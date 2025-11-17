@@ -1,0 +1,45 @@
+.registerContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:  #ebf1f8;
+  }
+  
+  .registerBox {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 500px;
+  }
+  
+  .registerBox h2 {
+    color: #1e3c72;
+    font-family: 'Times New Roman', serif;
+  }
+  
+  .loginLink {
+    color: #1e3c72;
+    font-weight: 500;
+  }
+  
+  .loginLink:hover {
+    text-decoration: underline;
+    color: #2a5298;
+  }
+  /* Responsive adjustments */
+  @media (max-width: 530px) {
+   
+    .registerBox {
+     width: 330px;
+    }
+  }
+  @media (min-width: 530px) and (max-width: 700px) {
+   
+    .registerBox {
+     width: 400px;
+    }
+  }
+
+  

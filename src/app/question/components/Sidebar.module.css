@@ -1,0 +1,59 @@
+.sidebar {
+  width: 220px;                  /* Fixed width for the sidebar */
+  background-color: #053e77;     
+  padding: 10px 20px;
+  height: calc(100vh - 180px);  
+  overflow-y: auto;              /* Enable vertical scrolling */
+  position: fixed; 
+  border-radius: 5px;             
+  top: 180px;                                          
+  z-index: 1;                    /* Ensure it is above other content */
+  color: white;
+  transition: transform 0.3s ease; /* Smooth transition for toggle */
+}
+
+.sidebarClosed {
+  transform: translateX(-100%);
+  visibility: hidden;
+}
+
+.sidebarHeader {
+  position: sticky;
+  top: 0;                        
+  background-color: #053e77;
+  z-index: 2;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ffffff33; 
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.topicList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.topicItem {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.topicItem:hover {
+  background-color: #98DED9; 
+}
+.active{
+  background-color: #98DED9
+}
+
+.noTopics {
+  text-align: center;
+  padding: 20px;
+  color: #cccccc;
+  font-style: italic;
+}

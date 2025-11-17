@@ -1,0 +1,36 @@
+
+  
+  .cards {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .cards div {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    flex: 1;
+    min-width: 170px;
+    height: 170px;
+  }
+  
+  .cards h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .cards p {
+    font-size: 18px;
+    margin-bottom: 0px !important;
+  }
+
+   /*reponsive adjustments*/
+   @media (max-width : 540px) {
+    .content{
+      margin-left: 0;
+      width: 100%;
+    }
+    
+   }

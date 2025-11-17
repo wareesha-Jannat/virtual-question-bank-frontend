@@ -1,0 +1,30 @@
+.content {
+  margin-left: 220px;
+  padding: 30px;
+  margin-top: 63px;
+  width: calc(100% - 220px);
+  background-color: #f4f7fc ;
+  height: calc(100vh - 63px); /* Adjust the height to exclude the header*/
+  overflow-y: auto;
+  z-index : 1;
+  transition : margin-left 0.3s ease, width 0.3s ease;
+}
+.hide {
+  margin-left: 0;
+  width: 100%;
+}
+
+
+
+
+ /*reponsive adjustments*/
+ @media (max-width : 800px) {
+  .content{
+    margin-left: 0;
+    width: 100%;
+  }
+
+  
+ }
+
+

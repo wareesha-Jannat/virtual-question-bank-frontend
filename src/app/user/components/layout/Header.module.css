@@ -1,0 +1,55 @@
+
+
+
+.header{
+  background-color: #053e77;
+
+} 
+.header button {
+  background-color: #053e77; 
+  border: none;
+  color: white;
+  font-weight: bold;
+ 
+}
+.header h1{
+  font-size: 22px;
+  font-weight: bold;
+  position: relative;
+    top: 3px;
+}
+.header a{
+ color: whitesmoke;
+}
+
+/* Notification dot style */
+.notificationDot {
+  position: absolute;
+  top: 5px; 
+  right: 4px; 
+  width: 8px; 
+  height: 8px; 
+  background-color: red; 
+  border-radius: 50%; 
+  border: 2px solid white; 
+  transform: translate(50%, -50%); 
+}
+
+/* Shaking bell icon animation */
+@keyframes shake {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+  100% { transform: rotate(0); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+
+
+
+
+ 

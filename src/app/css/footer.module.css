@@ -1,0 +1,15 @@
+.footer{
+  background-color:#053e77;
+}
+.footer p {
+    margin-bottom: 0;
+  }
+  
+.footer a {
+    text-decoration: none;
+    margin-left: 10px;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }

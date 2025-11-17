@@ -1,0 +1,64 @@
+.content {
+  margin-left: 220px;
+  margin-top: 180px;
+  padding: 30px;
+  width: calc(100% - 220px);
+  background-color: #f4f7fc;
+  height: calc(
+    100vh - 180px
+  ); /* Adjust the height to exclude the header and subject pane */
+  overflow-y: auto; /* This makes the content scrollable */
+  z-index: 1;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.hide {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 750px) {
+  .content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.searchInput {
+  width: 600px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.select {
+  margin-left: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media (max-width: 770px) {
+  .filters {
+    flex-wrap: wrap;
+  }
+}
+
+.explanation {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.explanationText {
+  margin: 0;
+  color: #6c757d;
+}
+.noQuestionsMessage {
+  color: #ff0000;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}

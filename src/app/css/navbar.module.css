@@ -1,0 +1,33 @@
+.customNavbar {
+  background-color: #053e77;
+  padding: 1rem 0;
+}
+.customNavbar h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff !important;
+
+  text-transform: uppercase;
+}
+
+.customNavbar a {
+  color: whitesmoke;
+}
+
+
+.div {
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .button {
+    margin: 16px 0px !important;
+  }
+  .div {
+    gap: 2rem;
+    justify-content: start;
+  }
+}

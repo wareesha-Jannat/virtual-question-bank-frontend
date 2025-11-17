@@ -1,0 +1,13 @@
+
+  .forgotPassword {
+    color: #1e3c72;
+    font-weight: 500;
+  }
+  
+  .forgotPassword:hover {
+    text-decoration: underline;
+    color: #2a5298;
+  }
+
+  
+  

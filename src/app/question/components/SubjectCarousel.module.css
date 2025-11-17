@@ -1,0 +1,31 @@
+.subjectPortion {
+  position: fixed;
+  top: 60px;
+  z-index: 2;
+  width: 100%;
+  justify-items: center;
+  background-color: #fdf6ec;
+}
+
+.subjectItem {
+  background-color: #d4edda; /* Background for subjects */
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.subjectItem.active {
+  background-color: #3b82f6; /* Active subject color */
+  color: white;
+}
+
+.subjectItem:hover {
+  background-color: #d1d5db;
+}
+
+.carousel {
+  max-width: 80%;
+}
