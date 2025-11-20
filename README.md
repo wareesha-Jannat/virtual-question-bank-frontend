@@ -110,7 +110,7 @@ Use the following credentials to explore the app :
 
 ## Live Demo
 
-[Visit the live site](https://boostme-henna.vercel.app)
+[Visit the live site](https://virtual-question-bank-frontend.vercel.app)
 
 ## Credits
 
