@@ -44,22 +44,9 @@ export const Header = ({ toggleSidebar }) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               {/* If authenticated, show Dashboard link based on role */}
-              {role !== "unauthorized" ? (
-                <li className="nav-item">
-                  <Link
-                    href={
-                      role === "Admin"
-                        ? "/user/admin/dashboard"
-                        : "/user/student/dashboard"
-                    }
-                    className="nav-link"
-                  >
-                    <i className="bi bi-grid-fill fs-5 me-2"></i>
-                    Dashboard
-                  </Link>
-                </li>
-              ) : (
-                <>
+              {role === "unauthorized" ? (
+                               <>
+
                   <li className="nav-item">
                     <Link href="/" className="nav-link" prefetch={true}>
                       <i className="bi bi-house-fill fs-5 me-2"></i>
@@ -73,6 +60,21 @@ export const Header = ({ toggleSidebar }) => {
                     </Link>
                   </li>
                 </>
+              ) : (
+                 <li className="nav-item">
+                  <Link
+                    href={
+                      role === "Admin"
+                        ? "/user/admin/dashboard"
+                        : "/user/student/dashboard"
+                    }
+                    className="nav-link"
+                  >
+                    <i className="bi bi-grid-fill fs-5 me-2"></i>
+                    Dashboard
+                  </Link>
+                </li>
+
               )}
             </ul>
           </div>

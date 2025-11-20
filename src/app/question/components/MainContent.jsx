@@ -115,13 +115,11 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
   };
 
   return (
-    <div
-      className={`${styles.content} container  ${isOpen ? "" : styles.hide}`}
-    >
+    <div className={`${styles.content}   ${isOpen ? "" : styles.hide}`}>
       {practiceMode ? (
         // Show PracticeComponent if practiceMode is true
         <PracticeComponent
-          questions={practiceQuestions} 
+          questions={practiceQuestions}
           onBackToView={() => {
             setPracticeMode(false);
             setPracticeQuestions([]);
