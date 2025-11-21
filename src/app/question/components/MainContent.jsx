@@ -152,7 +152,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
             >
-              <option value="">All Difficulty Levels</option>
+              <option value="">Difficulty Levels</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>
@@ -167,7 +167,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
                   setDifficulty("");
                 }}
               >
-                Clear Filters
+                Clear All
               </button>
             </div>
           </div>
