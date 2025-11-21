@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 // Array of paths where authenticated users should not access
-const authPaths = ["/account/Login", "/account/Register", "/"];
+const authPaths = ["/account/Login", "/account/Register"];
 
 async function verifyJWT(token, secret) {
   try {
@@ -26,6 +26,8 @@ export async function middleware(request) {
 
     //verify accessToken
     if (accessToken) {
+      console.log("JWT secret:", process.env.JWT_ACCESS_TOKEN_SECRET_KEY);
+      console.log("Access token:", accessToken);
       try {
         const decoded = await verifyJWT(
           accessToken,
