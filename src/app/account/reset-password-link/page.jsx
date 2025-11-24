@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPasswordLinkSchema } from "../../validation/schemas.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation.js";
 import { useRole } from "@/app/components/RoleProvider.jsx";
 
