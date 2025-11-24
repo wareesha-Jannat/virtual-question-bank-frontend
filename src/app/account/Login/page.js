@@ -8,12 +8,20 @@ import { loginSchema } from "../../validation/schemas.jsx";
 import { toast } from "react-toastify";
 import { useRole } from "@/app/components/RoleProvider";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Login() {
   const router = useRouter();
   const { role, setRole } = useRole();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (role === "Admin") {
+      router.push("/user/admin/dashboard");
+    } else if (role === "Student") {
+      router.push("/user/student/dashboard");
+    }
+  }, [role]);
 
   const {
     register,
@@ -41,7 +49,7 @@ export default function Login() {
         reset();
 
         setRole(result.user.role);
-    
+
         // Redirect based on the user's role
         if (result.user.role === "Admin") {
           router.push("/user/admin/dashboard");
@@ -93,7 +101,9 @@ export default function Login() {
                 className="position-absolute top-50 border-0 bg-transparent"
                 style={{ right: "0px" }}
               >
-               <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+                <i
+                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                ></i>
               </button>
             </div>
             {errors.password && (

@@ -6,9 +6,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { registerSchema } from "../../validation/schemas.jsx";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useRole } from "@/app/components/RoleProvider";
 
 export default function Register() {
   const router = useRouter();
+  const { role } = useRole();
+
+  useEffect(() => {
+    if (role === "Admin") {
+      router.push("/user/admin/dashboard");
+    } else if (role === "Student") {
+      router.push("/user/student/dashboard");
+    }
+  }, [role]);
+
   const {
     register,
     handleSubmit,

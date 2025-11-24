@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { BarChartComponent } from "@/app/user/admin/analyticsAndReporting/components/BarChartComponent";
 import { PieChartComponent } from "@/app/user/admin/analyticsAndReporting/components/PieChartComponent";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "@/app/components/Loader";
 
 export const PerformanceComponent = () => {
   // State to store fetched data
@@ -31,7 +32,7 @@ export const PerformanceComponent = () => {
 
   const router = useRouter();
 
-  const { data, isError } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["performanceData"],
     queryFn: async () => {
       const res = await fetch(
@@ -88,6 +89,13 @@ export const PerformanceComponent = () => {
   const totalPagesPerformance = Math.ceil(
     performanceData.examPerformance.length / itemsPerPage
   );
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">
@@ -97,7 +105,7 @@ export const PerformanceComponent = () => {
       <div className="mb-4">
         <h5 className="heading mb-3">Exams Taken Per Subject</h5>
 
-        {!isError && paginatedSubjects.length > 0 ? (
+        {!isError && paginatedSubjects && paginatedSubjects.length > 0 ? (
           <BarChartComponent data={paginatedSubjects} />
         ) : (
           <div

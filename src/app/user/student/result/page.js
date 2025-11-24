@@ -1,17 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { ResultPage } from "./components/ResultPage.jsx";
-import { useRouter } from "next/navigation";
 import { ResultComponent } from "@/app/examSession/components/ResultComponent.jsx";
 import { DetailResultComponent } from "@/app/examSession/components/DetailResultComponent.jsx";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Result() {
   const [mode, setMode] = useState("resultTable");
   const [resultData, setResultData] = useState({});
   const [detailResult, setDetailResult] = useState({});
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const handleViewResult = async (resultId) => {
@@ -41,7 +39,7 @@ export default function Result() {
         toast.error(err.message);
       },
     });
-  
+
     setResultData(data || {});
     setMode("result");
   };

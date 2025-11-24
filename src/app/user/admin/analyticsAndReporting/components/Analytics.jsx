@@ -5,6 +5,7 @@ import { BarChartComponent } from "./BarChartComponent";
 import { PieChartComponent } from "./PieChartComponent";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "@/app/components/Loader";
 
 export const Analytics = () => {
   // State to store the fetched data
@@ -15,7 +16,7 @@ export const Analytics = () => {
 
   const router = useRouter();
 
-  const { data, isError } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["analytics"],
     queryFn: async () => {
       const res = await fetch(
@@ -64,6 +65,14 @@ export const Analytics = () => {
   // Calculate total pages
   const totalPages = Math.ceil(totalSubjects / subjectsPerPage);
 
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div>
       <h3 className="mb-4 heading">Analytics Overview</h3>
@@ -71,7 +80,7 @@ export const Analytics = () => {
       {/* Question Usage Bar Chart */}
       <div className="mb-4">
         <h5>Question Usage</h5>
-        {!isError && currentSubjects.length > 0 ? (
+        {!isError && currentSubjects && currentSubjects.length > 0 ? (
           <BarChartComponent data={currentSubjects} />
         ) : (
           <div

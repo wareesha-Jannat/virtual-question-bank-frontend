@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { useRouter } from "next/navigation.js";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "@/app/components/Loader.jsx";
 
 export function MainContent() {
   const initData = {
@@ -21,7 +22,7 @@ export function MainContent() {
   };
   const router = useRouter();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["dashboard-admin"],
     queryFn: async () => {
       const response = await fetch(
@@ -55,6 +56,13 @@ export function MainContent() {
   });
 
   const dashboardData = data || initData;
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>

@@ -6,9 +6,22 @@ import { useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRole } from "@/app/components/RoleProvider";
 import { useUnreadNot } from "@/app/hooks/useUnreadNot";
+import { useRouter } from "next/navigation";
 
 export const Header = ({ toggleSidebar }) => {
   const { role } = useRole();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (role === "Admin") {
+      router.push("/user/admin/dashboard");
+    } else if (role === "Student") {
+      router.push("/user/student/dashboard");
+    } else {
+      router.push("/account/Login")
+    }
+  }, [role]);
+
   const { data } = useUnreadNot({
     enabled: role !== "Unauthorized" && role !== null,
   });

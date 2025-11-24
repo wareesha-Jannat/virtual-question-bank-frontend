@@ -45,8 +45,7 @@ export const Header = ({ toggleSidebar }) => {
             <ul className="navbar-nav ms-auto">
               {/* If authenticated, show Dashboard link based on role */}
               {role === "unauthorized" ? (
-                               <>
-
+                <>
                   <li className="nav-item">
                     <Link href="/" className="nav-link" prefetch={true}>
                       <i className="bi bi-house-fill fs-5 me-2"></i>
@@ -61,7 +60,7 @@ export const Header = ({ toggleSidebar }) => {
                   </li>
                 </>
               ) : (
-                 <li className="nav-item">
+                <li className="nav-item">
                   <Link
                     href={
                       role === "Admin"
@@ -74,7 +73,6 @@ export const Header = ({ toggleSidebar }) => {
                     Dashboard
                   </Link>
                 </li>
-
               )}
             </ul>
           </div>
