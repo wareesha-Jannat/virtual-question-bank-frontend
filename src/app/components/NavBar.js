@@ -52,7 +52,7 @@ export const NavBar = () => {
                 </Link>
               </li>
               <div className={`${styles.div}`}>
-                {role === "unauthorized" ? (
+                {role === "unauthorized" || role === null ? (
                   <>
                     <li className="nav-item">
                       <Link

@@ -71,6 +71,7 @@ export const getAuth = async () => {
     if (res.status === 401) {
       return {
         role: "unauthorized",
+        status : "unauthorized"
       };
     }
     const data = await res.json();

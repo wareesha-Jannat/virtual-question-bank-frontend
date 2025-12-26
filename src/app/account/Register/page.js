@@ -12,6 +12,8 @@ import { useRole } from "@/app/components/RoleProvider";
 export default function Register() {
   const router = useRouter();
   const { role } = useRole();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (role === "Admin") {
@@ -86,33 +88,61 @@ export default function Register() {
               <span className="text-danger">{errors.email.message}</span>
             )}
           </div>
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label htmlFor="password" className="form-label">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              {...register("password")}
-              className={`form-control ${errors.password ? "is-invalid" : ""}`}
-            />
+            <div>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                {...register("password")}
+                className={`form-control ${
+                  errors.password ? "is-invalid" : ""
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute top-50 border-0 bg-transparent"
+                style={{ right: "0px" }}
+              >
+                <i
+                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                ></i>
+              </button>
+            </div>
             {errors.password && (
               <span className="text-danger">{errors.password.message}</span>
             )}
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <label htmlFor="passwordConfirmation" className="form-label">
               Confirm password
             </label>
-            <input
-              type="password"
-              id="passwordConfirmation"
-              {...register("passwordConfirmation")}
-              className={`form-control ${
-                errors.passwordConfirmation ? "is-invalid" : ""
-              }`}
-            />
+            <div>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="passwordConfirmation"
+                {...register("passwordConfirmation")}
+                className={`form-control ${
+                  errors.passwordConfirmation ? "is-invalid" : ""
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="position-absolute top-50 border-0 bg-transparent"
+                style={{ right: "0px" }}
+              >
+                <i
+                  className={`bi ${
+                    showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                  }`}
+                ></i>
+              </button>
+            </div>
             {errors.passwordConfirmation && (
               <span className="text-danger">
                 {errors.passwordConfirmation.message}

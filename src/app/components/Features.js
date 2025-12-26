@@ -3,7 +3,7 @@ import styles from "../css/features.module.css";
 
 export const Features = () => {
   return (
-    <div id="Features" className={`${styles.features} py-5 bg-light`}>
+    <section id="Features" className={`${styles.features} py-5 bg-light`}>
       <div className="container-xxl text-center">
         <h2 className="mb-5">Features</h2>
         <div className="row justify-content-around">
@@ -33,6 +33,6 @@ export const Features = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

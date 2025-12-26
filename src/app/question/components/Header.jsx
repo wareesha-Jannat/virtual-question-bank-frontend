@@ -44,7 +44,7 @@ export const Header = ({ toggleSidebar }) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               {/* If authenticated, show Dashboard link based on role */}
-              {role === "unauthorized" ? (
+              {role === "unauthorized" || role === null ? (
                 <>
                   <li className="nav-item">
                     <Link href="/" className="nav-link" prefetch={true}>
