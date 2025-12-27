@@ -13,6 +13,7 @@ export function UserManagement() {
   const [searchTerm, setSearchTerm] = useState(""); // State for search
   const [filterRole, setFilterRole] = useState(""); // State for role filter
   const [currentPage, setCurrentPage] = useState(1); // State for pagination
+  const [deleteUserId, setDeleteUserId] = useState(null);
 
   const router = useRouter();
 
@@ -69,6 +70,7 @@ export function UserManagement() {
   const existingUsers = queryData?.users ?? [];
 
   const handleDelete = async (user) => {
+    setDeleteUserId(user._id);
     deleteUserMutation.mutate(
       {
         userId: user._id,
@@ -81,10 +83,12 @@ export function UserManagement() {
         onSuccess: (data) => {
           if (data.success) {
             toast.success(data.message);
+            setDeleteUserId(null);
           }
         },
         onError: (error) => {
           toast.error(data.message);
+          setDeleteUserId(null);
         },
       }
     );
@@ -194,7 +198,7 @@ export function UserManagement() {
                               onClick={() => handleDelete(user)}
                               disabled={deleteUserMutation.isPending}
                             >
-                              {deleteUserMutation.isPending ? (
+                              {deleteUserId == user._id ? (
                                 <>
                                   <span
                                     className="spinner-border spinner-border-sm"

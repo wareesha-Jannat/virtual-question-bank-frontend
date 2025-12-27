@@ -12,6 +12,7 @@ import { useDeleteQuestionMutation } from "./mutations.js";
 export const QuestionTab = () => {
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [deleteQuestionId, setDeleteQuestionId] = useState(null);
   const [subjectList, setSubjectList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterSubject, setFilterSubject] = useState("");
@@ -87,6 +88,7 @@ export const QuestionTab = () => {
   const existingQuestions = queryData?.questions ?? [];
 
   const handleDelete = async (question) => {
+    setDeleteQuestionId(question._id);
     deleteQuestionMutation.mutate(
       {
         questionId: question._id,
@@ -99,10 +101,12 @@ export const QuestionTab = () => {
         onSuccess: (data) => {
           if (data.success) {
             toast.success(data.message);
+            setDeleteQuestionId(null);
           }
         },
         onError: (error) => {
           toast.error(error.message);
+          setDeleteQuestionId(null);
         },
       }
     );
@@ -213,14 +217,14 @@ export const QuestionTab = () => {
                               className="btn btn-danger btn-sm  d-flex align-items-center gap-2"
                               onClick={() => handleDelete(question)}
                             >
-                              {deleteQuestionMutation.isPending ? (
+                              {deleteQuestionId == question._id ? (
                                 <>
                                   <span
                                     className="spinner-border spinner-border-sm"
                                     role="status"
                                     aria-hidden="true"
                                   ></span>
-                                  <span>Deleting...</span>
+                                  <span>Deleting</span>
                                 </>
                               ) : (
                                 "Delete"
