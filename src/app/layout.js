@@ -11,7 +11,6 @@ export const metadata = {
     template: "%s | Virtual Question Bank",
     default: "Virtual Question Bank",
   },
-
   description:
     "Prepare smarter for exams with a virtual question bank. Practice MCQs, track performance, and strengthen concepts with topic-wise questions.",
   keywords: [

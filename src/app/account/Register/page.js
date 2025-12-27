@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { registerSchema } from "../../validation/schemas.jsx";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRole } from "@/app/components/RoleProvider";
 
 export default function Register() {
