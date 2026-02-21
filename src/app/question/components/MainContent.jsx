@@ -9,6 +9,7 @@ import { PracticeComponent } from "./PracticeComponent";
 import { useRole } from "@/app/components/RoleProvider";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/app/hooks/useDebounce";
+import Loader from "@/app/components/Loader";
 
 export const MainContent = ({ isOpen, subjectId, topicId }) => {
   // State variables for holding questions, search term, difficulty, and filtered questions
@@ -28,7 +29,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
 
   //Query to fetch questions
 
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+  const { data, isFetchingNextPage, hasNextPage, isFetching, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [
         "questionsPage",
@@ -174,7 +175,12 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
 
           {/* Display questions */}
           <div className="mt-4">
-            {questions && questions.length > 0 ? (
+            {isFetching || !subjectId || !topicId ? (
+               <div>
+                          {" "}
+                          <Loader height="20" width="20" size={20} />{" "}
+                        </div>
+            ) : questions && questions.length > 0 ? (
               questions.map((question) => (
                 <div key={question._id} className="border p-3 rounded mb-2">
                   <div className="d-flex align-items-center justify-content-between heading">
@@ -227,6 +233,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
                 No questions available.
               </div>
             )}
+           
 
             {hasNextPage && (
               <button

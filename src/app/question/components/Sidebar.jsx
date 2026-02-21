@@ -3,10 +3,11 @@ import styles from "./Sidebar.module.css";
 import { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useTopics } from "@/app/hooks/useTopics";
+import Loader from "@/app/components/Loader";
 
 export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
   const [activeTopicId, setActiveTopicId] = useState(null);
-  const { data, error } = useTopics(subjectId);
+  const { data, error, isLoading } = useTopics(subjectId);
   const topics = data?.status === "success" ? data.topics : [];
 
   // Effect hook to set a default topic when topics are fetched
@@ -36,7 +37,12 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
       {/* Sidebar header and topic list */}
       <h3 className={styles.sidebarHeader}>Topics</h3>
       <ul className={styles.topicList}>
-        {topics && topics.length > 0 ? (
+        {isLoading || !subjectId ? (
+          <div>
+            {" "}
+            <Loader height="20" width="20" size={20} />{" "}
+          </div>
+        ) : topics && topics.length > 0 ? (
           topics.map((topic) => (
             <li
               key={topic._id}
@@ -52,6 +58,7 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
         ) : (
           <li className={styles.noTopics}>No Topics available</li>
         )}
+
         {error && <li className={styles.noTopics}>Error loading topics</li>}
       </ul>
     </div>

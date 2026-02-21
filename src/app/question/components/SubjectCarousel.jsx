@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styles from "./SubjectCarousel.module.css";
+import Loader from "@/app/components/Loader";
 
-export const SubjectCarousel = ({ subjects, onSubjectSelect }) => {
+export const SubjectCarousel = ({ subjects, onSubjectSelect, isLoading }) => {
   const [activeSubjectId, setActiveSubjectId] = useState(null);
   const scrollRef = React.useRef(null); // Ref to the container that holds the subjects for scrolling functionality
 
@@ -52,7 +53,9 @@ export const SubjectCarousel = ({ subjects, onSubjectSelect }) => {
           ref={scrollRef}
         >
           {/* Map through the subjects array and display each subject */}
-          {subjects?.length > 0 ? (
+          {isLoading ? (
+            <div style={{ minWidth: "250px" }}> <Loader height="20" width="20" size={20}/> </div>
+          ) : subjects?.length > 0 ? (
             subjects.map((subject) => (
               <div
                 key={subject._id}
@@ -66,7 +69,11 @@ export const SubjectCarousel = ({ subjects, onSubjectSelect }) => {
             ))
           ) : (
             <div className="text-muted p-3">No subjects found</div>
-          )}
+          )
+          }
+          
+          
+          
         </div>
         <button
           className={`btn btn-outline-secondary carousel-btn ms-2`}

@@ -13,7 +13,7 @@ export default function QuestionsPage() {
   const [subjectId, setSubjectId] = useState(null);
   const [topicId, setTopicId] = useState(null);
 
-  const { data } = useSubjects();
+  const { data, isLoading } = useSubjects();
 
   const subjects = data?.status === "success" ? data.subjects ?? [] : [];
 
@@ -41,6 +41,7 @@ export default function QuestionsPage() {
       {/* SubjectCarousel to display and select subjects */}
       <SubjectCarousel
         subjects={subjects}
+        isLoading={isLoading}
         onSubjectSelect={handleSubjectSelect}
       />
       <div className="custom-container">
