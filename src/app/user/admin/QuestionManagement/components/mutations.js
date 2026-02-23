@@ -6,7 +6,7 @@ export function useAddSubjectMutation() {
   const mutation = useMutation({
     mutationFn: async (subject) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/subjects/createSubject`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/subjects/`,
         {
           method: "POST",
           credentials: "include",
@@ -52,7 +52,7 @@ export function useDeleteSubjectMutation() {
   const mutation = useMutation({
     mutationFn: async (subject) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/subjects/deleteSubject/${subject}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/subjects/${subject}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -93,7 +93,7 @@ export function useAddTopicMutation() {
   const mutation = useMutation({
     mutationFn: async ({ newTopic, selectedSubject }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics/addTopic`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics/`,
         {
           method: "POST",
           credentials: "include",
@@ -139,7 +139,7 @@ export function useDeleteTopicMutation() {
   const mutation = useMutation({
     mutationFn: async (selectedTopic) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics/deleteTopic/${selectedTopic}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics/${selectedTopic}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -179,7 +179,7 @@ export function useDeleteQuestionMutation() {
   const mutation = useMutation({
     mutationFn: async ({ questionId }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/deleteQuestion/${questionId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/${questionId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -221,7 +221,7 @@ export function useAddQuestionMutation() {
   const mutation = useMutation({
     mutationFn: async (questionPayload) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/addQuestion`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/`,
         {
           method: "POST",
           credentials: "include",
@@ -267,9 +267,9 @@ export function useUpdateQuestionMutation() {
   const mutation = useMutation({
     mutationFn: async ({ questionPayload, questionId }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/updateQuestion/${questionId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/${questionId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",

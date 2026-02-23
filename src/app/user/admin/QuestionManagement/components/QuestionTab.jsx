@@ -56,7 +56,7 @@ export const QuestionTab = () => {
       const res = await fetch(
         `${
           process.env.NEXT_PUBLIC_BACKEND_URL
-        }/questions/getQuestionsByAdmin?${params.toString()}`,
+        }/questions/admin?${params.toString()}`,
         {
           method: "GET",
           credentials: "include",

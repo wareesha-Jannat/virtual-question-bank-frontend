@@ -6,7 +6,7 @@ export function useRequestDeleteMutation() {
   const mutation = useMutation({
     mutationFn: async ({ reqId }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support/deleteRequest?reqId=${reqId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests/${reqId}`,
         {
           method: "DELETE",
           credentials: "include",

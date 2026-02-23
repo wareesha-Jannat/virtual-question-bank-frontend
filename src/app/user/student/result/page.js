@@ -53,14 +53,13 @@ export default function Result() {
       queryKey: ["detailResult", examSessionId],
       queryFn: async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/detailResult`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/${examSessionId}`,
           {
-            method: "POST",
+            method: "GET",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ examSessionId }),
+            }
           }
         );
         const data = await response.json();

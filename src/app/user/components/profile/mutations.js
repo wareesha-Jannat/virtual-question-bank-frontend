@@ -4,7 +4,7 @@ export function useDeleteAccountMutation() {
   const mutation = useMutation({
     mutationFn: async (userId) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/deleteAccount/${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -28,9 +28,9 @@ export function useUpdatePersonalInfoMutation() {
   const mutation = useMutation({
     mutationFn: async ({ userId, formData }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/updatePersonalInfo/${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",

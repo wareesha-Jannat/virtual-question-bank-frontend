@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { isValid, format } from "date-fns";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ export const SupportRequestManagement = () => {
     queryKey: ["newRequests"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support/getNewRequests`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests?new=true`,
         {
           method: "GET",
           credentials: "include",
@@ -65,7 +65,7 @@ export const SupportRequestManagement = () => {
         const res = await fetch(
           `${
             process.env.NEXT_PUBLIC_BACKEND_URL
-          }/support/getRespondedRequests?${params.toString()}`,
+          }/support-requests?respondedByMe=true${params.toString()}`,
           {
             method: "GET",
             credentials: "include",

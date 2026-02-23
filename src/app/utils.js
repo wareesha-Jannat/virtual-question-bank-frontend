@@ -95,7 +95,7 @@ export const getAuth = async () => {
 export const checkUnreadNotifications = async () => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/hasUnread`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/unread/count`,
       {
         method: "GET",
         credentials: "include",

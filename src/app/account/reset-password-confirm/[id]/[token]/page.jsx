@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPasswordConfirmSchema } from "../../../../validation/schemas.jsx";
 import { toast } from "react-toastify";
-import { useEffect , useState} from "react";
+import { useEffect, useState } from "react";
 import { useRole } from "@/app/components/RoleProvider.jsx";
 
 export default function ResetPasswordConfirm() {
@@ -38,10 +38,10 @@ export default function ResetPasswordConfirm() {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/reset-password/${id}/${token}`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: { "content-Type": "application/json" },
           body: JSON.stringify(data),
-        }
+        },
       );
       const result = await res.json();
       if (res.ok) {
@@ -64,12 +64,24 @@ export default function ResetPasswordConfirm() {
             <label htmlFor="password" className="form-label">
               New Password
             </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              {...register("password")}
-              className={`form-control ${errors.password ? "is-invalid" : ""}`}
-            />
+            <div>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                {...register("password")}
+                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute top-50 border-0 bg-transparent"
+                style={{ right: "0px" }}
+              >
+                <i
+                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                ></i>
+              </button>
+            </div>
             {errors.password && (
               <span className="text-danger">{errors.password.message}</span>
             )}

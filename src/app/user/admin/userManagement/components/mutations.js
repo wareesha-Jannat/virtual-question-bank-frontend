@@ -6,7 +6,7 @@ export function useDeleteUserMutation() {
   const mutation = useMutation({
     mutationFn: async ({userId}) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/deleteUser/${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -47,7 +47,7 @@ export function useAddUserMutation() {
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/addUser`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -90,8 +90,8 @@ export function useUpdateUserMutation() {
 
   const mutation = useMutation({
     mutationFn: async ({ formData, userId }) => {
-     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/updateUser/${userId}`, {
-            method: "PUT",
+     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`, {
+            method: "PATCH",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",

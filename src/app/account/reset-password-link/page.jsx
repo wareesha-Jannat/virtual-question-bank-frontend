@@ -32,7 +32,7 @@ export default function ResetPasswordLink() {
     try {
       setLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/reset-password-link`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/password-resets`,
         {
           method: "POST",
           headers: { "content-Type": "application/json" },

@@ -1,3 +1,4 @@
+import Loader from "@/app/components/Loader";
 import { useDebounce } from "@/app/hooks/useDebounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -7,7 +8,7 @@ export const ResultPage = ({ handleViewResult }) => {
   // State for the single search query
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm);
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
+  const { data, isFetchingNextPage, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: ["resultData", debouncedSearch],
       queryFn: async ({ pageParam }) => {
@@ -15,14 +16,14 @@ export const ResultPage = ({ handleViewResult }) => {
         if (pageParam) params.append("cursor", pageParam);
         if (debouncedSearch) params.append("search", debouncedSearch);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/getResults`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/`,
           {
             method: "GET",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         const data = await res.json();
 
@@ -78,7 +79,11 @@ export const ResultPage = ({ handleViewResult }) => {
                 </tr>
               </thead>
               <tbody>
-                {results && results.length > 0 ? (
+                {isFetching ? (
+                  <div>
+                    <Loader />
+                  </div>
+                ) : results && results.length > 0 ? (
                   results.map((result, index) => (
                     <tr key={result.resultId}>
                       <td>{index + 1}</td>

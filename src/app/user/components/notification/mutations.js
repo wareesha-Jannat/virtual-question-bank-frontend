@@ -6,9 +6,9 @@ export function useMarkAsReadMutation() {
   const mutation = useMutation({
     mutationFn: async (notId) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/updateNotification/markAsRead/${notId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/${notId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",

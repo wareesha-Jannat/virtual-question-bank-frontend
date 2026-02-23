@@ -73,7 +73,7 @@ export default function ExamSessionPage() {
   const handleStartExam = async (examDetails) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/exams/startExam`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/exam-sessions/`,
         {
           method: "POST",
           credentials: "include",
@@ -106,9 +106,9 @@ export default function ExamSessionPage() {
   const handleSubmitExam = async (submittedExamSession) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/exams/finishExam`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/exam-sessions/${submittedExamSession._id}`,
         {
-          method: "POST",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -137,14 +137,13 @@ export default function ExamSessionPage() {
   const handleDetailResult = async (examsessionId) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/detailResult`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/${examsessionId}`,
         {
-          method: "POST",
+          method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ examSessionId: examsessionId }),
+          }
         }
       );
       const data = await response.json();

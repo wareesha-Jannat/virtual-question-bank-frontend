@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState,} from "react";
 import { useRouter } from "next/navigation";
 import { AddAndUpdateUser } from "./AddAndUpdateUser.jsx";
 import { toast } from "react-toastify";
@@ -38,7 +38,7 @@ export function UserManagement() {
       const res = await fetch(
         `${
           process.env.NEXT_PUBLIC_BACKEND_URL
-        }/users/getUsers?${params.toString()}`,
+        }/users?${params.toString()}`,
         {
           method: "GET",
           credentials: "include",

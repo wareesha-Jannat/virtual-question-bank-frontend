@@ -27,7 +27,7 @@ export const PracticeComponent = ({
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/evaluateResponse`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/evaluations`, {
         method: 'POST',
         credentials: 'include',
         headers: {

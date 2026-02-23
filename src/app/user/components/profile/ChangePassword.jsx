@@ -25,7 +25,7 @@ export const ChangePassword = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/changePassword`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/password`,
         {
           method: "POST",
           credentials: "include",

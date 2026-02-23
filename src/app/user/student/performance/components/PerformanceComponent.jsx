@@ -36,14 +36,14 @@ export const PerformanceComponent = () => {
     queryKey: ["performanceData"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/analyticsAndReporting/performanceData`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/insights/performance`,
         {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
 
@@ -72,22 +72,22 @@ export const PerformanceComponent = () => {
   const indexOfFirstPageSubject = indexOfLastPageSubject - itemsPerPage;
   const paginatedSubjects = performanceData.examTakenPerSubject?.slice(
     indexOfFirstPageSubject,
-    indexOfLastPageSubject
+    indexOfLastPageSubject,
   );
 
   const indexOfLastPagePerformance = currentPagePerformance * itemsPerPage;
   const indexOfFirstPagePerformance = indexOfLastPagePerformance - itemsPerPage;
   const paginatedPerformance = performanceData.examPerformance?.slice(
     indexOfFirstPagePerformance,
-    indexOfLastPagePerformance
+    indexOfLastPagePerformance,
   );
 
   // Calculate total pages for both paginated performanceData
   const totalPagesSubject = Math.ceil(
-    performanceData.examTakenPerSubject.length / itemsPerPage
+    performanceData.examTakenPerSubject.length / itemsPerPage,
   );
   const totalPagesPerformance = Math.ceil(
-    performanceData.examPerformance.length / itemsPerPage
+    performanceData.examPerformance.length / itemsPerPage,
   );
   if (isLoading) {
     return (

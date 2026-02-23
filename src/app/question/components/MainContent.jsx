@@ -50,7 +50,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
         ); // remove empty/null/undefined
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/getQuestions?${params}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/?${params}`
         );
         const data = await res.json();
         if (!res.ok)

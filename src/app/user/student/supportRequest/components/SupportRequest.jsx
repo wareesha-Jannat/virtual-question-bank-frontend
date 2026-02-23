@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useDebounce } from "@/app/hooks/useDebounce";
 import { useCreateRequestMutation } from "./mutations";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import Loader from "@/app/components/Loader";
 
 export function SupportRequest() {
   const initialFormData = {
@@ -44,40 +45,46 @@ export function SupportRequest() {
       },
     });
   };
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage, status } =
-    useInfiniteQuery({
-      queryKey: ["userRequests", debouncedSearch],
-      queryFn: async ({ pageParam }) => {
-        const params = new URLSearchParams();
-        if (pageParam) params.append("cursor", pageParam);
-        if (debouncedSearch) params.append("search", debouncedSearch);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/support/getRequests${params}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await res.json();
-        if (res.status === 401) {
-          throw new Error("Unauthorized");
-        }
-        if (!res.ok) throw new Error("Failed to get responded requests");
-        return data;
-      },
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onError: (err) => {
-       if (err.message === "Unauthorized") {
+  const {
+    data,
+    isFetchingNextPage,
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["userRequests", debouncedSearch],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams();
+      if (pageParam) params.append("cursor", pageParam);
+      if (debouncedSearch) params.append("search", debouncedSearch);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests/${params}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await res.json();
+      if (res.status === 401) {
+        throw new Error("Unauthorized");
+      }
+      if (!res.ok) throw new Error("Failed to get responded requests");
+      return data;
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    onError: (err) => {
+      if (err.message === "Unauthorized") {
         router.push("/account/Login");
         return;
       }
       toast.error(err.message || "Something went wrong");
-      },
-    });
+    },
+  });
 
   const requests = data?.pages.flatMap((page) => page.requests) || [];
 
@@ -157,11 +164,6 @@ export function SupportRequest() {
               Search
             </button>
           </div>
-          {status === "loading" && (
-            <>
-              <Loader />
-            </>
-          )}
 
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
@@ -178,7 +180,11 @@ export function SupportRequest() {
                 </tr>
               </thead>
               <tbody>
-                {requests.length > 0 ? (
+                {isFetching ? (
+                  <div>
+                    <Loader />
+                  </div>
+                ) : requests.length > 0 ? (
                   requests.map((request, index) => (
                     <tr key={request._id}>
                       <td>{index + 1}</td>

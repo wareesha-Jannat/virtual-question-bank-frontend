@@ -67,7 +67,7 @@ export const Reporting = () => {
     ],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/analyticsAndReporting/reportingData`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/insights/reports`,
         {
           method: "POST",
           credentials: "include",

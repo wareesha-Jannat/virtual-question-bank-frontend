@@ -26,14 +26,14 @@ export function MainContent() {
     queryKey: ["dashboard-admin"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/dashboardData`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/admin`,
         {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await response.json();
 

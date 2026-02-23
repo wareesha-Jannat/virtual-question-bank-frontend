@@ -27,7 +27,7 @@ export function MainContent() {
     queryKey: ["dashboard-student"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/dashboardDataStudent`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard/student`,
         {
           method: "GET",
           credentials: "include",

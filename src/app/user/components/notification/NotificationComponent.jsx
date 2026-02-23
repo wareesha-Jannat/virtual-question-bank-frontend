@@ -15,7 +15,7 @@ export function NotificationComponent() {
     queryKey: ["notifications"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/getNotifications`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/`,
         {
           method: "GET",
           credentials: "include",

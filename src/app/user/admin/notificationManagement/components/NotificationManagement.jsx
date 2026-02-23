@@ -28,7 +28,7 @@ export function NotificationManagement() {
       setLoading(true);
       // Send the notification to the backend
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/createNotification`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notifications/`,
         {
           method: "POST",
           credentials: "include",
