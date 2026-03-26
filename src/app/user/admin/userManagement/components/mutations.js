@@ -4,7 +4,7 @@ export function useDeleteUserMutation() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async ({userId}) => {
+    mutationFn: async ({ userId }) => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
         {
@@ -13,7 +13,7 @@ export function useDeleteUserMutation() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
 
@@ -48,14 +48,15 @@ export function useAddUserMutation() {
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          });
-          const data = await res.json();
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
       if (!res.ok) throw new Error(data.message || "Failed to add User");
       return data;
     },
@@ -90,15 +91,18 @@ export function useUpdateUserMutation() {
 
   const mutation = useMutation({
     mutationFn: async ({ formData, userId }) => {
-     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          });
-          const data = await res.json();;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+      const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to update User");
       return data;
     },
@@ -121,7 +125,7 @@ export function useUpdateUserMutation() {
         return {
           ...oldData,
           users: oldData.users.map((u) =>
-            u._id === data.updatedUser._id ? (u = data.updatedUser) : u
+            u._id === data.updatedUser._id ? (u = data.updatedUser) : u,
           ),
         };
       });

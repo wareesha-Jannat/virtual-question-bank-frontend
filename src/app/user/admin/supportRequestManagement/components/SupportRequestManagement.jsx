@@ -266,7 +266,7 @@ export const SupportRequestManagement = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="7">
+                <td colSpan="8">
                   <Loader />
                 </td>
               </tr>
