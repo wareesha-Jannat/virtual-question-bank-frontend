@@ -81,7 +81,7 @@ export default function ExamSessionPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(examDetails),
-        }
+        },
       );
       const data = await response.json();
 
@@ -114,7 +114,7 @@ export default function ExamSessionPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ examSession: submittedExamSession }),
-        }
+        },
       );
       const data = await response.json();
 
@@ -137,14 +137,14 @@ export default function ExamSessionPage() {
   const handleDetailResult = async (examsessionId) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/${examsessionId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/detail/${examsessionId}`,
         {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-          }
-        }
+          },
+        },
       );
       const data = await response.json();
 
@@ -200,7 +200,7 @@ export default function ExamSessionPage() {
         className="container-fluid d-flex align-items-center justify-content-center "
         style={{ backgroundColor: "antiquewhite" }}
       >
-        <div className="row d-flex container-xxl align-items-center justify-content-center p-4">
+        <div className="row d-flex container-xxl align-items-center justify-content-center ">
           <ExamComponent
             examSession={examSession}
             onSubmitExam={handleSubmitExam}
@@ -214,10 +214,10 @@ export default function ExamSessionPage() {
   if (resultData && mode === "result") {
     return (
       <div
-        className="container-fluid d-flex align-items-center justify-content-center"
+        className="container-fluid d-flex align-items-center justify-content-center min-vh-100"
         style={{ backgroundColor: "antiquewhite" }}
       >
-        <div className="row d-flex container-xxl align-items-center justify-content-center p-4">
+        <div className="row d-flex container-xxl align-items-center justify-content-center ">
           <ResultComponent
             result={resultData}
             onViewDetail={handleDetailResult}
@@ -234,7 +234,7 @@ export default function ExamSessionPage() {
         className="container-fluid d-flex align-items-center justify-content-center"
         style={{ backgroundColor: "antiquewhite" }}
       >
-        <div className="row container-xxl d-flex align-items-center justify-content-center p-4">
+        <div className="row container-xxl d-flex align-items-center justify-content-center">
           <DetailResultComponent
             exam={detailResult}
             onBack={handleBackToResult}

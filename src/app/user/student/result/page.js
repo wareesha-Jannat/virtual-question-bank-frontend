@@ -17,20 +17,19 @@ export default function Result() {
       queryKey: ["result", resultId],
       queryFn: async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/getSingleResult`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/${resultId}`,
           {
-            method: "POST",
+            method: "GET",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ resultId }),
-          }
+          },
         );
         const data = await response.json();
-
-        if (!response.ok)
+        if (!response.ok) {
           throw new Error(data.message || "Failed to get result");
+        }
         return data;
       },
       staleTime: Infinity,
@@ -39,7 +38,7 @@ export default function Result() {
         toast.error(err.message);
       },
     });
-
+    
     setResultData(data || {});
     setMode("result");
   };
@@ -53,14 +52,14 @@ export default function Result() {
       queryKey: ["detailResult", examSessionId],
       queryFn: async () => {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/${examSessionId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/detail/${examSessionId}`,
           {
             method: "GET",
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-            }
-          }
+            },
+          },
         );
         const data = await response.json();
         if (!response.ok)
@@ -89,35 +88,25 @@ export default function Result() {
   if (resultData && mode === "result") {
     return (
       <>
-        <div
-          className="container-fluid"
-          style={{ backgroundColor: "antiquewhite" }}
-        >
-          <div className="row d-flex align-items-center justify-content-center p-4">
-            <ResultComponent
-              result={resultData}
-              dashboardMode={true}
-              onViewDetail={handleDetailResult}
-              onBack={handleBackToTable}
-            />
-          </div>
+        <div className="row d-flex align-items-center justify-content-center p-2">
+          <ResultComponent
+            result={resultData}
+            dashboardMode={true}
+            onViewDetail={handleDetailResult}
+            onBack={handleBackToTable}
+          />
         </div>
       </>
     );
   }
   if (detailResult && mode === "detailResult") {
     return (
-      <div
-        className="container-fluid"
-        style={{ backgroundColor: "antiquewhite" }}
-      >
-        <div className="row d-flex align-items-center justify-content-center p-4">
-          <DetailResultComponent
-            exam={detailResult}
-            dashboardMode={true}
-            onBack={handleBackToTable}
-          />
-        </div>
+      <div className="row d-flex align-items-center justify-content-center p-2">
+        <DetailResultComponent
+          exam={detailResult}
+          dashboardMode={true}
+          onBack={handleBackToTable}
+        />
       </div>
     );
   }

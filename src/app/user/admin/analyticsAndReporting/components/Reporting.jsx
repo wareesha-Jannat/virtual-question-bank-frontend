@@ -20,6 +20,7 @@ import { useSubjects } from "@/app/hooks/useSubjects";
 import { useTopics } from "@/app/hooks/useTopics";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/components/Loader";
 
 export const Reporting = () => {
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -60,7 +61,7 @@ export const Reporting = () => {
     }
   }, [subjectList, topicList]);
 
-  const { data, isError } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: [
       "reporting",
       { dateRange, selectedDifficulty, selectedSubject, selectedTopic },
@@ -80,7 +81,7 @@ export const Reporting = () => {
             difficulty: selectedDifficulty,
             dateRange,
           }),
-        }
+        },
       );
       const data = await res.json();
       if (res.status === 401) {
@@ -110,14 +111,14 @@ export const Reporting = () => {
   const indexOfFirstQuestion = indexOfLastQuestion - itemsPerPage;
   const paginatedData = questionWiseData?.slice(
     indexOfFirstQuestion,
-    indexOfLastQuestion
+    indexOfLastQuestion,
   );
 
   // Handle search
   const filteredData = questionWiseData?.filter(
     (item) =>
       item.questionNumber.toString().includes(searchTerm) ||
-      item.question.toLowerCase().includes(searchTerm.toLowerCase())
+      item.question.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleSubjectChange = (selectedOption) => {
@@ -180,7 +181,7 @@ export const Reporting = () => {
               options={subjectList}
               value={
                 subjectList.find(
-                  (option) => option.value === selectedSubject
+                  (option) => option.value === selectedSubject,
                 ) || null
               }
               onChange={handleSubjectChange}
@@ -249,7 +250,11 @@ export const Reporting = () => {
         <div className="mb-4">
           <h5 className="headingQuestion"> Exam Score Distribution</h5>
           <div style={{ width: "100%", height: "300px" }}>
-            {!isError && scoreDistributionData.length > 0 ? (
+            {isLoading || !data ? (
+              <div>
+                <Loader />
+              </div>
+            ) : !isError && scoreDistributionData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -295,7 +300,11 @@ export const Reporting = () => {
         <div className="mb-4">
           <h5 className="headingQuestion">Question-wise Analysis</h5>
           <div style={{ width: "100%", height: "300px" }}>
-            {!isError && paginatedData.length > 0 ? (
+            {isLoading || !data ? (
+              <div>
+                <Loader />
+              </div>
+            ) : !isError && paginatedData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={paginatedData}>
                   <XAxis dataKey="questionNumber" />
@@ -368,7 +377,13 @@ export const Reporting = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredData?.length > 0 ? (
+                {isLoading || !data ? (
+                  <tr>
+                    <td colSpan="7">
+                      <Loader />
+                    </td>
+                  </tr>
+                ) : filteredData?.length > 0 ? (
                   filteredData?.map((item) => (
                     <tr key={item.questionNumber}>
                       <td>{item.questionNumber}</td>

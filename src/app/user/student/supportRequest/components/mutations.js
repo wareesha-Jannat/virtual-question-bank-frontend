@@ -14,13 +14,12 @@ export function useCreateRequestMutation() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       const data = await res.json();
-      if (response.status === 401) {
-        throw new Error("UNAUTHORIZED")
-        
+      if (res.status === 401) {
+        throw new Error("UNAUTHORIZED");
       }
 
       if (!res.ok) throw new Error(data.message || "Failed to create request");
@@ -31,7 +30,7 @@ export function useCreateRequestMutation() {
       const queryKey = ["userRequests", ""];
 
       await queryClient.cancelQueries({ queryKey });
-      queryClient.setQueriesData(queryKey, (oldData) => {
+      queryClient.setQueryData(queryKey, (oldData) => {
         if (!oldData) return oldData;
 
         const firstPage = oldData.pages[0];

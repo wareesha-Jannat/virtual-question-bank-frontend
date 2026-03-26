@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { FormatList } from "@/app/utils";
@@ -126,7 +126,7 @@ export const SubjectTab = () => {
             className="btn btn-danger mt-2 d-flex align-items-center gap-2"
             disabled={!selectedSubject || deleteSubjectMutation.isPending}
           >
-            {deleteSubjectMutation ? (
+            {deleteSubjectMutation.isPending ? (
               <>
                 <span
                   className="spinner-border spinner-border-sm"

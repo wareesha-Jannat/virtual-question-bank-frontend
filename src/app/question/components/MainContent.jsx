@@ -29,38 +29,45 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
 
   //Query to fetch questions
 
-  const { data, isFetchingNextPage, hasNextPage, isFetching, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: [
-        "questionsPage",
-        debouncedSearch,
-        difficulty,
-        subjectId,
-        topicId,
-      ],
-      queryFn: async ({ pageParam }) => {
-        const params = new URLSearchParams(
-          Object.entries({
-            cursor: pageParam,
-            search: debouncedSearch,
-            difficulty,
-            subjectId,
-            topicId,
-          }).filter(([, v]) => v !== undefined && v !== null)
-        ); // remove empty/null/undefined
+  const {
+    data,
+    isFetchingNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    status,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: [
+      "questionsPage",
+      debouncedSearch,
+      difficulty,
+      subjectId,
+      topicId,
+    ],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams(
+        Object.entries({
+          cursor: pageParam,
+          search: debouncedSearch,
+          difficulty,
+          subjectId,
+          topicId,
+        }).filter(([, v]) => v !== undefined && v !== null),
+      ); // remove empty/null/undefined
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/?${params}`
-        );
-        const data = await res.json();
-        if (!res.ok)
-          throw new Error(data.message || "Failed to fetch questions");
-        return data;
-      },
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage?.nextCursor || null,
-      enabled: !!subjectId && !!topicId,
-    });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/questions/?${params}`,
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to fetch questions");
+      return data;
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor || null,
+    enabled: !!subjectId && !!topicId,
+    keepPreviousData: true,
+  });
   const questions = data?.pages.flatMap((page) => page.questions) || [];
 
   //Toggle explanation
@@ -93,7 +100,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
         const confirmAll = window.confirm(
           `You have ${questions.length} questions loaded.\n\n` +
             `Click "OK" to practice ALL.\n` +
-            `Click "Cancel" to practice first 50 only.`
+            `Click "Cancel" to practice first 50 only.`,
         );
         if (confirmAll) {
           setPracticeQuestions(questions);
@@ -175,87 +182,85 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
 
           {/* Display questions */}
           <div className="mt-4">
-            {isFetching || !subjectId || !topicId ? (
-               <div>
-                          {" "}
-                          <Loader height="20" width="20" size={20} />{" "}
-                        </div>
+            {isLoading || !subjectId || !topicId ? (
+              <div>
+                {" "}
+                <Loader height="20" width="20" size={20} />{" "}
+              </div>
             ) : questions && questions.length > 0 ? (
-              questions.map((question) => (
-                <div key={question._id} className="border p-3 rounded mb-2">
-                  <div className="d-flex align-items-center justify-content-between heading">
-                    <h6>{question.questionText}</h6>
-                  </div>
-                  {question.questionType === "MCQ" && (
-                    <div className="mt-4">
-                      {question.options.map((option, index) => (
-                        <div
-                          key={index}
-                          className="d-flex align-items-center mb-1"
-                        >
-                          <input
-                            className="me-2"
-                            type="radio"
-                            checked={option === question.correctAnswer.trim()}
-                            readOnly
-                          />
-                          <label>{option}</label>
-                        </div>
-                      ))}
+              <>
+                {questions.map((question) => (
+                  <div key={question._id} className="border p-3 rounded mb-2">
+                    <div className="d-flex align-items-center justify-content-between heading">
+                      <h6>{question.questionText}</h6>
                     </div>
-                  )}
+                    {question.questionType === "MCQ" && (
+                      <div className="mt-4">
+                        {question.options.map((option, index) => (
+                          <div
+                            key={index}
+                            className="d-flex align-items-center mb-1"
+                          >
+                            <input
+                              className="me-2"
+                              type="radio"
+                              checked={option === question.correctAnswer.trim()}
+                              readOnly
+                            />
+                            <label>{option}</label>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
-                  {/* Display explanation if expanded */}
-                  {question.questionType === "Descriptive" && (
-                    <p className="mt-4">
-                      <strong>Answer:</strong> {question.correctAnswer}
-                    </p>
-                  )}
-                  <button
-                    className="btn btn-info mt-2"
-                    onClick={() => toggleExplanation(question._id)}
-                  >
-                    {expandedQuestionId === question._id
-                      ? "Hide Explanation"
-                      : "Show Explanation"}
-                  </button>
-                  {expandedQuestionId === question._id && (
-                    <div className={styles.explanation}>
-                      <p className={styles.explanationText}>
-                        <strong>Explanation:</strong> {question.explanation}
+                    {/* Display explanation if expanded */}
+                    {question.questionType === "Descriptive" && (
+                      <p className="mt-4">
+                        <strong>Answer:</strong> {question.correctAnswer}
                       </p>
-                    </div>
-                  )}
-                </div>
-              ))
+                    )}
+                    <button
+                      className="btn btn-info mt-2"
+                      onClick={() => toggleExplanation(question._id)}
+                    >
+                      {expandedQuestionId === question._id
+                        ? "Hide Explanation"
+                        : "Show Explanation"}
+                    </button>
+                    {expandedQuestionId === question._id && (
+                      <div className={styles.explanation}>
+                        <p className={styles.explanationText}>
+                          <strong>Explanation:</strong> {question.explanation}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {hasNextPage && (
+                  <button
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                    className="btn btn-info d-flex align-items-center justify-content-center gap-2 px-4 py-2 fw-semibold shadow-sm"
+                  >
+                    {isFetchingNextPage ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        <span className="text-white">Loading...</span>
+                      </>
+                    ) : (
+                      <span className="text-white">Load More</span>
+                    )}
+                  </button>
+                )}
+              </>
             ) : (
               <div className={styles.noQuestionsMessage}>
                 No questions available.
               </div>
-            )}
-           
-
-            {hasNextPage && (
-              <button
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                className="btn btn-info d-flex align-items-center justify-content-center gap-2 px-4 py-2 fw-semibold shadow-sm"
-              >
-                {isFetchingNextPage ? (
-                  <>
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      <span>Loading...</span>
-                    </>
-                  </>
-                ) : (
-                  <span className="text-white">Load More</span>
-                )}
-              </button>
             )}
           </div>
 

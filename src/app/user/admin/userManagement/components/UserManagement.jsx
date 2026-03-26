@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useDeleteUserMutation } from "./mutations.js";
 import { useDebounce } from "@/app/hooks/useDebounce.js";
+import Loader from "@/app/components/Loader.jsx";
 
 export function UserManagement() {
   const [editingUser, setEditingUser] = useState(null);
@@ -22,7 +23,7 @@ export function UserManagement() {
   const usersPerPage = 5;
 
   //Questions query
-  const { data: queryData } = useQuery({
+  const { data: queryData, isLoading } = useQuery({
     queryKey: [
       "users",
       { currentPage, debouncedSearch, filterRole, usersPerPage },
@@ -175,7 +176,13 @@ export function UserManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {existingUsers.length > 0 ? (
+                  {isLoading ? (
+                    <tr>
+                    <td colSpan="6">
+                      <Loader />
+                    </td>
+                  </tr>
+                  ) : existingUsers.length > 0 ? (
                     existingUsers.map((user, index) => (
                       <tr key={user._id}>
                         <td>

@@ -8,6 +8,7 @@ import { useSubjects } from "@/app/hooks/useSubjects";
 import { useDebounce } from "@/app/hooks/useDebounce.js";
 import { useQuery } from "@tanstack/react-query";
 import { useDeleteQuestionMutation } from "./mutations.js";
+import Loader from "@/app/components/Loader.jsx";
 
 export const QuestionTab = () => {
   const [editingQuestion, setEditingQuestion] = useState(null);
@@ -40,7 +41,7 @@ export const QuestionTab = () => {
   const debouncedSearch = useDebounce(searchTerm);
 
   //Questions query
-  const { data: queryData } = useQuery({
+  const { data: queryData , isLoading} = useQuery({
     queryKey: [
       "adminQuestions",
       { currentPage, debouncedSearch, filterSubject, questionsPerPage },
@@ -192,7 +193,13 @@ export const QuestionTab = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {existingQuestions.length > 0 ? (
+                  {isLoading ? (
+                    <tr>
+                    <td colSpan="7">
+                      <Loader />
+                    </td>
+                  </tr>
+                  ) : existingQuestions.length > 0 ? (
                     existingQuestions.map((question, index) => (
                       <tr key={question._id}>
                         <td>

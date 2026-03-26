@@ -120,14 +120,14 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
     examSession.questions[currentQuestionIndex].questionId;
 
   return (
-    <div className="col-11">
+    <div className="col-12 col-md-10">
       <div
         className="card shadow mt-4 p-4"
         style={{ backgroundColor: "#f4f7fc " }}
       >
         <h1
-          className="text-center my-4"
-          style={{ backgroundColor: "#053e77", color: "white" }}
+          className="text-center my-4 p-2"
+          style={{ backgroundColor: "#053e77", color: "white", borderRadius : "5px" }}
         >
           Virtual Question Bank
         </h1>
@@ -226,9 +226,9 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
             Next
           </button>
         </div>
-        <div className="text-center mt-2 ">
+        <div className="text-center mt-3 ">
           <button
-            className="btn btn-danger me-2"
+            className="btn btn-danger m-1"
             onClick={() => handleFinishExam("Cancelled")}
             disabled={isCancelling}
           >
@@ -247,7 +247,7 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
             )}
           </button>
           <button
-            className="btn btn-success me-2"
+            className="btn btn-success m-1"
             onClick={() => handleFinishExam("Completed")}
             disabled={isFinishing}
           >

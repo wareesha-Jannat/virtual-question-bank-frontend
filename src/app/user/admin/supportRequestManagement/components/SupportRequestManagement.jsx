@@ -22,18 +22,22 @@ export const SupportRequestManagement = () => {
   const deleteRequestMutation = useRequestDeleteMutation();
   const saveRequestMutation = useRequestUpdateMutation();
 
-  const { data: requestData, isError } = useQuery({
+  const {
+    data: requestData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["newRequests"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests?new=true`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests?type=new`,
         {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
       if (res.status === 401) {
@@ -55,42 +59,48 @@ export const SupportRequestManagement = () => {
 
   const newRequests = requestData?.newRequests || [];
 
-  const { data, isFetchingNextPage, hasNextPage, fetchNextPage, status } =
-    useInfiniteQuery({
-      queryKey: ["respondedRequests", debouncedSearch],
-      queryFn: async ({ pageParam }) => {
-        const params = new URLSearchParams();
-        if (pageParam) params.append("cursor", pageParam);
-        if (debouncedSearch) params.append("search", debouncedSearch);
-        const res = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_BACKEND_URL
-          }/support-requests?respondedByMe=true${params.toString()}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await res.json();
-        if (res.status === 401) {
-          throw new Error("Unauthorized");
-        }
-        if (!res.ok) throw new Error("Failed to get responded requests");
-        return data;
-      },
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onError: (err) => {
-        if (err.message === "Unauthorized") {
-          router.push("/account/Login");
-          return;
-        }
-        toast.error(err.message || "Something went wrong");
-      },
-    });
+  const {
+    data,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    status,
+    isLoading: loading,
+  } = useInfiniteQuery({
+    queryKey: ["respondedRequests", debouncedSearch],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams();
+      if (pageParam) params.append("cursor", pageParam);
+      if (debouncedSearch) params.append("search", debouncedSearch);
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }/support-requests?type=responded&${params.toString()}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await res.json();
+      if (res.status === 401) {
+        throw new Error("Unauthorized");
+      }
+      if (!res.ok) throw new Error("Failed to get responded requests");
+      return data;
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    onError: (err) => {
+      if (err.message === "Unauthorized") {
+        router.push("/account/Login");
+        return;
+      }
+      toast.error(err.message || "Something went wrong");
+    },
+  });
 
   const respondedRequests = data?.pages.flatMap((page) => page.requests) || [];
 
@@ -150,7 +160,7 @@ export const SupportRequestManagement = () => {
         onError: (error) => {
           toast.error(error.message);
         },
-      }
+      },
     );
   };
 
@@ -174,7 +184,13 @@ export const SupportRequestManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {newRequests && newRequests.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan="7">
+                  <Loader />
+                </td>
+              </tr>
+            ) : newRequests && newRequests.length > 0 ? (
               newRequests.map((request, index) => (
                 <tr key={request._id}>
                   <td>{index + 1}</td>
@@ -224,6 +240,7 @@ export const SupportRequestManagement = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
         <button
           className="btn btn-outline-primary ms-2"
           onClick={() => refetch()}
@@ -231,70 +248,73 @@ export const SupportRequestManagement = () => {
           Search
         </button>
       </div>
-      {status === "loading" && (
-        <>
-          <Loader />
-        </>
-      )}
-      <table className="table table-bordered">
-        <thead>
-          <tr className="text-nowrap table-success">
-            <th>#</th>
-            <th>Request By</th>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Response</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Responded At</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {respondedRequests && respondedRequests.length > 0 ? (
-            respondedRequests.map((request, index) => (
-              <tr key={request._id}>
-                <td>{index + 1}</td>
-                <td className="text-nowrap">{request.userId.name}</td>
-                <td className="text-nowrap">{request.subject}</td>
-                <td style={{ minWidth: "200px" }}>{request.message}</td>
-                <td style={{ minWidth: "200px" }}>
-                  {request.responseText ? request.responseText : "N/A"}
-                </td>
-                <td style={{ minWidth: "80px" }}>
-                  {formatDateTime(request.createdAt)}
-                </td>
-                <td>{request.status}</td>
-                <td style={{ minWidth: "80px" }}>
-                  {formatDateTime(request.updatedAt)}
-                </td>
-                <td>
-                  {" "}
-                  <button
-                    onClick={() => handleDeleteRequest(request._id)}
-                    className="btn btn-danger "
-                  >
-                    <i className="bi bi-trash "></i>
-                  </button>
+      <div className="table-responsive">
+        <table className="table table-bordered">
+          <thead>
+            <tr className="text-nowrap table-success">
+              <th>#</th>
+              <th>Request By</th>
+              <th>Subject</th>
+              <th>Message</th>
+              <th>Response</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Responded At</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="7">
+                  <Loader />
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="7" className="text-center">
-                No responded requests available
-              </td>
-            </tr>
-          )}
-          {status === "error" && (
-            <tr>
-              <td colSpan="7" className="text-center text-danger">
-                Error loading requests
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            ) : respondedRequests && respondedRequests.length > 0 ? (
+              respondedRequests.map((request, index) => (
+                <tr key={request._id}>
+                  <td>{index + 1}</td>
+                  <td className="text-nowrap">{request?.userId?.name}</td>
+                  <td className="text-nowrap">{request?.subject}</td>
+                  <td style={{ minWidth: "200px" }}>{request?.message}</td>
+                  <td style={{ minWidth: "200px" }}>
+                    {request?.responseText ? request?.responseText : "N/A"}
+                  </td>
+                  <td style={{ minWidth: "80px" }}>
+                    {formatDateTime(request?.createdAt)}
+                  </td>
+                  <td>{request?.status}</td>
+                  <td style={{ minWidth: "80px" }}>
+                    {formatDateTime(request?.updatedAt)}
+                  </td>
+                  <td>
+                    {" "}
+                    <button
+                      onClick={() => handleDeleteRequest(request._id)}
+                      className="btn btn-danger "
+                    >
+                      <i className="bi bi-trash "></i>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center">
+                  No responded requests available
+                </td>
+              </tr>
+            )}
+            {status === "error" && (
+              <tr>
+                <td colSpan="7" className="text-center text-danger">
+                  Error loading requests
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
       {hasNextPage && (
         <button
           onClick={() => fetchNextPage()}

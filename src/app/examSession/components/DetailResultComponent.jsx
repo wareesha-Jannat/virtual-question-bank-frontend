@@ -26,25 +26,25 @@ export const DetailResultComponent = ({
   if (!exam) return <div>Loading...</div>;
 
   return (
-    <div className="col-11">
+    <div className="col-12 col-md-10">
       {/* Main card container for the detailed result analysis */}
       <div
         className="card shadow mt-4 p-4"
         style={{ backgroundColor: "#f4f7fc " }}
       >
         <h1
-          className="text-center my-4"
+          className="text-center my-4 p-2 rounded-1"
           style={{ backgroundColor: "#053e77", color: "white" }}
         >
           Virtual Question Bank
         </h1>
 
-        <h2 className="text-center mt-4 heading">Detailed Question Analysis</h2>
+        <h2 className="text-center heading">Detailed Question Analysis</h2>
 
         {/* Back button to navigate back depending on dashboardMode */}
         <div className="text-end my-2">
           {dashboardMode ? (
-            <button className="btn btn-primary me-3" onClick={onBack}>
+            <button className="btn btn-primary me-2" onClick={onBack}>
               Back to Result
             </button>
           ) : (
@@ -73,22 +73,25 @@ export const DetailResultComponent = ({
         </p>
 
         {/* Iterate through each question in the exam and display analysis */}
-        <div className="mt-4">
+        <div className="mt-3">
           {exam?.questions.map((q, index) => (
-            <div key={q._id } className="card mb-3 shadow-sm">
+            <div key={q._id} className="card mb-3 shadow-sm">
               <div className="card-body">
                 {/* Question text */}
                 <h5 className="mb-2">
                   <strong>Question {index + 1}:</strong>{" "}
-                  {q.questionId.questionText}
+                  {q.questionId?.questionText}
                 </h5>
 
                 {/* For MCQ questions, display options with color coding for correct and incorrect answers */}
                 {q.questionId.questionType === "MCQ" && (
                   <div className="mb-3">
                     {q.questionId.options.map((option, idx) => {
-                      const isUserAnswer = q.userAnswer ? q.userAnswer.trim(): null; // Set to null if undefined
-                      const isCorrectAnswer = option.trim() === q.questionId.correctAnswer.trim(); //Check if the current option is correct Answer
+                      const isUserAnswer = q.userAnswer
+                        ? q.userAnswer.trim()
+                        : null; // Set to null if undefined
+                      const isCorrectAnswer =
+                        option.trim() === q.questionId.correctAnswer.trim(); //Check if the current option is correct Answer
                       const isUserOption = isUserAnswer === option.trim(); // Check if the option is the user's answer
                       const isAnswerCorrect = isUserOption && q.isCorrect; // Check if the user's answer is correct
 
@@ -101,18 +104,18 @@ export const DetailResultComponent = ({
                               isUserAnswer === null
                                 ? // If the answer is correct (but user has not selected it )
                                   isCorrectAnswer
-                                  ? "alert-success" 
-                                  : "alert-secondary" 
+                                  ? "alert-success"
+                                  : "alert-secondary"
                                 : // If the user has selected an answer
-                                isUserOption
-                                ? // If the user's answer is correct
-                                  isAnswerCorrect
-                                  ? "alert-success" 
-                                  : "alert-danger" 
-                                : // If the user's answer is not selected, check if it's the correct answer
-                                isCorrectAnswer
-                                ? "alert-success" 
-                                : "alert-secondary" 
+                                  isUserOption
+                                  ? // If the user's answer is correct
+                                    isAnswerCorrect
+                                    ? "alert-success"
+                                    : "alert-danger"
+                                  : // If the user's answer is not selected, check if it's the correct answer
+                                    isCorrectAnswer
+                                    ? "alert-success"
+                                    : "alert-secondary"
                             } d-flex align-items-center`}
                         >
                           {/* Icon for correct/incorrect answer */}

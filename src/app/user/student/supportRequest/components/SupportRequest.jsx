@@ -33,6 +33,7 @@ export function SupportRequest() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     createRequestMutation.mutate(formData, {
       onSuccess: (data) => {
         if (data.success) {
@@ -49,9 +50,9 @@ export function SupportRequest() {
     data,
     isFetchingNextPage,
     hasNextPage,
-    isFetching,
+    isLoading,
     fetchNextPage,
-    status,
+    refetch,
   } = useInfiniteQuery({
     queryKey: ["userRequests", debouncedSearch],
     queryFn: async ({ pageParam }) => {
@@ -59,7 +60,7 @@ export function SupportRequest() {
       if (pageParam) params.append("cursor", pageParam);
       if (debouncedSearch) params.append("search", debouncedSearch);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests/${params}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests?${params.toString()}`,
         {
           method: "GET",
           credentials: "include",
@@ -136,7 +137,7 @@ export function SupportRequest() {
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  <span>Creating...</span>
+                  <span> Creating...</span>
                 </>
               ) : (
                 "Create Request"
@@ -180,10 +181,12 @@ export function SupportRequest() {
                 </tr>
               </thead>
               <tbody>
-                {isFetching ? (
-                  <div>
-                    <Loader />
-                  </div>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="8">
+                      <Loader />
+                    </td>
+                  </tr>
                 ) : requests.length > 0 ? (
                   requests.map((request, index) => (
                     <tr key={request._id}>

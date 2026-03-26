@@ -13,7 +13,7 @@ export function useRequestDeleteMutation() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -48,41 +48,46 @@ export function useRequestUpdateMutation() {
   const mutation = useMutation({
     mutationFn: async (requestData) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support/saveRequestResponse`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/support-requests/${requestData.requestId}`,
         {
-          method: "POST",
+          method: "PATCH",
           credentials: "include",
           body: JSON.stringify(requestData),
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.message || "Failed to save response");
       return data;
     },
     onSuccess: async (data) => {
       if (!data.success) return;
-      const queryKey = ["respondedRequests", ""];
+      // const queryKey = ["respondedRequests"]; partial match
 
-      await queryClient.cancelQueries({ queryKey });
-      queryClient.setQueriesData(queryKey, (oldData) => {
-        if (!oldData) return oldData;
-
-        const firstPage = oldData.pages[0];
-        return {
-          pageParams: oldData.pageParams,
-          pages: [
-            {
-              nextCursor: firstPage.nextCursor,
-              requests: [data.updatedReq, ...firstPage.requests],
-            },
-            ...oldData.pages.slice(1),
-          ],
-        };
-      });
+      await queryClient.cancelQueries({ queryKey: ["respondedRequests"] });
+      queryClient.setQueriesData(
+        { queryKey: ["respondedRequests"] },
+        (oldData) => {
+          if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+            return oldData;
+          }
+          const firstPage = oldData?.pages[0];
+          return {
+            pageParams: oldData.pageParams,
+            pages: [
+              {
+                nextCursor: firstPage.nextCursor,
+                requests: [data.supportRequest, ...firstPage.requests],
+              },
+              ...oldData.pages.slice(1),
+            ],
+          };
+        },
+      );
       const queryKey2 = ["newRequests"];
       await queryClient.cancelQueries({ queryKey: queryKey2 });
 
@@ -90,7 +95,7 @@ export function useRequestUpdateMutation() {
         if (!oldData) return oldData;
         return {
           newRequests: oldData.newRequests.filter(
-            (r) => r._id !== data.updatedReq._id
+            (r) => r._id !== data.supportRequest._id,
           ),
         };
       });

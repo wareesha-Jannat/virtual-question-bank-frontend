@@ -8,41 +8,46 @@ export const ResultPage = ({ handleViewResult }) => {
   // State for the single search query
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm);
-  const { data, isFetchingNextPage, isFetching, hasNextPage, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: ["resultData", debouncedSearch],
-      queryFn: async ({ pageParam }) => {
-        const params = new URLSearchParams();
-        if (pageParam) params.append("cursor", pageParam);
-        if (debouncedSearch) params.append("search", debouncedSearch);
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/results/`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
+  const {
+    data,
+    isFetchingNextPage,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["resultData", debouncedSearch],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams();
+      if (pageParam) params.append("cursor", pageParam);
+      if (debouncedSearch) params.append("search", debouncedSearch);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/results?${params.toString()}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
-        const data = await res.json();
+        },
+      );
+      const data = await res.json();
 
-        if (res.status === 401) {
-          throw new Error("Unauthorized");
-        }
-        if (!res.ok) throw new Error("Failed to get responded requests");
-        return data;
-      },
-      initialPageParam: null,
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onError: (err) => {
-        if (err.message === "Unauthorized") {
-          router.push("/account/Login");
-          return;
-        }
-        toast.error(err.message || "Something went wrong");
-      },
-    });
+      if (res.status === 401) {
+        throw new Error("Unauthorized");
+      }
+      if (!res.ok) throw new Error("Failed to get responded requests");
+      return data;
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    onError: (err) => {
+      if (err.message === "Unauthorized") {
+        router.push("/account/Login");
+        return;
+      }
+      toast.error(err.message || "Something went wrong");
+    },
+  });
 
   const results = data?.pages.flatMap((page) => page.results) || [];
 
@@ -79,10 +84,12 @@ export const ResultPage = ({ handleViewResult }) => {
                 </tr>
               </thead>
               <tbody>
-                {isFetching ? (
-                  <div>
-                    <Loader />
-                  </div>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="7">
+                      <Loader />
+                    </td>
+                  </tr>
                 ) : results && results.length > 0 ? (
                   results.map((result, index) => (
                     <tr key={result.resultId}>

@@ -123,7 +123,7 @@ export const TopicManagement = ({ subjectList }) => {
               !newTopic || !selectedSubject || addTopicMutation.isPending
             }
           >
-            {addTopicMutation ? (
+            {addTopicMutation.isPending ? (
               <>
                 <span
                   className="spinner-border spinner-border-sm"
