@@ -56,7 +56,6 @@ export function useAddUserMutation() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message || "Failed to add User");
       return data;
     },
@@ -72,7 +71,7 @@ export function useAddUserMutation() {
       ];
 
       await queryClient.cancelQueries({ queryKey });
-      queryClient.setQueryData(queryKey, (oldData) => {
+      queryClient.setQueriesData({ queryKey: ["users"] }, (oldData) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
