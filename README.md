@@ -103,10 +103,6 @@ Use the following credentials to explore the app :
 - **Email:** student@example.com
 - **Password:** student@123
 
-### For Admin
-
-- **Email:** admin@example.com
-- **Password:** admin@123
 
 ## Live Demo
 
