@@ -7,9 +7,14 @@
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: #fff !important;
+  color: #ffffff !important;
 
   text-transform: uppercase;
+}
+
+.customNavbar .navbar-collapse.show {
+  background-color: #053e77 !important;
+  padding: 1rem;
 }
 
 .customNavbar a {
