@@ -11,7 +11,7 @@ export function useDeleteAccountMutation() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
 
@@ -28,7 +28,7 @@ export function useUpdatePersonalInfoMutation() {
   const mutation = useMutation({
     mutationFn: async ({ userId, formData }) => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}/personal-info`,
         {
           method: "PATCH",
           credentials: "include",
@@ -36,7 +36,7 @@ export function useUpdatePersonalInfoMutation() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
       if (res.status === 401) {
         throw new Error("UNAUTHORIZED");
