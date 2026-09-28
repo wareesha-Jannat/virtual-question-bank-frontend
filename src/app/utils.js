@@ -1,3 +1,5 @@
+
+
 //Function to fomat list to be used in react-select dropdown
 
 export const FormatList = (list) => {
@@ -36,7 +38,7 @@ export const getSubjects = async () => {
 export const getTopics = async (subjectId) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics?subjectId=${subjectId}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/topics?subjectId=${subjectId}`,
     );
     const data = await res.json();
 
@@ -56,41 +58,6 @@ export const getTopics = async (subjectId) => {
   }
 };
 
-export const getAuth = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me/role`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (res.status === 401) {
-      return {
-        role: "unauthorized",
-        status : "unauthorized"
-      };
-    }
-    const data = await res.json();
-
-    if (!res.ok) {
-      return {
-        role: "unauthorized",
-      };
-    }
-
-    return {
-      role: data?.role,
-    };
-  } catch (error) {
-    return {
-      role: "unauthorized",
-    };
-  }
-};
 
 export const checkUnreadNotifications = async () => {
   try {
@@ -102,7 +69,7 @@ export const checkUnreadNotifications = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const data = await response.json();

@@ -5,23 +5,20 @@ export const PracticeComponent = ({
   questions,
   onBackToView,
 }) => {
-  const [userAnswers, setUserAnswers] = useState({}); // Track answers for each question
+  const [userAnswer, setUserAnswer] = useState(""); // Track Answer for each question
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null); // Store feedback for correctness of answer
   const [isDisabled, setIsDisabled] = useState(false);  // Store the disabled state for buttons and inputs (e.g, to disable after submission)
 
    // Handle answer change for the selected question
   const handleAnswerChange = (questionId, value) => {
-    setUserAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: value, // Update answer for the specific question
-    }));
+    setUserAnswer(value);
     setSelectedQuestionId(questionId);
   };
 
   // Handle answer submit
   const handleSubmit = async () => {
-    if (!userAnswers[selectedQuestionId]) {
+    if (!userAnswer) {
       toast.error('Please provide an answer before submitting.');
       return;
     }
@@ -34,7 +31,7 @@ export const PracticeComponent = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userAnswer: userAnswers[selectedQuestionId],
+          userAnswer,
           selectedQuestionId,
         }),
       });
@@ -56,10 +53,7 @@ export const PracticeComponent = ({
 
   
   const handleReset = () => {
-    setUserAnswers((prevAnswer) => ({
-      ...prevAnswer,
-      [selectedQuestionId]: '', // Reset the answer for the selected question
-    }));
+    setUserAnswer("");
     setSelectedQuestionId(null);
     setIsCorrect(null);
     setIsDisabled(false); // Re-enable submissions after reset
@@ -92,7 +86,7 @@ export const PracticeComponent = ({
                 {q.questionType === 'MCQ' && (
                   <div>
                     {q.options.map((option, index) => {
-                      const isSelected = userAnswers[q._id] === option;
+                      const isSelected = q._id === selectedQuestionId && userAnswer === option;
 
                       return (
                         <div key={index} className='d-flex align-items-center mb-2'>
@@ -117,7 +111,7 @@ export const PracticeComponent = ({
                       className='form-control'
                       rows='4'
                       placeholder='Write your answer here...'
-                      value={userAnswers[q._id] || ''} // Default to empty if not set
+                      value={ q._id === selectedQuestionId  ? userAnswer : ''} // Default to empty if not set
                       onChange={(e) => handleAnswerChange(q._id, e.target.value)}
                       disabled={isDisabled} // Disable textarea after submission
                     />

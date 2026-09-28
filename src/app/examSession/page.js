@@ -43,6 +43,7 @@ export default function ExamSessionPage() {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
+      //warning before leaving the page: shows a dialog with default message asking for confirmation before leaving page
       event.preventDefault();
       event.returnValue = "";
     };
@@ -54,6 +55,9 @@ export default function ExamSessionPage() {
     };
   }, []);
 
+  //   beforeunload = "Don't leave my page accidentally."
+
+  // popstate + pushState = "Don't go backward in browser history."
   useEffect(() => {
     const preventBackNavigation = () => {
       history.pushState(null, null, location.href);
@@ -122,6 +126,7 @@ export default function ExamSessionPage() {
         toast.success(data.message);
         localStorage.removeItem("examSession");
         router.push("./question"); // Redirect to question page if finished without detailed results
+
       } else if (response.status === 201) {
         toast.success(data.message);
         setResultData(data.populatedResult);
@@ -171,7 +176,7 @@ export default function ExamSessionPage() {
     );
   }
 
-  // Display message if no exam session is available
+
   // Display message if no exam session is available
   if (!examSession && mode === "exam") {
     return (

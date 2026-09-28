@@ -9,7 +9,7 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
   const [isFinishing, setIsFinishing] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(examSession.duration * 60); // Convert duration to seconds
-  const [userAnswers, setUserAnswers] = useState([]); // Store answers keyed by question index
+  const [userAnswers, setUserAnswers] = useState({}); // Store answers keyed by question id
   const timerIdRef = useRef(); // Reference to manage the timer
 
   // Start the timer and set start time when component mounts
@@ -50,11 +50,11 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
   // Update user answer for current question
 
   const handleAnswerChange = (answer) => {
-    setUserAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      updatedAnswers[currentQuestionIndex] = answer; // Use index to store the answer
-      return updatedAnswers;
-    });
+    const questionId = currentQuestion._id;
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: answer,
+    }));
   };
   // Navigation to the next question
   const handleNextQuestion = () => {
@@ -95,7 +95,7 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
         status,
         questions: examSession.questions.map((q, index) => ({
           ...q,
-          userAnswer: userAnswers[index] || "",
+          userAnswer: userAnswers[q.questionId._id] || "",
         })),
       };
 
@@ -127,7 +127,11 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
       >
         <h1
           className="text-center my-4 p-2"
-          style={{ backgroundColor: "#053e77", color: "white", borderRadius : "5px" }}
+          style={{
+            backgroundColor: "#053e77",
+            color: "white",
+            borderRadius: "5px",
+          }}
         >
           Virtual Question Bank
         </h1>
@@ -189,7 +193,7 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
                       type="radio"
                       name="answer"
                       value={option}
-                      checked={userAnswers[currentQuestionIndex] === option}
+                      checked={userAnswers[currentQuestion._id] === option}
                       onChange={(e) => handleAnswerChange(e.target.value)}
                     />
                     {option}
@@ -200,7 +204,7 @@ export const ExamComponent = ({ examSession, onSubmitExam }) => {
           )}
           {currentQuestion.questionType === "Descriptive" && (
             <textarea
-              value={userAnswers[currentQuestionIndex]}
+              value={userAnswers[currentQuestion._id]}
               onChange={(e) => handleAnswerChange(e.target.value)}
               placeholder="Write your answer here"
               className="form-control"

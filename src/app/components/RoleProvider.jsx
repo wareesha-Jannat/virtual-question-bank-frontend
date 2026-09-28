@@ -1,19 +1,10 @@
 "use client";
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { getAuth } from "../utils";
+import React, { createContext, useState, useContext } from "react";
 
 const RoleContext = createContext(null);
 
-const RoleProvider = ({ children }) => {
-  const [role, setRole] = useState(null);
-
-  async function fetchRole() {
-    const data = await getAuth();
-    setRole(data.role);
-  }
-  useEffect(() => {
-    fetchRole();
-  }, []);
+const RoleProvider = ({ children, initialRole }) => {
+  const [role, setRole] = useState(initialRole);
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>

@@ -3,7 +3,7 @@ import styles from "../css/howitworks.module.css";
 
 export const HowItWorks = () => {
   return (
-    <div id="Howitworks" className={`${styles.howitworks} py-4`}>
+    <div id="Howitworks" className={`${styles.howitworks} py-4 `}>
       <div className="container-xxl text-center">
         <h2 className="mb-5">How It Works</h2>
         <div className="row mb-3">

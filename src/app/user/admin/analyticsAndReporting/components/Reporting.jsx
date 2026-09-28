@@ -41,7 +41,7 @@ export const Reporting = () => {
 
   // ✅ Fetch topics for selected subject
   const { data: topicsData } = useTopics(selectedSubject, {
-    enabled: !!selectedSubject, // fetch only when subject is selected
+    enabled: !!selectedSubject, // fetch only when subject is selected !!(convert value into boolean)
   });
 
   const topicList = useMemo(() => {

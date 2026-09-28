@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useSubjects } from "../hooks/useSubjects";
 
 export default function QuestionsPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to manage sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); //State to manage sidebar visibility
   const [subjectId, setSubjectId] = useState(null);
   const [topicId, setTopicId] = useState(null);
 
@@ -20,7 +20,7 @@ export default function QuestionsPage() {
   // Function to toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
+  }
 
   // Function to handle subject selection
   const handleSubjectSelect = (id) => {

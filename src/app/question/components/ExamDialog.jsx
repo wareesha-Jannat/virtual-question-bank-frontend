@@ -22,7 +22,7 @@ export const ExamDialog = ({ show, handleClose, subId }) => {
   const topicList = data?.status === "success" ? data.topics : [];
 
   const [errorMessage, setErrorMessage] = useState(""); // Holds error messages for validation
-  const [maxQuestions, setMaxQuestions] = useState(MAX_QUESTIONS); 
+  const [maxQuestions, setMaxQuestions] = useState(MAX_QUESTIONS);
 
   // Update subject and subjectId based on topicList when available
   useEffect(() => {
@@ -53,13 +53,10 @@ export const ExamDialog = ({ show, handleClose, subId }) => {
     // Validate the totalQuestions input
     if (name === "totalQuestions" && value > maxQuestions) {
       setErrorMessage(
-        `The maximum number of questions allowed is ${maxQuestions}.`
+        `The maximum number of questions allowed is ${maxQuestions}.`,
       );
-    } else {
-      setErrorMessage("");
-    }
-    // Validate the totalQuestions input
-    if (name === "duration" && value > MAX_DURATION) {
+    } else if (name === "duration" && value > MAX_DURATION) {
+      // Validate the totalQuestions input
       setErrorMessage(`The maximum duration allowed is ${MAX_DURATION}.`);
     } else {
       setErrorMessage("");
@@ -93,14 +90,14 @@ export const ExamDialog = ({ show, handleClose, subId }) => {
     // Additional validation before starting the exam
     if (examDetails.duration > MAX_DURATION) {
       setErrorMessage(
-        `Please enter a duration less than or equal to ${MAX_DURATION} minutes.`
+        `Please enter a duration less than or equal to ${MAX_DURATION} minutes.`,
       );
       return;
     }
 
     if (examDetails.totalQuestions > maxQuestions) {
       setErrorMessage(
-        `Please enter a number less than or equal to ${maxQuestions}.`
+        `Please enter a number less than or equal to ${maxQuestions}.`,
       );
       return;
     }

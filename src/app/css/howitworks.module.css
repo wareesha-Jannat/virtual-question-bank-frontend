@@ -10,3 +10,5 @@
     font-size: 1.5rem;
     margin-bottom: 1rem;
   }
+
+   /* scroll-margin-top: 90px; so the fixed navbar does not hide the heading of this section when scrolled to this section or use html{ scroll-behavior : smooth} */ 

@@ -11,6 +11,7 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
   const topics = data?.status === "success" ? data.topics : [];
 
   // Effect hook to set a default topic when topics are fetched
+
   useEffect(() => {
     if (!activeTopicId && topics.length > 0) {
       const defaultTopicId = topics[0]._id;
@@ -18,6 +19,7 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
       onTopicSelect(defaultTopicId);
     }
   }, [topics, activeTopicId]);
+  
   useEffect(() => {
     // reset topic when subject changes
     setActiveTopicId(null);

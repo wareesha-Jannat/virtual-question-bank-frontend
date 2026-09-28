@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ReactQueryProvider from "./components/ReactQueryProvider";
 import RoleProvider from "./components/RoleProvider";
+import { getAuth } from "./server-auth";
 
 export const metadata = {
   title: {
@@ -45,12 +46,13 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const { role } = await getAuth();
   return (
     <html lang="en">
       <body>
         <ReactQueryProvider>
-          <RoleProvider>
+          <RoleProvider initialRole={role}>
             <ToastContainer className="customToast" />
             {children}
           </RoleProvider>

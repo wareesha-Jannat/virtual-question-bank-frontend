@@ -68,6 +68,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
     enabled: !!subjectId && !!topicId,
     keepPreviousData: true,
   });
+
   const questions = data?.pages.flatMap((page) => page.questions) || [];
 
   //Toggle explanation
@@ -123,7 +124,7 @@ export const MainContent = ({ isOpen, subjectId, topicId }) => {
   };
 
   return (
-    <div className={`${styles.content}   ${isOpen ? "" : styles.hide}`}>
+    <div className={`${styles.content} ${isOpen ? "" : styles.hide}`}>
       {practiceMode ? (
         // Show PracticeComponent if practiceMode is true
         <PracticeComponent
