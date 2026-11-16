@@ -6,6 +6,7 @@ import { PieChartComponent } from "./PieChartComponent";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/app/components/Loader";
+import styles from "../../AdminPages.module.css";
 
 export const Analytics = () => {
   // State to store the fetched data
@@ -67,7 +68,7 @@ export const Analytics = () => {
 
   if (isLoading) {
     return (
-      <div>
+      <div className={styles.loadingState}>
         <Loader />
       </div>
     );
@@ -75,81 +76,93 @@ export const Analytics = () => {
 
   return (
     <div>
-      <h3 className="mb-4 heading">Analytics Overview</h3>
-
-      {/* Question Usage Bar Chart */}
-      <div className="mb-4">
-        <h5>Question Usage</h5>
-        {!isError && currentSubjects && currentSubjects.length > 0 ? (
-          <BarChartComponent data={currentSubjects} />
-        ) : (
-          <div
-            className="d-flex justify-content-center align-items-center bg-light border rounded p-4 mt-3"
-            style={{ height: "100%" }}
-          >
-            <div className="text-center">
-              <i className="bi bi-exclamation-triangle text-danger fs-3 mb-2"></i>
-              <p className="text-danger fw-semibold mb-0">No Data</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Pagination Controls */}
-      <div className="d-flex justify-content-between mb-3">
-        <button
-          className="btn btn-primary me-2"
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1} // Disable on the first page
+      <div className={styles.chartGrid}>
+        <section
+          className={`${styles.chartPanel} ${styles.chartWide}`}
+          aria-labelledby="question-usage-heading"
         >
-          Previous
-        </button>
-        <span className="me-2">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          className="btn btn-primary"
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages} // Disable on the last page
+          <div className={styles.panelHeader}>
+            <div>
+              <h2 id="question-usage-heading" className={styles.panelTitle}>
+                Question Usage
+              </h2>
+              <p className={styles.panelDescription}>
+                Questions organized by subject.
+              </p>
+            </div>
+          </div>
+          <div className={styles.chartCanvas}>
+            {!isError && currentSubjects && currentSubjects.length > 0 ? (
+              <BarChartComponent data={currentSubjects} />
+            ) : (
+              <div className={styles.emptyState}>
+                <i className="bi bi-bar-chart" aria-hidden="true" />
+                <p className="mb-0">No Data</p>
+              </div>
+            )}
+          </div>
+          <div className={styles.chartPagination}>
+            <button
+              className={styles.paginationButton}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className={styles.pageIndicator}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className={styles.paginationButton}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </section>
+
+        <section
+          className={styles.chartPanel}
+          aria-labelledby="user-engagement-heading"
         >
-          Next
-        </button>
-      </div>
-
-      {/* User Engagement Pie Chart */}
-      <div className="mb-4">
-        <h5 className="headingQuestion">User Engagement</h5>
-        {!isError && userEngagementData.length > 0 ? (
-          <PieChartComponent data={userEngagementData} />
-        ) : (
-          <div
-            className="d-flex justify-content-center align-items-center bg-light border rounded p-4 mt-3"
-            style={{ height: "100%" }}
-          >
-            <div className="text-center">
-              <i className="bi bi-exclamation-triangle text-danger fs-3 mb-2"></i>
-              <p className="text-danger fw-semibold mb-0">No Data</p>
-            </div>
+          <div className={styles.panelHeader}>
+            <h2 id="user-engagement-heading" className={styles.panelTitle}>
+              User Engagement
+            </h2>
           </div>
-        )}
-      </div>
-
-      {/* Performance Metrics Bar Chart */}
-      <div className="mb-4">
-        <h5 className="headingQuestion mb-4">Performance Metrics</h5>
-        {!isError && performanceData.length > 0 ? (
-          <BarChartComponent data={performanceData} />
-        ) : (
-          <div
-            className="d-flex justify-content-center align-items-center bg-light border rounded p-4 mt-3"
-            style={{ height: "100%" }}
-          >
-            <div className="text-center">
-              <i className="bi bi-exclamation-triangle text-danger fs-3 mb-2"></i>
-              <p className="text-danger fw-semibold mb-0">No Data</p>
-            </div>
+          <div className={styles.chartCanvas}>
+            {!isError && userEngagementData.length > 0 ? (
+              <PieChartComponent data={userEngagementData} />
+            ) : (
+              <div className={styles.emptyState}>
+                <i className="bi bi-pie-chart" aria-hidden="true" />
+                <p className="mb-0">No Data</p>
+              </div>
+            )}
           </div>
-        )}
+        </section>
+
+        <section
+          className={styles.chartPanel}
+          aria-labelledby="performance-metrics-heading"
+        >
+          <div className={styles.panelHeader}>
+            <h2 id="performance-metrics-heading" className={styles.panelTitle}>
+              Performance Metrics
+            </h2>
+          </div>
+          <div className={styles.chartCanvas}>
+            {!isError && performanceData.length > 0 ? (
+              <BarChartComponent data={performanceData} />
+            ) : (
+              <div className={styles.emptyState}>
+                <i className="bi bi-graph-up" aria-hidden="true" />
+                <p className="mb-0">No Data</p>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );

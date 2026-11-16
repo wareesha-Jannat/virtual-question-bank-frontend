@@ -7,6 +7,7 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import { useAddQuestionMutation, useUpdateQuestionMutation } from "./mutations";
 import Loader from "@/app/components/Loader";
+import styles from "../../AdminPages.module.css";
 
 export const AddAndUpdateQuestion = ({
   subjectList,
@@ -166,17 +167,15 @@ export const AddAndUpdateQuestion = ({
   };
 
   return (
-    <>
-      <div className="mt-4 ">
-        {editMode ? "" : <h3 className="heading"> Add New Question</h3>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="questionText" className="form-label">
+      <div>
+        <form onSubmit={handleSubmit} className={styles.formGrid}>
+          <div className={`${styles.formField} ${styles.formWide}`}>
+            <label htmlFor="questionText" className={styles.formLabel}>
               Question Text
             </label>
             <input
               type="text"
-              className="form-control"
+              className={styles.formControl}
               id="questionText"
               name="questionText"
               value={formData.questionText}
@@ -185,12 +184,12 @@ export const AddAndUpdateQuestion = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="questionType" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="questionType" className={styles.formLabel}>
               Question Type
             </label>
             <select
-              className="form-select"
+              className={styles.formControl}
               id="questionType"
               name="questionType"
               value={formData.questionType}
@@ -203,14 +202,14 @@ export const AddAndUpdateQuestion = ({
           </div>
 
           {formData.questionType === "MCQ" && (
-            <div id="mcqFields">
-              <div className="mb-3">
-                <label htmlFor="options" className="form-label">
+            <div id="mcqFields" className={styles.formField}>
+              <div className={styles.formField}>
+                <label htmlFor="options" className={styles.formLabel}>
                   Options (comma separated)
                 </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={styles.formControl}
                   id="options"
                   name="options"
                   value={formData.options}
@@ -221,13 +220,13 @@ export const AddAndUpdateQuestion = ({
               </div>
             </div>
           )}
-          <div className="mb-3">
-            <label htmlFor="correctAnswer" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="correctAnswer" className={styles.formLabel}>
               Correct Answer
             </label>
             <input
               type="text"
-              className="form-control"
+              className={styles.formControl}
               id="correctAnswer"
               name="correctAnswer"
               value={formData.correctAnswer}
@@ -236,12 +235,12 @@ export const AddAndUpdateQuestion = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="difficultyLevel" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="difficultyLevel" className={styles.formLabel}>
               Difficulty Level
             </label>
             <select
-              className="form-select"
+              className={styles.formControl}
               id="difficultyLevel"
               name="difficultyLevel"
               value={formData.difficultyLevel}
@@ -254,13 +253,14 @@ export const AddAndUpdateQuestion = ({
             </select>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="subject" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="subject" className={styles.formLabel}>
               Subject
             </label>
             <Select
               options={subjectList}
-              className="form-control"
+              className={styles.reactSelect}
+              classNamePrefix="vqb"
               id="subject"
               name="subject"
               value={
@@ -276,13 +276,14 @@ export const AddAndUpdateQuestion = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="topic" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="topic" className={styles.formLabel}>
               Topic
             </label>
             <Select
               options={topicList}
-              className="form-control"
+              className={styles.reactSelect}
+              classNamePrefix="vqb"
               id="topic"
               name="topic"
               value={
@@ -298,12 +299,12 @@ export const AddAndUpdateQuestion = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="explanation" className="form-label">
+          <div className={`${styles.formField} ${styles.formWide}`}>
+            <label htmlFor="explanation" className={styles.formLabel}>
               Explanation (Optional)
             </label>
             <textarea
-              className="form-control"
+              className={`${styles.formControl} ${styles.formTextarea}`}
               id="explanation"
               name="explanation"
               value={formData.explanation}
@@ -317,7 +318,7 @@ export const AddAndUpdateQuestion = ({
             disabled={
               updateQuestionMutation.isPending || addQuestionMutation.isPending
             }
-            className="btn btn-success d-flex align-items-center gap-2"
+            className={`${styles.primaryButton} ${styles.formSubmit}`}
           >
             {editMode ? (
               updateQuestionMutation.isPending ? (
@@ -347,6 +348,5 @@ export const AddAndUpdateQuestion = ({
           </button>
         </form>
       </div>
-    </>
   );
 };

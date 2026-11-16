@@ -1,0 +1,439 @@
+/* ═══════════════════════════════════════════════════════════
+   ExamComponent.module.css  — Active exam session UI
+   Uses design tokens from globals.css / design-tokens.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Page shell ────────────────────────────────────────────── */
+.examShell {
+  min-height: 100vh;
+  background-color: var(--vqb-surface);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* ─── Centre column ─────────────────────────────────────────── */
+.examColumn {
+  width: 100%;
+  max-width: 780px;
+}
+
+/* ─── Top brand bar ─────────────────────────────────────────── */
+.brandBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: var(--vqb-nav-bg);
+  color: var(--vqb-text-inverse);
+  border-radius: var(--vqb-radius-lg) var(--vqb-radius-lg) 0 0;
+  padding: 0.9rem 1.5rem;
+}
+
+.brandBar i {
+  font-size: 1.3rem;
+  color: var(--vqb-primary-muted);
+}
+
+.brandBar h1 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Main card ─────────────────────────────────────────────── */
+.card {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: 0 0 var(--vqb-radius-lg) var(--vqb-radius-lg);
+  padding: 1.75rem 2rem 2rem;
+  box-shadow: var(--vqb-shadow-lg);
+}
+
+/* ─── Exam title ────────────────────────────────────────────── */
+.examTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--vqb-text-primary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ─── Meta info row ─────────────────────────────────────────── */
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.metaItem {
+  font-size: 0.82rem;
+  color: var(--vqb-text-muted);
+}
+
+.metaItem strong {
+  color: var(--vqb-text-secondary);
+  font-weight: 600;
+}
+
+/* ─── Topics pill strip ─────────────────────────────────────── */
+.topicsStrip {
+  font-size: 0.82rem;
+  color: var(--vqb-text-muted);
+  margin-bottom: 1rem;
+}
+
+.topicsStrip strong {
+  color: var(--vqb-text-secondary);
+  font-weight: 600;
+}
+
+/* ─── Timer banner ──────────────────────────────────────────── */
+.timerNormal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--vqb-radius-md);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: var(--vqb-primary-light);
+  border: 1.5px solid var(--vqb-primary-muted);
+  color: var(--vqb-primary);
+}
+
+.timerWarning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--vqb-radius-md);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: var(--vqb-warning-bg);
+  border: 1.5px solid #fcd34d;
+  color: #92400e;
+}
+
+.timerDanger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--vqb-radius-md);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: var(--vqb-danger-bg);
+  border: 1.5px solid #fca5a5;
+  color: var(--vqb-danger);
+}
+
+.timerNormal i,
+.timerWarning i,
+.timerDanger i {
+  font-size: 1.1rem;
+}
+
+/* ─── Progress bar ──────────────────────────────────────────── */
+.progressWrap {
+  margin-bottom: 1.25rem;
+}
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--vqb-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background: var(--vqb-surface-alt);
+  border-radius: var(--vqb-radius-pill);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--vqb-primary);
+  border-radius: var(--vqb-radius-pill);
+  transition: width 0.3s ease;
+}
+
+/* ─── Jump-to selector ──────────────────────────────────────── */
+.jumpWrap {
+  margin-bottom: 1.25rem;
+}
+
+.jumpLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--vqb-text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.jumpSelect {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+  outline: none;
+  transition: border-color var(--vqb-transition-fast), box-shadow var(--vqb-transition-fast);
+  cursor: pointer;
+}
+
+.jumpSelect:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+/* ─── Question card ─────────────────────────────────────────── */
+.questionCard {
+  background: var(--vqb-surface-alt);
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.questionMeta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vqb-primary);
+  margin-bottom: 0.6rem;
+}
+
+.questionText {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--vqb-text-primary);
+  line-height: 1.6;
+  border-left: 3px solid var(--vqb-primary);
+  padding-left: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ─── MCQ option rows ───────────────────────────────────────── */
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  background: var(--vqb-surface-card);
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast);
+}
+
+.optionLabel:hover {
+  background-color: var(--vqb-primary-light);
+  border-color: var(--vqb-primary);
+}
+
+.optionLabel input[type="radio"] {
+  accent-color: var(--vqb-primary);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.optionSelected {
+  background-color: var(--vqb-primary-light);
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+  font-weight: 600;
+}
+
+/* ─── Descriptive textarea ──────────────────────────────────── */
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background: var(--vqb-surface-card);
+  resize: vertical;
+  min-height: 110px;
+  font-family: var(--vqb-font-sans);
+  line-height: 1.6;
+  outline: none;
+  transition: border-color var(--vqb-transition-fast), box-shadow var(--vqb-transition-fast);
+}
+
+.textarea:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+/* ─── Nav buttons row ───────────────────────────────────────── */
+.navRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.btnNav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+}
+
+.btnNav:hover:not(:disabled) {
+  background-color: var(--vqb-primary-light);
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+}
+
+.btnNav:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* ─── Action buttons row ────────────────────────────────────── */
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--vqb-divider);
+}
+
+.btnCancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1.5px solid #fca5a5;
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-danger-bg);
+  color: var(--vqb-danger);
+  cursor: pointer;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast);
+}
+
+.btnCancel:hover:not(:disabled) {
+  background-color: var(--vqb-danger);
+  color: var(--vqb-text-inverse);
+  border-color: var(--vqb-danger);
+}
+
+.btnCancel:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btnFinish {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-accent);
+  color: var(--vqb-text-inverse);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(14, 159, 110, 0.3);
+  transition: background-color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.btnFinish:hover:not(:disabled) {
+  background-color: var(--vqb-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(14, 159, 110, 0.4);
+}
+
+.btnFinish:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ─── Answered indicator dots ───────────────────────────────── */
+.dotGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--vqb-border);
+  background: var(--vqb-surface-card);
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--vqb-text-muted);
+  transition: background-color var(--vqb-transition-fast), border-color var(--vqb-transition-fast);
+}
+
+.dotAnswered {
+  background: var(--vqb-accent);
+  border-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse);
+}
+
+.dotCurrent {
+  background: var(--vqb-primary);
+  border-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .card { padding: 1.25rem 1rem 1.5rem; }
+  .actionRow { flex-direction: column; }
+  .btnFinish, .btnCancel { width: 100%; justify-content: center; }
+}

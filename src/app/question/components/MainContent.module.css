@@ -1,67 +1,441 @@
+/* ═══════════════════════════════════════════════════════════
+   MainContent.module.css — Questions Page main panel
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+  Layout math:
+    Navbar (68px) + Subject strip (~68px) = 136px top offset
+    Sidebar width = 220px (when open)
+*/
+
+/* ─── Main content wrapper ──────────────────────────────────── */
 .content {
   margin-left: 220px;
-  margin-top: 180px;
-  padding: 30px;
+  margin-top: 136px;
+  padding: 1.75rem 1.75rem 3rem;
   width: calc(100% - 220px);
-  background-color: #f4f7fc;
-  height: calc(
-    100vh - 180px
-  ); /* Adjust the height to exclude the header and subject pane */
-  overflow-y: auto; /* This makes the content scrollable */
-  z-index: 1;
-  transition: margin-left 0.3s ease, width 0.3s ease;
+  min-height: calc(100vh - 136px);
+  background-color: var(--vqb-surface);
+  overflow-y: auto;
+  transition: margin-left 0.28s ease, width 0.28s ease;
 }
 
+/* ─── Sidebar hidden — expand to full width ─────────────────── */
 .hide {
   margin-left: 0;
   width: 100%;
 }
 
-/* Responsive adjustments */
-@media (max-width: 750px) {
-  .content {
-    margin-left: 0;
-    width: 100%;
-  }
+/* ─── Action bar (Practice / Take Exam buttons) ─────────────── */
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
+.actionBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+
+/* Practice — teal-green primary */
+.btnPractice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--vqb-radius-pill);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse);
+  box-shadow: 0 2px 8px rgba(14, 159, 110, 0.25);
+  transition: transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.btnPractice:hover {
+  background-color: var(--vqb-accent-dark);
+  box-shadow: 0 4px 12px rgba(14, 159, 110, 0.38);
+  color: var(--vqb-text-inverse);
+  transform: translateY(-1px);
+}
+
+/* Take Exam — primary blue */
+.btnExam {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--vqb-radius-pill);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  box-shadow: 0 2px 8px rgba(26, 86, 219, 0.25);
+  transition: transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.btnExam:hover {
+  background-color: var(--vqb-primary-dark);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.35);
+  color: var(--vqb-text-inverse);
+  transform: translateY(-1px);
+}
+
+/* ─── Filter bar ────────────────────────────────────────────── */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Search input */
 .searchInput {
-  width: 600px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  flex: 1;
+  min-width: 0;
+  padding: 0.52rem 0.9rem 0.52rem 2.35rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 0.75rem center;
+  outline: none;
+  transition: border-color var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
 }
 
+.searchInput:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+.searchInput::placeholder {
+  color: var(--vqb-text-muted);
+}
+
+/* Difficulty select */
 .select {
-  margin-left: auto;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 0.52rem 2rem 0.52rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+  min-width: 150px;
 }
 
-@media (max-width: 770px) {
-  .filters {
-    flex-wrap: wrap;
-  }
-  .content{
-    padding : 10px;
-  }
+.select:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
 }
 
+/* Clear all button */
+.btnClear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.btnClear:hover {
+  border-color: var(--vqb-danger);
+  color: var(--vqb-danger);
+  background-color: var(--vqb-danger-bg);
+}
+
+/* ─── Question Card ─────────────────────────────────────────── */
+.questionCard {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.85rem;
+  transition: box-shadow var(--vqb-transition-base),
+              border-color var(--vqb-transition-base);
+}
+
+.questionCard:hover {
+  box-shadow: var(--vqb-shadow-md);
+  border-color: var(--vqb-primary-muted);
+}
+
+/* ─── Question card header row ──────────────────────────────── */
+.questionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.questionText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--vqb-text-primary);
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+/* ─── Difficulty badge ──────────────────────────────────────── */
+.badgeEasy {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  background-color: var(--vqb-success-bg);
+  color: var(--vqb-success);
+  border: 1px solid #a7f3d0;
+}
+
+.badgeMedium {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  background-color: var(--vqb-warning-bg);
+  color: var(--vqb-warning);
+  border: 1px solid #fcd34d;
+}
+
+.badgeHard {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  background-color: var(--vqb-danger-bg);
+  color: var(--vqb-danger);
+  border: 1px solid #fca5a5;
+}
+
+.badgeType {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  background-color: var(--vqb-primary-light);
+  color: var(--vqb-primary);
+  border: 1px solid var(--vqb-primary-muted);
+}
+
+/* ─── MCQ options ───────────────────────────────────────────── */
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  padding-left: 0.25rem;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+}
+
+.optionRow input[type="radio"] {
+  accent-color: var(--vqb-accent);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+/* Correct answer option highlight in view mode */
+.optionCorrect {
+  color: var(--vqb-success);
+  font-weight: 600;
+}
+
+/* ─── Descriptive answer area ───────────────────────────────── */
+.descriptiveAnswer {
+  margin-top: 0.85rem;
+  padding: 0.75rem 1rem;
+  background: var(--vqb-success-bg);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  line-height: 1.6;
+}
+
+.descriptiveAnswer strong {
+  color: var(--vqb-success);
+}
+
+/* ─── Show / hide explanation button ────────────────────────── */
+.btnExplanation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-primary-muted);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-primary-light);
+  color: var(--vqb-primary);
+  cursor: pointer;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast);
+}
+
+.btnExplanation:hover {
+  background-color: var(--vqb-primary);
+  border-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Explanation panel ─────────────────────────────────────── */
 .explanation {
-  margin-top: 20px;
-  background-color: #f8f9fa;
-  padding: 10px;
-  border-radius: 4px;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--vqb-surface-alt);
+  border-left: 3px solid var(--vqb-primary);
+  border-radius: 0 var(--vqb-radius-md) var(--vqb-radius-md) 0;
 }
 
 .explanationText {
   margin: 0;
-  color: #6c757d;
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  line-height: 1.6;
 }
+
+.explanationText strong {
+  color: var(--vqb-primary);
+}
+
+/* ─── Load More button ──────────────────────────────────────── */
+.btnLoadMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.6rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-primary);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-primary-light);
+  color: var(--vqb-primary);
+  cursor: pointer;
+  transition: background-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast);
+}
+
+.btnLoadMore:hover:not(:disabled) {
+  background-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  transform: translateY(-1px);
+}
+
+.btnLoadMore:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ─── Empty / no questions state ────────────────────────────── */
 .noQuestionsMessage {
-  color: #3b3a3a;
-  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  color: var(--vqb-text-muted);
   text-align: center;
-  margin-top: 20px;
+}
+
+.noQuestionsMessage i {
+  font-size: 2.5rem;
+  color: var(--vqb-border);
+}
+
+/* ─── Results count label ───────────────────────────────────── */
+.resultsLabel {
+  font-size: 0.78rem;
+  color: var(--vqb-text-muted);
+  margin-bottom: 0.85rem;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 750px) {
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem 1rem 2rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchInput,
+  .select {
+    width: 100%;
+  }
 }

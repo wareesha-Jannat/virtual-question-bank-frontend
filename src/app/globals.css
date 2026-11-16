@@ -1,70 +1,152 @@
-body {
-  font-family: sans-serif !important;
+/* ─── 1. Design Tokens ─────────────────────────────────────────────────────── */
+@import url('./css/design-tokens.css');
+
+/* ─── 2. Google Fonts ──────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── 3. Base Reset & Typography ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--vqb-font-sans) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── 4. Scroll Offset (for fixed navbar) ──────────────────────────────────── */
+[id] {
+  scroll-margin-top: calc(var(--vqb-nav-height) + 16px);
+}
+
+/* ─── 5. Heading Typography ─────────────────────────────────────────────────  */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--vqb-font-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--vqb-text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ─── 6. Focus Accessibility ────────────────────────────────────────────────  */
+:focus-visible {
+  outline: 3px solid var(--vqb-primary);
+  outline-offset: 3px;
+  border-radius: var(--vqb-radius-sm);
+}
+
+/* ─── 7. Section Label utility (reusable across redesigned sections) ────────  */
+.vqb-section-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vqb-primary);
+  background: var(--vqb-primary-light);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--vqb-radius-pill);
+  margin-bottom: 1rem;
+}
+
+/* ─── 8. Section Title utility ──────────────────────────────────────────────  */
+.vqb-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  color: var(--vqb-text-primary);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.vqb-section-subtitle {
+  font-size: 1.05rem;
+  color: var(--vqb-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ─── 9. Custom Container (retained from original) ──────────────────────────  */
 .custom-container {
-  background-color: #fdf6ec;
+  background-color: var(--vqb-surface);
   width: 100%;
 }
 
+/* ─── 10. Heading utility classes (retained for other pages) ────────────────  */
 .heading {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: var(--vqb-accent-light);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: var(--vqb-radius-sm);
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--vqb-shadow-sm);
 }
 
 .headingQuestion {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: var(--vqb-accent-light);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: var(--vqb-radius-sm);
   text-align: start;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--vqb-shadow-sm);
 }
 
 .headingPink {
   background-color: antiquewhite;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: var(--vqb-radius-sm);
   text-align: center;
 }
 
+/* ─── 11. Auth Form containers (used on Login / Register pages) ─────────────  */
 .formContainer {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ebf1f8;
+  background-color: var(--vqb-surface-alt);
 }
 
 .formBox {
-  background: #fff;
+  background: var(--vqb-surface-card);
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  border-radius: var(--vqb-radius-lg);
+  box-shadow: var(--vqb-shadow-lg);
+  width: 420px;
 }
 
 .formBox h2 {
-  color: #1e3c72;
-  font-family: "Times New Roman", serif;
+  color: var(--vqb-nav-bg);
+  font-family: var(--vqb-font-heading);
+  font-weight: 800;
 }
 
+/* ─── 12. Toast notifications ───────────────────────────────────────────────  */
 .customToast {
   margin-top: 80px;
   margin-right: 50px;
-  box-align: center;
 }
 
-/* Responsive adjustments */
+/* ─── 13. Responsive overrides ──────────────────────────────────────────────  */
 @media (max-width: 545px) {
   .formBox {
-    width: 310px;
+    width: 92vw;
+    max-width: 360px;
+    margin: 0 auto;
   }
 }

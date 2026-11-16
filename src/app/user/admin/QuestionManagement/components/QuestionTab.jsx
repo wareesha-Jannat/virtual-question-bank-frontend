@@ -9,6 +9,7 @@ import { useDebounce } from "@/app/hooks/useDebounce.js";
 import { useQuery } from "@tanstack/react-query";
 import { useDeleteQuestionMutation } from "./mutations.js";
 import Loader from "@/app/components/Loader.jsx";
+import styles from "../../AdminPages.module.css";
 
 export const QuestionTab = () => {
   const [editingQuestion, setEditingQuestion] = useState(null);
@@ -130,26 +131,53 @@ export const QuestionTab = () => {
 
   return (
     <>
-      {/* Add New Question Component */}
-      <AddAndUpdateQuestion subjectList={subjectList} editMode={false} />
+      <section className={styles.panel} aria-labelledby="add-question-heading">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="add-question-heading" className={styles.panelTitle}>
+              Add New Question
+            </h2>
+            <p className={styles.panelDescription}>
+              Add a question and assign it to the relevant subject and topic.
+            </p>
+          </div>
+        </div>
+        <AddAndUpdateQuestion subjectList={subjectList} editMode={false} />
+      </section>
 
-      {/* Filter and Search Section */}
-      <div className="container-fluid mt-3">
-        <div className="row">
-          <div className="col-md-6">
+      <section
+        className={styles.panel}
+        aria-labelledby="existing-questions-heading"
+      >
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="existing-questions-heading" className={styles.panelTitle}>
+              Existing Questions
+            </h2>
+            <p className={styles.panelDescription}>
+              Search or filter questions to update or remove them.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.toolbar}>
+          <label className={`${styles.searchField} ${styles.formField}`}>
+            <span className="visually-hidden">Search by question text</span>
+            <i className="bi bi-search" aria-hidden="true" />
             <input
               type="text"
-              className="form-control"
+              className={`${styles.formControl} ${styles.searchInput}`}
               placeholder="Search by question text..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)} // Update search term
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
-          <div className="col-md-4">
+          </label>
+          <label className={`${styles.filterSelect} ${styles.formField}`}>
+            <span className="visually-hidden">Filter by subject</span>
             <select
-              className="form-select"
+              className={styles.formControl}
               value={filterSubject}
-              onChange={(e) => setFilterSubject(e.target.value)} // Update filter term
+              onChange={(e) => setFilterSubject(e.target.value)}
             >
               <option value="">Filter by Subject</option>
               {subjectList.map((subject) => (
@@ -158,124 +186,114 @@ export const QuestionTab = () => {
                 </option>
               ))}
             </select>
-          </div>
-
-          <div className="col-md-2">
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                setSearchTerm("");
-                setFilterSubject("");
-              }}
-            >
-              Clear Filters
-            </button>
-          </div>
+          </label>
+          <button
+            className={`${styles.secondaryButton} ${styles.clearButton}`}
+            onClick={() => {
+              setSearchTerm("");
+              setFilterSubject("");
+            }}
+          >
+            Clear Filters
+          </button>
         </div>
-      </div>
 
-      {/* Existing Questions Table */}
-      <div className="mt-3 container-fluid ">
-        <div className="row">
-          <h3 className="heading">Existing Questions</h3>
-          <div className="col-12 mt-2">
-            <div className="table-responsive">
-              <table className="table table-striped table-hover ">
-                <thead>
-                  <tr className="table-success text-nowrap">
-                    <th>#</th>
-                    <th>Question Text</th>
-                    <th>Type</th>
-                    <th>Difficulty Level</th>
-                    <th>Subject</th>
-                    <th>Topic</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {isLoading ? (
-                    <tr>
-                    <td colSpan="7">
-                      <Loader />
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Question Text</th>
+                <th scope="col">Type</th>
+                <th scope="col">Difficulty Level</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="7" className={styles.tableEmpty}>
+                    <Loader />
+                  </td>
+                </tr>
+              ) : existingQuestions.length > 0 ? (
+                existingQuestions.map((question, index) => (
+                  <tr key={question._id}>
+                    <td className={styles.tableNumber}>
+                      {(currentPage - 1) * questionsPerPage + (index + 1)}
+                    </td>
+                    <td className={`${styles.tableText} ${styles.questionText}`}>
+                      {question.questionText}
+                    </td>
+                    <td>{question.questionType}</td>
+                    <td>{question.difficultyLevel}</td>
+                    <td className={styles.tableSubject}>
+                      {question.subjectId?.name}
+                    </td>
+                    <td>{question.topicId?.name}</td>
+                    <td className={styles.tableActions}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <button
+                          className={styles.secondaryButton}
+                          onClick={() => handleEdit(question)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className={styles.dangerButton}
+                          onClick={() => handleDelete(question)}
+                        >
+                          {deleteQuestionId == question._id ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              />
+                              <span>Deleting</span>
+                            </>
+                          ) : (
+                            "Delete"
+                          )}
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                  ) : existingQuestions.length > 0 ? (
-                    existingQuestions.map((question, index) => (
-                      <tr key={question._id}>
-                        <td>
-                          {(currentPage - 1) * questionsPerPage + (index + 1)}
-                        </td>
-                        <td style={{ minWidth: "400px" }}>
-                          {question.questionText}
-                        </td>
-                        <td>{question.questionType}</td>
-                        <td>{question.difficultyLevel}</td>
-                        <td>{question.subjectId?.name}</td>
-                        <td>{question.topicId?.name}</td>
-                        <td>
-                          <div className="d-flex me-1 ">
-                            <button
-                              className="btn btn-primary btn-sm me-2"
-                              onClick={() => handleEdit(question)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="btn btn-danger btn-sm  d-flex align-items-center gap-2"
-                              onClick={() => handleDelete(question)}
-                            >
-                              {deleteQuestionId == question._id ? (
-                                <>
-                                  <span
-                                    className="spinner-border spinner-border-sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                  ></span>
-                                  <span>Deleting</span>
-                                </>
-                              ) : (
-                                "Delete"
-                              )}
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="7" className="text-center">
-                        No questions available.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className={styles.tableEmpty}>
+                    No questions available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      {/* Pagination Controls */}
-      <div className="d-flex justify-content-center mt-3">
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <nav aria-label="Question directory pages">
+          <ul className={styles.pagination}>
+            <li
+              className={`${styles.pageItem} ${
+                currentPage === 1 ? styles.pageItemDisabled : ""
+              }`}
+            >
               <button
-                className="page-link"
+                className={styles.pageButton}
                 onClick={() => setCurrentPage(currentPage - 1)}
               >
                 Previous
               </button>
             </li>
             {Array.from({ length: totalPages }, (_, index) => (
-              <li
-                key={index + 1}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
+              <li key={index + 1} className={styles.pageItem}>
                 <button
-                  className="page-link"
+                  className={`${styles.pageButton} ${
+                    currentPage === index + 1 ? styles.pageButtonActive : ""
+                  }`}
+                  aria-current={currentPage === index + 1 ? "page" : undefined}
                   onClick={() => setCurrentPage(index + 1)}
                 >
                   {index + 1}
@@ -283,12 +301,12 @@ export const QuestionTab = () => {
               </li>
             ))}
             <li
-              className={`page-item ${
-                currentPage === totalPages ? "disabled" : ""
+              className={`${styles.pageItem} ${
+                currentPage === totalPages ? styles.pageItemDisabled : ""
               }`}
             >
               <button
-                className="page-link"
+                className={styles.pageButton}
                 onClick={() => setCurrentPage(currentPage + 1)}
               >
                 Next
@@ -296,28 +314,24 @@ export const QuestionTab = () => {
             </li>
           </ul>
         </nav>
-      </div>
+      </section>
 
-      {/* Bootstrap Modal for Editing Question */}
       {showModal && (
-        <div
-          className="modal show d-block"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-        >
-          <div className="modal-dialog">
-            <div
-              className="modal-content"
-              style={{ backgroundColor: "#f4f7fc " }}
-            >
-              <div className="heading modal-header">
-                <h5 className="modal-title ms-2 fs-3">Update Question</h5>
+        <div className={styles.modalOverlay} tabIndex="-1" role="dialog">
+          <div className={styles.modalDialog} role="document">
+            <div className={styles.modalContent}>
+              <div className={styles.modalHeader}>
+                <h2 className={styles.modalTitle}>Update Question</h2>
                 <button
                   type="button"
-                  className="btn-close"
+                  className={styles.iconButton}
+                  aria-label="Close update question dialog"
                   onClick={handleCloseModal}
-                ></button>
+                >
+                  <i className="bi bi-x-lg" aria-hidden="true" />
+                </button>
               </div>
-              <div className="modal-body">
+              <div className={styles.modalBody}>
                 <AddAndUpdateQuestion
                   subjectList={subjectList}
                   editMode={true}

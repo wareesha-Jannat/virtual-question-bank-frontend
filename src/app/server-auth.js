@@ -1,44 +1,36 @@
 import { cookies } from "next/headers";
+import { decodeJwt } from "jose";
+
+const VALID_ROLES = new Set(["Admin", "Student"]);
+
+function getRoleFromToken(token) {
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const role = decodeJwt(token).role;
+    return typeof role === "string" && VALID_ROLES.has(role) ? role : null;
+  } catch {
+    return null;
+  }
+}
 
 export const getAuth = async () => {
   try {
     const cookieStore = await cookies();
+    const role =
+      getRoleFromToken(cookieStore.get("accessToken")?.value) ??
+      getRoleFromToken(cookieStore.get("refreshToken")?.value);
 
-    const cookieHeader = cookieStore
-      .getAll()
-      .map(({ name, value }) => `${name}=${value}`)
-      .join("; ");
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me/role`,
-      {
-        method: "GET",
-        headers: {
-          Cookie: cookieHeader,
-        },
-        cache: "no-store",
-      },
-    );
-    if (res.status === 401) {
-      return {
-        role: "unauthorized",
-        status: "unauthorized",
-      };
-    }
-    const data = await res.json();
-
-    if (!res.ok) {
-      return {
-        role: "unauthorized",
-      };
+    if (!role) {
+      return { role: "unauthorized", status: "unauthorized" };
     }
 
     return {
-      role: data?.role,
+      role,
     };
-  } catch (error) {
-    return {
-      role: "unauthorized",
-    };
+  } catch {
+    return { role: "unauthorized", status: "unauthorized" };
   }
 };

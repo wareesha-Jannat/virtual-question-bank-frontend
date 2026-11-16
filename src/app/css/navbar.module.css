@@ -1,38 +1,150 @@
+/* ═══════════════════════════════════════════════════════════
+   navbar.module.css — Redesigned Navigation Bar
+   Uses design tokens from design-tokens.css via globals.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Base Navbar Shell ─────────────────────────────────────── */
 .customNavbar {
-  background-color: #053e77;
-  padding: 1rem 0;
-  height: 70px;
+  background-color: var(--vqb-nav-bg);
+  height: var(--vqb-nav-height);
+  padding: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background-color var(--vqb-transition-base),
+              box-shadow var(--vqb-transition-base);
 }
+
+.customNavbar.scrolled {
+  box-shadow: 0 2px 20px rgba(7, 20, 43, 0.35);
+}
+
+/* ─── Brand / Logo ──────────────────────────────────────────── */
 .customNavbar h1 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #ffffff !important;
-
-  text-transform: uppercase;
-}
-
-.customNavbar .navbar-collapse.show {
-  background-color: #053e77 !important;
-  padding: 1rem;
-}
-
-.customNavbar a {
-  color: whitesmoke;
-}
-
-.div {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--vqb-text-inverse) !important;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .button {
-    margin: 16px 0px !important;
-  }
-  .div {
-    gap: 2rem;
-    justify-content: start;
+.customNavbar h1 i {
+  font-size: 1.4rem;
+  color: var(--vqb-primary-muted);
+  flex-shrink: 0;
+}
+
+/* ─── Nav Links ─────────────────────────────────────────────── */
+.customNavbar a.nav-link {
+  color: var(--vqb-nav-link) !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 0.75rem !important;
+  border-radius: var(--vqb-radius-sm);
+  transition: color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+  position: relative;
+  letter-spacing: 0.01em;
+}
+
+.customNavbar a.nav-link:hover,
+.customNavbar a.nav-link:focus-visible {
+  color: var(--vqb-nav-link-hover) !important;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Auth / CTA Buttons — shared base ─────────────────────── */
+.buttonOutline,
+.buttonFilled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.42rem 1rem;
+  border-radius: var(--vqb-radius-pill);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast);
+}
+
+/* Login — ghost/outline style */
+.buttonOutline {
+  background-color: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: var(--vqb-text-inverse) !important;
+}
+
+.buttonOutline:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.75);
+  color: var(--vqb-text-inverse) !important;
+  transform: translateY(-1px);
+}
+
+/* Register / Dashboard — filled style */
+.buttonFilled {
+  background-color: var(--vqb-accent);
+  border: 1.5px solid var(--vqb-accent);
+  color: var(--vqb-text-inverse) !important;
+  box-shadow: 0 2px 8px rgba(14, 159, 110, 0.3);
+}
+
+.buttonFilled:hover {
+  background-color: var(--vqb-accent-dark);
+  border-color: var(--vqb-accent-dark);
+  color: var(--vqb-text-inverse) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 159, 110, 0.4);
+}
+
+/* ─── Auth Buttons Container ────────────────────────────────── */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ─── Toggler button override ───────────────────────────────── */
+.customNavbar .navbar-toggler {
+  border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--vqb-radius-sm) !important;
+  padding: 0.35rem 0.55rem !important;
+}
+
+.customNavbar .navbar-toggler:focus {
+  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.customNavbar .navbar-toggler-icon {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* ─── Mobile Collapse Panel ─────────────────────────────────── */
+.mobilePanel {
+  background-color: var(--vqb-nav-bg) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1rem 1rem !important;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 991.98px) {
+  .authButtons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
   }
 }

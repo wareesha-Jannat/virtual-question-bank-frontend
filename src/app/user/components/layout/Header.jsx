@@ -36,14 +36,23 @@ export const Header = ({ toggleSidebar }) => {
     <>
       <nav
         className={` ${styles.header} navbar navbar-expand-lg navbar-dark fixed-top `}
+        aria-label="Main navigation"
       >
         <div className="container-xxl">
-          <button onClick={() => toggleSidebar?.()}>
+          <button
+            type="button"
+            className={styles.sidebarToggle}
+            onClick={() => toggleSidebar?.()}
+            aria-label="Toggle sidebar"
+          >
             <i className="bi bi-list fs-4"></i>
           </button>
-          <h1 className="navbar-brand">Virtual Question Bank</h1>
+          <h1 className={`navbar-brand ${styles.brand}`}>
+            <i className="bi bi-journal-check" aria-hidden="true"></i>
+            Virtual Question Bank
+          </h1>
           <button
-            className="navbar-toggler"
+            className={`navbar-toggler ${styles.navToggler}`}
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"

@@ -1,49 +1,246 @@
+/* ═══════════════════════════════════════════════════════════
+   hero.module.css — Redesigned Hero Section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Outer Shell ───────────────────────────────────────────── */
 .hero {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   overflow: hidden;
+  padding-top: var(--vqb-nav-height);
 }
 
+/* ─── Background Image ──────────────────────────────────────── */
 .heroImage {
   object-fit: cover;
+  object-position: center 30%;
   z-index: 0;
 }
 
+/* ─── Multi-layer Overlay (depth & legibility) ──────────────── */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
   z-index: 1;
+  /* Deep navy-to-transparent, left-biased for text legibility */
+  background:
+    linear-gradient(
+      105deg,
+      rgba(7, 20, 43, 0.87) 0%,
+      rgba(7, 20, 43, 0.72) 55%,
+      rgba(7, 20, 43, 0.42) 100%
+    );
 }
 
+/* ─── Content Container ─────────────────────────────────────── */
 .content {
   position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: 780px;
+  padding: 2rem 1.5rem 3rem;
   text-align: center;
-  max-width: 800px;
-  padding: 0 1rem;
 }
 
+/* ─── Badge / eyebrow text ──────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vqb-primary-muted);
+  background: rgba(147, 180, 245, 0.12);
+  border: 1px solid rgba(147, 180, 245, 0.25);
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--vqb-radius-pill);
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Headline ──────────────────────────────────────────────── */
 .content h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: clamp(2.1rem, 5.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--vqb-text-inverse);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
 }
 
+.accent {
+  color: var(--vqb-primary-muted);
+}
+
+/* ─── Sub-heading ───────────────────────────────────────────── */
 .content p {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 600px;
+  margin: 0 auto 2.25rem;
+  line-height: 1.7;
 }
 
+/* ─── CTA Button Group ──────────────────────────────────────── */
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.9rem;
+  background-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse) !important;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: var(--vqb-radius-pill);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition:
+    background-color var(--vqb-transition-fast),
+    transform var(--vqb-transition-fast),
+    box-shadow var(--vqb-transition-fast);
+  box-shadow: 0 4px 16px rgba(14, 159, 110, 0.40);
+}
+
+.btnPrimary:hover {
+  background-color: var(--vqb-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(14, 159, 110, 0.50);
+  color: var(--vqb-text-inverse) !important;
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.78rem 1.9rem;
+  background-color: transparent;
+  color: var(--vqb-text-inverse) !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--vqb-radius-pill);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition:
+    background-color var(--vqb-transition-fast),
+    border-color var(--vqb-transition-fast),
+    transform var(--vqb-transition-fast);
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  color: var(--vqb-text-inverse) !important;
+}
+
+/* ─── Stat Cards Row ────────────────────────────────────────── */
+.statsRow {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--vqb-radius-md);
+  padding: 0.85rem 1.5rem;
+  min-width: 110px;
+  backdrop-filter: blur(6px);
+}
+
+.statValue {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--vqb-text-inverse);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Scroll Cue ────────────────────────────────────────────── */
+.scrollCue {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: scrollBounce 2.2s ease-in-out infinite;
+  cursor: default;
+  pointer-events: none;
+}
+
+.scrollCue i {
+  font-size: 1.1rem;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+  50%       { transform: translateX(-50%) translateY(5px); opacity: 0.85; }
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .content h1 {
-    font-size: 2.3rem;
+  .content {
+    padding: 1.5rem 1rem 2.5rem;
   }
 
-  .content p {
-    font-size: 1rem;
+  .statsRow {
+    gap: 0.75rem;
+  }
+
+  .statCard {
+    padding: 0.65rem 1.1rem;
+    min-width: 90px;
+  }
+
+  .statValue {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ctaGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    justify-content: center;
   }
 }

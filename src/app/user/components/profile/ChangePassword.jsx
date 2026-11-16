@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { changePasswordSchema } from "../../../validation/schemas.jsx";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import styles from "./ProfileComponent.module.css";
 
 export const ChangePassword = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -47,121 +48,159 @@ export const ChangePassword = () => {
   };
 
   return (
-    <div className="container-fluid mt-4">
-      <div className="row justify-content-center">
-        <h2 className="heading">Change Password</h2>
-        <div className="col-10 ">
-          <div className="card p-4 shadow-sm mt-3">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-3 position-relative">
-                <label htmlFor="oldPassword" className="form-label">
-                  Old Password
-                </label>
-                <div>
-                  <input
-                    type={showOldPassword ? "text" : "password"}
-                    id="oldPassword"
-                    {...register("oldPassword")}
-                    className={`form-control ${
-                      errors.oldPassword ? "is-invalid" : ""
-                    }`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowOldPassword(!showOldPassword)}
-                    className="position-absolute top-50 border-0 bg-transparent"
-                    style={{ right: "0px" }}
-                  >
-                    <i
-                      className={`bi ${
-                        showOldPassword ? "bi-eye-slash" : "bi-eye"
-                      }`}
-                    ></i>
-                  </button>
-                </div>
-                {errors.oldPassword && (
-                  <span className="text-danger">
-                    {errors.oldPassword.message}
-                  </span>
-                )}
-              </div>
-
-              <div className="mb-3 position-relative">
-                <label htmlFor="password" className="form-label">
-                  New Password
-                </label>
-                <div>
-                  <input
-                    type={showNewPassword ? "text" : "password"}
-                    id="newPassword"
-                    {...register("newPassword")}
-                    className={`form-control ${
-                      errors.newPassword ? "is-invalid" : ""
-                    }`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="position-absolute top-50 border-0 bg-transparent"
-                    style={{ right: "0px" }}
-                  >
-                    <i
-                      className={`bi ${
-                        showNewPassword ? "bi-eye-slash" : "bi-eye"
-                      }`}
-                    ></i>
-                  </button>
-                </div>
-                {errors.newPassword && (
-                  <span className="text-danger">
-                    {errors.newPassword.message}
-                  </span>
-                )}
-              </div>
-
-              <div className="mb-3 position-relative">
-                <label htmlFor="password" className="form-label">
-                  Confirm New Password
-                </label>
-                <div>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    id="passwordConfirmation"
-                    {...register("passwordConfirmation")}
-                    className={`form-control ${
-                      errors.passwordConfirmation ? "is-invalid" : ""
-                    }`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="position-absolute top-50 border-0 bg-transparent"
-                    style={{ right: "0px" }}
-                  >
-                    <i
-                      className={`bi ${
-                        showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                      }`}
-                    ></i>
-                  </button>
-                </div>
-                {errors.passwordConfirmation && (
-                  <span className="text-danger">
-                    {errors.passwordConfirmation.message}
-                  </span>
-                )}
-              </div>
+    <section className={styles.formCard} aria-labelledby="change-password-title">
+      <h2 id="change-password-title" className={styles.sectionTitle}>
+        Change password
+      </h2>
+      <p className={styles.sectionDescription}>
+        Choose a new password to help keep your account secure.
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} aria-busy={loading}>
+        <div className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label htmlFor="oldPassword" className={styles.formLabel}>
+              Old password
+            </label>
+            <div className={styles.passwordField}>
+              <input
+                type={showOldPassword ? "text" : "password"}
+                id="oldPassword"
+                autoComplete="current-password"
+                aria-invalid={Boolean(errors.oldPassword)}
+                aria-describedby={
+                  errors.oldPassword ? "old-password-error" : undefined
+                }
+                {...register("oldPassword")}
+                className={`${styles.formControl} ${styles.passwordInput}`}
+              />
               <button
-                type="submit"
-                className="btn btn-primary w-100"
-                disabled={loading}
+                type="button"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+                className={styles.visibilityButton}
+                aria-label={showOldPassword ? "Hide old password" : "Show old password"}
+                aria-pressed={showOldPassword}
               >
-                {loading ? "Saving..." : "Save"}
+                <i
+                  className={`bi ${showOldPassword ? "bi-eye-slash" : "bi-eye"}`}
+                  aria-hidden="true"
+                ></i>
               </button>
-            </form>
+            </div>
+            {errors.oldPassword && (
+              <span id="old-password-error" className={styles.formError} role="alert">
+                {errors.oldPassword.message}
+              </span>
+            )}
+          </div>
+
+          <div className={styles.formField}>
+            <label htmlFor="newPassword" className={styles.formLabel}>
+              New password
+            </label>
+            <div className={styles.passwordField}>
+              <input
+                type={showNewPassword ? "text" : "password"}
+                id="newPassword"
+                autoComplete="new-password"
+                aria-invalid={Boolean(errors.newPassword)}
+                aria-describedby={
+                  errors.newPassword ? "new-password-error" : undefined
+                }
+                {...register("newPassword")}
+                className={`${styles.formControl} ${styles.passwordInput}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className={styles.visibilityButton}
+                aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                aria-pressed={showNewPassword}
+              >
+                <i
+                  className={`bi ${showNewPassword ? "bi-eye-slash" : "bi-eye"}`}
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+            {errors.newPassword && (
+              <span id="new-password-error" className={styles.formError} role="alert">
+                {errors.newPassword.message}
+              </span>
+            )}
+          </div>
+
+          <div className={styles.formField}>
+            <label htmlFor="passwordConfirmation" className={styles.formLabel}>
+              Confirm new password
+            </label>
+            <div className={styles.passwordField}>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="passwordConfirmation"
+                autoComplete="new-password"
+                aria-invalid={Boolean(errors.passwordConfirmation)}
+                aria-describedby={
+                  errors.passwordConfirmation
+                    ? "confirm-password-error"
+                    : undefined
+                }
+                {...register("passwordConfirmation")}
+                className={`${styles.formControl} ${styles.passwordInput}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className={styles.visibilityButton}
+                aria-label={
+                  showConfirmPassword
+                    ? "Hide confirm password"
+                    : "Show confirm password"
+                }
+                aria-pressed={showConfirmPassword}
+              >
+                <i
+                  className={`bi ${
+                    showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                  }`}
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+            {errors.passwordConfirmation && (
+              <span
+                id="confirm-password-error"
+                className={styles.formError}
+                role="alert"
+              >
+                {errors.passwordConfirmation.message}
+              </span>
+            )}
           </div>
         </div>
-      </div>
-    </div>
+        <div className={styles.formActions}>
+          <button
+            type="submit"
+            className={styles.primaryButton}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Saving...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-shield-check" aria-hidden="true"></i>
+                Save
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </section>
   );
 };

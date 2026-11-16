@@ -2,10 +2,13 @@
 import { useRouter } from "next/navigation";
 import { format, isValid } from "date-fns";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import styles from "./DetailResultComponent.module.css";
 
 // DetailResultComponent: Displays a detailed analysis of each question in an exam result.
 // - dashboardMode: Boolean to determine if "Back" should go to the dashboard or questions page.
 // - onBack: Function to handle back button action.
+// All question data (questionText, options, correctAnswer, explanation) is now read directly
+// from the embedded snapshot in examSession.questions[] — no q.questionId needed.
 export const DetailResultComponent = ({
   exam,
   dashboardMode = false,
@@ -25,161 +28,224 @@ export const DetailResultComponent = ({
   // Render a loading message if the exam data is not yet available.
   if (!exam) return <div>Loading...</div>;
 
+  // Derived summary counts
+  const correctCount = exam.questions.filter((q) => q.isCorrect).length;
+  const incorrectCount = exam.questions.filter(
+    (q) => !q.isCorrect && q.userAnswer
+  ).length;
+  const unansweredCount = exam.questions.filter((q) => !q.userAnswer).length;
+
   return (
-    <div className="col-12 col-md-10">
-      {/* Main card container for the detailed result analysis */}
-      <div
-        className="card shadow mt-4 p-4"
-        style={{ backgroundColor: "#f4f7fc " }}
-      >
-        <h1
-          className="text-center my-4 p-2 rounded-1"
-          style={{ backgroundColor: "#053e77", color: "white" }}
-        >
-          Virtual Question Bank
-        </h1>
-
-        <h2 className="text-center heading">Detailed Question Analysis</h2>
-
-        {/* Back button to navigate back depending on dashboardMode */}
-        <div className="text-end my-2">
-          {dashboardMode ? (
-            <button className="btn btn-primary me-2" onClick={onBack}>
-              Back to Result
-            </button>
-          ) : (
-            <div className="d-flex">
-              <button className="btn btn-primary ms-2" onClick={onBack}>
-                Back to Result
-              </button>
-              <button
-                className="btn btn-secondary ms-auto"
-                onClick={() => router.push("/question")}
-              >
-                Back to Questions
-              </button>
-            </div>
-          )}
+    <div className={styles.detailShell}>
+      <div className={styles.detailColumn}>
+        {/* Brand bar */}
+        <div className={styles.brandBar}>
+          <i className="bi bi-journal-bookmark-fill"></i>
+          <h1>Virtual Question Bank</h1>
         </div>
 
-        {/* Display exam start and end times */}
-        <p className="text-muted d-flex flex-wrap justify-content-between gap-3 mt-2">
-          <span>
-            <strong>Start Time:</strong> {formatDateTime(exam.startTime)}
-          </span>
-          <span>
-            <strong>End Time:</strong> {formatDateTime(exam.endTime)}
-          </span>
-        </p>
+        {/* Main card */}
+        <div className={styles.card}>
+          {/* Page header row */}
+          <div className={styles.pageHeader}>
+            <h2 className={styles.pageTitle}>
+              <i className="bi bi-clipboard-data"></i> Detailed Question
+              Analysis
+            </h2>
 
-        {/* Iterate through each question in the exam and display analysis */}
-        <div className="mt-3">
-          {exam?.questions.map((q, index) => (
-            <div key={q._id} className="card mb-3 shadow-sm">
-              <div className="card-body">
-                {/* Question text */}
-                <h5 className="mb-2">
-                  <strong>Question {index + 1}:</strong>{" "}
-                  {q.questionId?.questionText}
-                </h5>
-
-                {/* For MCQ questions, display options with color coding for correct and incorrect answers */}
-                {q.questionId.questionType === "MCQ" && (
-                  <div className="mb-3">
-                    {q.questionId.options.map((option, idx) => {
-                      const isUserAnswer = q.userAnswer
-                        ? q.userAnswer.trim()
-                        : null; // Set to null if undefined
-                      const isCorrectAnswer =
-                        option.trim() === q.questionId.correctAnswer.trim(); //Check if the current option is correct Answer
-                      const isUserOption = isUserAnswer === option.trim(); // Check if the option is the user's answer
-                      const isAnswerCorrect = isUserOption && q.isCorrect; // Check if the user's answer is correct
-
-                      return (
-                        <div
-                          key={idx}
-                          className={`alert 
-                            ${
-                              // Check if the user has not answered
-                              isUserAnswer === null
-                                ? // If the answer is correct (but user has not selected it )
-                                  isCorrectAnswer
-                                  ? "alert-success"
-                                  : "alert-secondary"
-                                : // If the user has selected an answer
-                                  isUserOption
-                                  ? // If the user's answer is correct
-                                    isAnswerCorrect
-                                    ? "alert-success"
-                                    : "alert-danger"
-                                  : // If the user's answer is not selected, check if it's the correct answer
-                                    isCorrectAnswer
-                                    ? "alert-success"
-                                    : "alert-secondary"
-                            } d-flex align-items-center`}
-                        >
-                          {/* Icon for correct/incorrect answer */}
-                          <span className="me-2">
-                            {
-                              // Check if the user has not answered yet
-                              isUserAnswer === null ? (
-                                // If the answer is correct (but not selected by the user)
-                                isCorrectAnswer ? (
-                                  <i className="bi bi-check-circle-fill"></i> // Icon for correct answer (unanswered)
-                                ) : null // No icon for incorrect options (unanswered)
-                              ) : // If the user has selected an answer
-                              isUserOption ? (
-                                // If the user's answer is correct
-                                isAnswerCorrect ? (
-                                  <i className="bi bi-check-circle-fill"></i> // Icon for correct answer by user
-                                ) : (
-                                  <i className="bi bi-x-circle-fill"></i>
-                                ) // Icon for incorrect answer by user
-                              ) : // If the user hasn't selected this option, check if it's the correct answer
-                              isCorrectAnswer ? (
-                                <i className="bi bi-check-circle-fill"></i> // Icon for correct answer (not selected by user)
-                              ) : null // No icon for incorrect options not selected by the user
-                            }
-                          </span>
-                          {option}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* For Descriptive questions, show user's answer and correct answer */}
-                {q.questionId.questionType === "Descriptive" && (
-                  <div className="mb-3">
-                    <p>
-                      <strong>Your Answer:</strong>
-                      <span
-                        className={q.isCorrect ? "text-success" : "text-danger"}
-                      >
-                        {q.userAnswer ? q.userAnswer : "No answer provided"}
-                      </span>
-                    </p>
-                    {!q.isCorrect && q.userAnswer && (
-                      <p className="bg-light p-3 rounded headingQuestion">
-                        <strong>Correct Answer: </strong>{" "}
-                        {q.questionId.correctAnswer}
-                      </p>
-                    )}
-                  </div>
-                )}
-
-                {/* Feedback and Explanation section for each question */}
-                <div className="bg-light p-3 rounded headingQuestion">
-                  <p className="mb-2">
-                    <strong>Feedback:</strong> {q.feedback}
-                  </p>
-                  <p className="mb-1">
-                    <strong>Explanation:</strong> {q.questionId.explanation}
-                  </p>
-                </div>
-              </div>
+            {/* Back button(s) depending on dashboardMode */}
+            <div className={styles.btnGroup}>
+              {dashboardMode ? (
+                <button className={styles.btnBack} onClick={onBack}>
+                  <i className="bi bi-arrow-left"></i> Back to Result
+                </button>
+              ) : (
+                <>
+                  <button className={styles.btnBack} onClick={onBack}>
+                    <i className="bi bi-arrow-left"></i> Back to Result
+                  </button>
+                  <button
+                    className={styles.btnQuestions}
+                    onClick={() => router.push("/question")}
+                  >
+                    <i className="bi bi-collection"></i> Back to Questions
+                  </button>
+                </>
+              )}
             </div>
-          ))}
+          </div>
+
+          {/* Summary bar */}
+          <div className={styles.summaryBar}>
+            <span className={styles.summaryItem}>
+              <i className="bi bi-list-ol"></i>
+              {exam.questions.length} Questions
+            </span>
+            <span className={styles.summaryItem}>
+              <i className="bi bi-check-circle-fill"></i>
+              {correctCount} Correct
+            </span>
+            <span className={styles.summaryItem}>
+              <i className="bi bi-x-circle-fill"></i>
+              {incorrectCount} Incorrect
+            </span>
+            {unansweredCount > 0 && (
+              <span className={styles.summaryItem}>
+                <i className="bi bi-dash-circle"></i>
+                {unansweredCount} Unanswered
+              </span>
+            )}
+          </div>
+
+          {/* Time meta row */}
+          <div className={styles.timeMeta}>
+            <span className={styles.timeItem}>
+              <strong>Start Time:</strong> {formatDateTime(exam.startTime)}
+            </span>
+            <span className={styles.timeItem}>
+              <strong>End Time:</strong> {formatDateTime(exam.endTime)}
+            </span>
+          </div>
+
+          {/* Question cards */}
+          <div>
+            {exam?.questions.map((q, index) => {
+              const isUnanswered = !q.userAnswer;
+              const qCardClass = `${styles.qCard} ${
+                isUnanswered
+                  ? styles.qCardUnanswered
+                  : q.isCorrect
+                  ? styles.qCardCorrect
+                  : styles.qCardIncorrect
+              }`;
+
+              const badgeClass = isUnanswered
+                ? styles.qCorrectBadgeUnanswered
+                : q.isCorrect
+                ? styles.qCorrectBadgeTrue
+                : styles.qCorrectBadgeFalse;
+
+              const badgeLabel = isUnanswered
+                ? "Unanswered"
+                : q.isCorrect
+                ? "Correct"
+                : "Incorrect";
+
+              const badgeIcon = isUnanswered
+                ? "bi-dash-circle"
+                : q.isCorrect
+                ? "bi-check-circle-fill"
+                : "bi-x-circle-fill";
+
+              return (
+                <div key={q._id} className={qCardClass}>
+                  <div className={styles.qCardBody}>
+                    {/* Question header */}
+                    <div className={styles.qHeaderRow}>
+                      <span className={styles.qNum}>
+                        Question {index + 1}
+                      </span>
+                      <span
+                        className={`${styles.qCorrectBadge} ${badgeClass}`}
+                      >
+                        <i className={`bi ${badgeIcon}`}></i> {badgeLabel}
+                      </span>
+                    </div>
+
+                    {/* Question text */}
+                    <p className={styles.qText}>{q.questionText}</p>
+
+                    {/* MCQ options with colour-coding */}
+                    {q.questionType === "MCQ" && (
+                      <div>
+                        {q.options.map((option, idx) => {
+                          const isUserAnswer = q.userAnswer
+                            ? q.userAnswer.trim()
+                            : null; // Set to null if undefined
+                          const isCorrectAnswer =
+                            option.trim() === q.correctAnswer.trim(); // Check if the current option is correct Answer
+                          const isUserOption =
+                            isUserAnswer === option.trim(); // Check if the option is the user's answer
+                          const isAnswerCorrect =
+                            isUserOption && q.isCorrect; // Check if the user's answer is correct
+
+                          // Determine row style
+                          let rowClass = styles.optionNeutral;
+                          let iconName = null;
+
+                          if (isUserAnswer === null) {
+                            // Unanswered: highlight correct in green, rest neutral
+                            if (isCorrectAnswer) {
+                              rowClass = styles.optionCorrect;
+                              iconName = "bi-check-circle-fill";
+                            }
+                          } else if (isUserOption) {
+                            // User selected this option
+                            if (isAnswerCorrect) {
+                              rowClass = styles.optionCorrect;
+                              iconName = "bi-check-circle-fill";
+                            } else {
+                              rowClass = styles.optionWrong;
+                              iconName = "bi-x-circle-fill";
+                            }
+                          } else if (isCorrectAnswer) {
+                            // Not user's choice but it's the correct one
+                            rowClass = styles.optionCorrect;
+                            iconName = "bi-check-circle-fill";
+                          }
+
+                          return (
+                            <div
+                              key={idx}
+                              className={`${styles.optionRow} ${rowClass}`}
+                            >
+                              <span className={styles.optionIcon}>
+                                {iconName && (
+                                  <i className={`bi ${iconName}`}></i>
+                                )}
+                              </span>
+                              {option}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* Descriptive answer */}
+                    {q.questionType === "Descriptive" && (
+                      <div className={styles.descriptiveBlock}>
+                        <p className={styles.descLabel}>Your Answer</p>
+                        <div
+                          className={`${styles.descUserAnswer} ${
+                            q.isCorrect
+                              ? styles.descUserCorrect
+                              : styles.descUserWrong
+                          }`}
+                        >
+                          {q.userAnswer ? q.userAnswer : "No answer provided"}
+                        </div>
+                        {!q.isCorrect && q.userAnswer && (
+                          <div className={styles.descCorrectAnswer}>
+                            <strong>Correct Answer:</strong> {q.correctAnswer}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Feedback + Explanation */}
+                    <div className={styles.feedbackPanel}>
+                      <p>
+                        <strong>Feedback:</strong> {q.feedback}
+                      </p>
+                      <p>
+                        <strong>Explanation:</strong> {q.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

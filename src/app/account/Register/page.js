@@ -1,5 +1,5 @@
 "use client";
-import styles from "./Register.module.css";
+import styles from "../Auth.module.css";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -55,114 +55,138 @@ export default function Register() {
     }
   };
   return (
-    <div className={styles.registerContainer}>
-      <div className={styles.registerBox}>
-        <h2 className="text-center mb-4">Register</h2>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Name
+    <main className={styles.page}>
+      <section className={styles.card} aria-labelledby="register-title">
+        <header className={styles.header}>
+          <span className={styles.brand} aria-hidden="true">
+            <i className="bi bi-journal-check"></i>
+          </span>
+          <span className={styles.eyebrow}>Virtual Question Bank</span>
+          <h1 id="register-title" className={styles.title}>Create your account</h1>
+          <p className={styles.description}>Get started with your personalized learning space.</p>
+        </header>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.form}>
+          <div className={styles.field}>
+            <label htmlFor="name" className={styles.label}>
+              Name <span className={styles.required} aria-hidden="true">*</span>
             </label>
             <input
               type="text"
               id="name"
+              autoComplete="name"
+              placeholder="Your name"
+              aria-required="true"
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "register-name-error" : undefined}
               {...register("name")}
-              className={`form-control ${errors.name ? "is-invalid" : ""}`}
+              className={`${styles.input} ${errors.name ? styles.inputInvalid : ""}`}
             />
             {errors.name && (
-              <span className="text-danger">{errors.name.message}</span>
+              <span id="register-name-error" className={styles.error} role="alert">
+                {errors.name.message}
+              </span>
             )}
           </div>
-
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
+          <div className={styles.field}>
+            <label htmlFor="email" className={styles.label}>
+              Email <span className={styles.required} aria-hidden="true">*</span>
             </label>
             <input
               type="email"
               id="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              aria-required="true"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "register-email-error" : undefined}
               {...register("email")}
-              className={`form-control ${errors.email ? "is-invalid" : ""}`}
+              className={`${styles.input} ${errors.email ? styles.inputInvalid : ""}`}
             />
             {errors.email && (
-              <span className="text-danger">{errors.email.message}</span>
+              <span id="register-email-error" className={styles.error} role="alert">
+                {errors.email.message}
+              </span>
             )}
           </div>
-          <div className="mb-3 position-relative">
-            <label htmlFor="password" className="form-label">
-              Password
+          <div className={styles.field}>
+            <label htmlFor="password" className={styles.label}>
+              Password <span className={styles.required} aria-hidden="true">*</span>
             </label>
-            <div>
+            <div className={styles.passwordField}>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                autoComplete="new-password"
+                placeholder="Create a password"
+                aria-required="true"
+                aria-invalid={Boolean(errors.password)}
+                aria-describedby={errors.password ? "register-password-error" : "register-password-hint"}
                 {...register("password")}
-                className={`form-control ${
-                  errors.password ? "is-invalid" : ""
-                }`}
+                className={`${styles.input} ${styles.passwordInput} ${errors.password ? styles.inputInvalid : ""}`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="position-absolute top-50 border-0 bg-transparent"
-                style={{ right: "0px" }}
+                className={styles.visibilityButton}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
               >
-                <i
-                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
-                ></i>
+                <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
               </button>
             </div>
-            {errors.password && (
-              <span className="text-danger">{errors.password.message}</span>
+            {errors.password ? (
+              <span id="register-password-error" className={styles.error} role="alert">
+                {errors.password.message}
+              </span>
+            ) : (
+              <p id="register-password-hint" className={styles.fieldHint}>
+                Use at least 5 characters.
+              </p>
             )}
           </div>
-
-          <div className="mb-3 position-relative">
-            <label htmlFor="passwordConfirmation" className="form-label">
-              Confirm password
+          <div className={styles.field}>
+            <label htmlFor="passwordConfirmation" className={styles.label}>
+              Confirm password <span className={styles.required} aria-hidden="true">*</span>
             </label>
-            <div>
+            <div className={styles.passwordField}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="passwordConfirmation"
+                autoComplete="new-password"
+                placeholder="Enter your password again"
+                aria-required="true"
+                aria-invalid={Boolean(errors.passwordConfirmation)}
+                aria-describedby={errors.passwordConfirmation ? "register-confirm-error" : undefined}
                 {...register("passwordConfirmation")}
-                className={`form-control ${
-                  errors.passwordConfirmation ? "is-invalid" : ""
-                }`}
+                className={`${styles.input} ${styles.passwordInput} ${errors.passwordConfirmation ? styles.inputInvalid : ""}`}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="position-absolute top-50 border-0 bg-transparent"
-                style={{ right: "0px" }}
+                className={styles.visibilityButton}
+                aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                aria-pressed={showConfirmPassword}
               >
-                <i
-                  className={`bi ${
-                    showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                  }`}
-                ></i>
+                <i className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
               </button>
             </div>
             {errors.passwordConfirmation && (
-              <span className="text-danger">
+              <span id="register-confirm-error" className={styles.error} role="alert">
                 {errors.passwordConfirmation.message}
               </span>
             )}
           </div>
-
-          <button type="submit" className="btn btn-primary w-100">
-            Register
+          <button type="submit" className={styles.primaryButton}>
+            Create account
           </button>
         </form>
-        <div className="mt-3 text-center">
-          <p>
-            Already have an account?{" "}
-            <Link href="/account/Login" className={styles.loginLink}>
-              Login here
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
+        <p className={styles.footer}>
+          Already have an account?
+          <Link href="/account/Login" className={styles.link}>
+            Sign in
+          </Link>
+        </p>
+      </section>
+    </main>
   );
 }

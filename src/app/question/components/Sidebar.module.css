@@ -1,59 +1,138 @@
+/* ═══════════════════════════════════════════════════════════
+   Sidebar.module.css — Topics panel (redesigned)
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+  Layout math:
+    Navbar height     = 68px  (--vqb-nav-height)
+    Subject strip     = 68px  (approx: padding + title + pills)
+    Sidebar top       = 136px (68 + 68)
+*/
+
+/* ─── Sidebar container ─────────────────────────────────────── */
 .sidebar {
-  width: 220px;                  /* Fixed width for the sidebar */
-  background-color: #053e77;     
-  padding: 10px 20px;
-  height: calc(100vh - 180px);  
-  overflow-y: auto;              /* Enable vertical scrolling */
-  position: fixed; 
-  border-radius: 5px;             
-  top: 180px;                                          
-  z-index: 1;                    /* Ensure it is above other content */
-  color: white;
-  transition: transform 0.3s ease; /* Smooth transition for toggle */
+  position: fixed;
+  top: 136px;                          /* below navbar + subject strip */
+  left: 0;
+  width: 220px;
+  height: calc(100vh - 136px);
+  background-color: var(--vqb-nav-bg); /* deep navy, same as navbar   */
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  box-shadow: 3px 0 16px rgba(7, 20, 43, 0.15);
 }
 
+/* ─── Hidden state ──────────────────────────────────────────── */
 .sidebarClosed {
   transform: translateX(-100%);
+  box-shadow: none;
   visibility: hidden;
 }
 
+/* ─── Sticky header ─────────────────────────────────────────── */
 .sidebarHeader {
-  position: sticky;
-  top: 0;                        
-  background-color: #053e77;
-  z-index: 2;
-  padding: 10px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ffffff33; 
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--vqb-nav-bg);
+  flex-shrink: 0;
 }
 
-.topicList {
-  list-style: none;
-  padding: 0;
+.sidebarTitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--vqb-primary-muted);
   margin: 0;
 }
 
-.topicItem {
-  margin: 10px 0;
-  padding: 10px;
+/* ─── Scrollable topic list ─────────────────────────────────── */
+.topicList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 0.75rem;
+  list-style: none;
+  margin: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+
+.topicList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.topicList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.topicList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+}
+
+/* ─── Topic item ────────────────────────────────────────────── */
+.topicItem {
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
   cursor: pointer;
+  margin-bottom: 0.25rem;
+  transition: background-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+  line-height: 1.4;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topicItem::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+  transition: background-color var(--vqb-transition-fast);
 }
 
 .topicItem:hover {
-  background-color: #98DED9; 
-}
-.active{
-  background-color: #98DED9
+  background-color: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.95);
 }
 
+.topicItem:hover::before {
+  background-color: var(--vqb-primary-muted);
+}
+
+/* ─── Active topic ──────────────────────────────────────────── */
+.topicItem.active {
+  background-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  font-weight: 600;
+}
+
+.topicItem.active::before {
+  background-color: var(--vqb-text-inverse);
+}
+
+/* ─── Empty / error state ───────────────────────────────────── */
 .noTopics {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
   text-align: center;
-  padding: 20px;
-  color: #cccccc;
+  padding: 1.5rem 1rem;
   font-style: italic;
+  list-style: none;
+}
+
+/* ─── Loading state ─────────────────────────────────────────── */
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
 }

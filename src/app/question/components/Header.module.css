@@ -1,31 +1,103 @@
+/* ═══════════════════════════════════════════════════════════
+   Header.module.css — Questions Page Navbar (redesigned)
+   Consistent with the Home Page navbar design system.
+   ═══════════════════════════════════════════════════════════ */
 
-.header{
-    background-color: #053e77;
-  
-  } 
-  .header button {
-    background-color: #053e77; 
-    border: none;
-    color: white;
-    font-weight: bold;
-   
-  }
-  .header h1{
-    font-size: 22px;
-    font-weight: bold;
-    position: relative;
-    top: 3px;
-    
-  }
-  .header a{
-   color: whitesmoke;
-  }
-  
- 
-  
+/* ─── Base shell ────────────────────────────────────────────── */
+.header {
+  background-color: var(--vqb-nav-bg);
+  height: var(--vqb-nav-height);
+  padding: 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 12px rgba(7, 20, 43, 0.25);
+}
 
-  
-  
-  
-  
-   
+/* ─── Sidebar toggle button ─────────────────────────────────── */
+.header .toggleBtn {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--vqb-radius-sm);
+  color: var(--vqb-text-inverse);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-right: 0.75rem;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast);
+  flex-shrink: 0;
+}
+
+.header .toggleBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.header .toggleBtn i {
+  font-size: 1.2rem;
+}
+
+/* ─── Brand ─────────────────────────────────────────────────── */
+.header h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--vqb-text-inverse) !important;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header h1 i {
+  font-size: 1.3rem;
+  color: var(--vqb-primary-muted);
+}
+
+/* ─── Nav links ─────────────────────────────────────────────── */
+.header a {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.4rem 0.7rem !important;
+  border-radius: var(--vqb-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+  text-decoration: none !important;
+}
+
+.header a:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Mobile toggler ────────────────────────────────────────── */
+.header .navbar-toggler {
+  border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--vqb-radius-sm) !important;
+  padding: 0.3rem 0.5rem !important;
+}
+
+.header .navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+/* ─── Mobile collapse panel ─────────────────────────────────── */
+.header .navbar-collapse {
+  background-color: var(--vqb-nav-bg);
+}
+
+@media (max-width: 991.98px) {
+  .header .navbar-collapse.show {
+    padding: 0.75rem 1rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}

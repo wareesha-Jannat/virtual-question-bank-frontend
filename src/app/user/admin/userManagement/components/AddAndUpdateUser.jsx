@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import { toast } from "react-toastify";
 import { useAddUserMutation, useUpdateUserMutation } from "./mutations";
+import styles from "../../AdminPages.module.css";
 
 export const AddAndUpdateUser = ({
   editMode = false, // Check if it's an update
@@ -81,17 +82,15 @@ export const AddAndUpdateUser = ({
   };
 
   return (
-    <>
-      <div className="mt-4 ">
-        {editMode ? "" : <h3 className="heading"> Add New User</h3>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
+      <div>
+        <form onSubmit={handleSubmit} className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label htmlFor="name" className={styles.formLabel}>
               Name
             </label>
             <input
               type="text"
-              className="form-control"
+              className={styles.formControl}
               id="name"
               name="name"
               value={formData.name}
@@ -100,13 +99,13 @@ export const AddAndUpdateUser = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="email" className={styles.formLabel}>
               Email
             </label>
             <input
               type="email"
-              className="form-control"
+              className={styles.formControl}
               id="email"
               name="email"
               value={formData.email}
@@ -115,12 +114,12 @@ export const AddAndUpdateUser = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="role" className="form-label">
+          <div className={styles.formField}>
+            <label htmlFor="role" className={styles.formLabel}>
               Role
             </label>
             <select
-              className="form-select"
+              className={styles.formControl}
               id="role"
               name="role"
               value={formData.role}
@@ -134,7 +133,7 @@ export const AddAndUpdateUser = ({
 
           <button
             type="submit"
-            className="btn btn-success d-flex align-items-center gap-2"
+            className={`${styles.primaryButton} ${styles.formSubmit}`}
             name="addQuestion"
             disabled={addUserMutation.isPending || updateUserMutation.isPending}
           >
@@ -166,6 +165,5 @@ export const AddAndUpdateUser = ({
           </button>
         </form>
       </div>
-    </>
   );
 };

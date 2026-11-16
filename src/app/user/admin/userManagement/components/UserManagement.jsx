@@ -1,5 +1,5 @@
 "use client";
-import { useState,} from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AddAndUpdateUser } from "./AddAndUpdateUser.jsx";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDeleteUserMutation } from "./mutations.js";
 import { useDebounce } from "@/app/hooks/useDebounce.js";
 import Loader from "@/app/components/Loader.jsx";
+import styles from "../../AdminPages.module.css";
 
 export function UserManagement() {
   const [editingUser, setEditingUser] = useState(null);
@@ -37,16 +38,14 @@ export function UserManagement() {
       });
 
       const res = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BACKEND_URL
-        }/users?${params.toString()}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/?${params.toString()}`,
         {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
       if (res.status === 401) {
@@ -91,7 +90,7 @@ export function UserManagement() {
           toast.error(data.message);
           setDeleteUserId(null);
         },
-      }
+      },
     );
   };
 
@@ -108,155 +107,183 @@ export function UserManagement() {
   // Pagination logic
 
   return (
-    <div>
-      {/* Add new user Component */}
-      <div className="container-fluid">
-        <div className="row">
-          <h1>User Management</h1>
-          <div className="col-12">
-            <AddAndUpdateUser />
+    <div className={styles.page}>
+      <header className={styles.pageHeader}>
+        <span className={styles.pageIcon} aria-hidden="true">
+          <i className="bi bi-people" />
+        </span>
+        <div>
+          <span className={styles.eyebrow}>Administration</span>
+          <h1 className={styles.pageTitle}>User Management</h1>
+          <p className={styles.pageDescription}>
+            Manage accounts, roles, and access to the question bank.
+          </p>
+        </div>
+      </header>
+
+      <section className={styles.panel} aria-labelledby="add-user-heading">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="add-user-heading" className={styles.panelTitle}>
+              Add a user
+            </h2>
+            <p className={styles.panelDescription}>
+              Create an account and assign its application role.
+            </p>
           </div>
         </div>
-      </div>
+        <AddAndUpdateUser />
+      </section>
 
-      {/* Search and Filter UI */}
-      <div className="mt-4">
-        <div className="row">
-          <div className="col-md-6">
+      <section className={styles.panel} aria-labelledby="users-list-heading">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="users-list-heading" className={styles.panelTitle}>
+              User directory
+            </h2>
+            <p className={styles.panelDescription}>
+              Search, filter, and manage existing accounts.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.toolbar}>
+          <label className={`${styles.searchField} ${styles.formField}`}>
+            <span className="visually-hidden">Search by name or email</span>
+            <i className="bi bi-search" aria-hidden="true" />
             <input
               type="text"
               placeholder="Search by name or email"
-              className="form-control"
+              className={`${styles.formControl} ${styles.searchInput}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
-          <div className="col-md-4">
+          </label>
+          <label className={`${styles.filterSelect} ${styles.formField}`}>
+            <span className="visually-hidden">Filter by role</span>
             <select
-              className="form-select"
+              className={styles.formControl}
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
             >
               <option value="">All Roles</option>
               <option value="Admin">Admin</option>
               <option value="Student">Student</option>
-              {/* Add other roles as needed */}
             </select>
-          </div>
-          <div className="col-md-2">
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                setSearchTerm("");
-                setFilterRole("");
-                setCurrentPage(1); // Reset to first page on filter clear
-              }}
-            >
-              Clear Filters
-            </button>
-          </div>
+          </label>
+          <button
+            className={`${styles.secondaryButton} ${styles.clearButton}`}
+            onClick={() => {
+              setSearchTerm("");
+              setFilterRole("");
+              setCurrentPage(1);
+            }}
+          >
+            Clear Filters
+          </button>
         </div>
-      </div>
 
-      {/* List of User table */}
-      <div className="mt-3 container-fluid ">
-        <div className="row">
-          <h3 className="heading ">List of Users</h3>
-          <div className="col-12 mt-2">
-            <div className="table-responsive">
-              <table className="table table-striped table-hover ">
-                <thead>
-                  <tr className="table-success text-nowrap">
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {isLoading ? (
-                    <tr>
-                    <td colSpan="6">
-                      <Loader />
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="6" className={styles.tableEmpty}>
+                    <Loader />
+                  </td>
+                </tr>
+              ) : existingUsers.length > 0 ? (
+                existingUsers.map((user, index) => (
+                  <tr key={user._id}>
+                    <td className={styles.tableNumber}>
+                      {(currentPage - 1) * usersPerPage + (index + 1)}
+                    </td>
+                    <td className={styles.tableSubject}>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    <td className={styles.tableStatus}>
+                      <span
+                        className={`${styles.statusBadge} ${
+                          user.isActive
+                            ? styles.statusActive
+                            : styles.statusInactive
+                        }`}
+                      >
+                        {user.isActive ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                    <td className={styles.tableActions}>
+                      <div className="d-flex flex-wrap gap-2">
+                        <button
+                          className={styles.secondaryButton}
+                          onClick={() => handleEdit(user)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className={styles.dangerButton}
+                          onClick={() => handleDelete(user)}
+                          disabled={deleteUserMutation.isPending}
+                        >
+                          {deleteUserId == user._id ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              />
+                              <span>Deleting...</span>
+                            </>
+                          ) : (
+                            "Delete"
+                          )}
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                  ) : existingUsers.length > 0 ? (
-                    existingUsers.map((user, index) => (
-                      <tr key={user._id}>
-                        <td>
-                          {(currentPage - 1) * usersPerPage + (index + 1)}
-                        </td>
-                        <td style={{ minWidth: "200px" }}>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.role}</td>
-                        <td>{user.isActive ? "Active" : "Inactive"}</td>
-                        <td style={{ minWidth: "200px" }}>
-                          <div className="d-flex  ">
-                            <button
-                              className="btn btn-primary btn-sm me-3"
-                              onClick={() => handleEdit(user)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="btn btn-danger btn-sm d-flex align-items-center gap-2"
-                              onClick={() => handleDelete(user)}
-                              disabled={deleteUserMutation.isPending}
-                            >
-                              {deleteUserId == user._id ? (
-                                <>
-                                  <span
-                                    className="spinner-border spinner-border-sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                  ></span>
-                                  <span>Deleting...</span>
-                                </>
-                              ) : (
-                                "Delete"
-                              )}
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="6" className="text-center">
-                        No users available.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className={styles.tableEmpty}>
+                    No users available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      {/* Pagination Controls */}
-      <div className="d-flex justify-content-center mt-3">
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <nav aria-label="User directory pages">
+          <ul className={styles.pagination}>
+            <li
+              className={`${styles.pageItem} ${
+                currentPage === 1 ? styles.pageItemDisabled : ""
+              }`}
+            >
               <button
-                className="page-link"
+                className={styles.pageButton}
                 onClick={() => setCurrentPage(currentPage - 1)}
               >
                 Previous
               </button>
             </li>
             {Array.from({ length: totalPages }, (_, index) => (
-              <li
-                key={index + 1}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
+              <li key={index + 1} className={styles.pageItem}>
                 <button
-                  className="page-link"
+                  className={`${styles.pageButton} ${
+                    currentPage === index + 1 ? styles.pageButtonActive : ""
+                  }`}
+                  aria-current={currentPage === index + 1 ? "page" : undefined}
                   onClick={() => setCurrentPage(index + 1)}
                 >
                   {index + 1}
@@ -264,12 +291,12 @@ export function UserManagement() {
               </li>
             ))}
             <li
-              className={`page-item ${
-                currentPage === totalPages ? "disabled" : ""
+              className={`${styles.pageItem} ${
+                currentPage === totalPages ? styles.pageItemDisabled : ""
               }`}
             >
               <button
-                className="page-link"
+                className={styles.pageButton}
                 onClick={() => setCurrentPage(currentPage + 1)}
               >
                 Next
@@ -277,31 +304,27 @@ export function UserManagement() {
             </li>
           </ul>
         </nav>
-      </div>
+      </section>
 
-      {/* Bootstrap Modal for Editing user */}
       {showModal && (
-        <div
-          className="modal fade show d-block"
-          tabIndex="-1"
-          role="dialog"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-        >
+        <div className={styles.modalOverlay} tabIndex="-1" role="dialog">
           <div
-            style={{ marginTop: "70px" }}
-            className=" modal-dialog modal-dialog-scrollable  modal-md"
+            className={`${styles.modalDialog} modal-dialog-scrollable`}
+            role="document"
           >
-            <div className="modal-content">
-              <div className="heading modal-header">
-                <h5 className=" modal-title ms-2 fs-3">Update User </h5>
+            <div className={styles.modalContent}>
+              <div className={styles.modalHeader}>
+                <h2 className={styles.modalTitle}>Update User</h2>
                 <button
                   type="button"
-                  className="btn-close"
+                  className={styles.iconButton}
+                  aria-label="Close update user dialog"
                   onClick={handleCloseModal}
-                ></button>
+                >
+                  <i className="bi bi-x-lg" aria-hidden="true" />
+                </button>
               </div>
-              <div className="modal-body">
-                {/* Reuse AddAndUpdateUser Component for Editing */}
+              <div className={styles.modalBody}>
                 <AddAndUpdateUser
                   editMode={true}
                   existingUser={editingUser}

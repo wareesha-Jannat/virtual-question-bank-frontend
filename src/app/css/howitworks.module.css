@@ -1,14 +1,129 @@
-.howitworks h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
+/* ═══════════════════════════════════════════════════════════
+   howitworks.module.css — Redesigned How It Works Section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Section Wrapper ───────────────────────────────────────── */
+.howitworks {
+  background-color: var(--vqb-surface-alt);
+  padding: var(--vqb-space-4xl) 0;
 }
-  .howitworks i {
-    color: #28a745;
-  }
-  
-  .howitworks h4 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+
+/* ─── Section Header ────────────────────────────────────────── */
+.howitworks .sectionHeader {
+  text-align: center;
+  margin-bottom: var(--vqb-space-3xl);
+}
+
+/* ─── Steps Container ───────────────────────────────────────── */
+.stepsRow {
+  position: relative;
+}
+
+/* Connecting line between steps on desktop */
+.stepsRow::before {
+  content: '';
+  position: absolute;
+  top: 34px; /* align with center of step number circles */
+  left: calc(12.5% + 24px);
+  right: calc(12.5% + 24px);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--vqb-primary-light) 0%,
+    var(--vqb-primary) 50%,
+    var(--vqb-primary-light) 100%
+  );
+  z-index: 0;
+}
+
+/* ─── Individual Step Card ──────────────────────────────────── */
+.stepCard {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+/* ─── Step Number Circle ────────────────────────────────────── */
+.stepCircle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--vqb-surface-card);
+  border: 2.5px solid var(--vqb-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--vqb-shadow-md);
+  transition: background-color var(--vqb-transition-base),
+              transform var(--vqb-transition-base);
+  flex-shrink: 0;
+}
+
+.stepCard:hover .stepCircle {
+  background-color: var(--vqb-primary);
+  transform: scale(1.08);
+}
+
+.stepCircle i {
+  font-size: 1.5rem;
+  color: var(--vqb-primary);
+  transition: color var(--vqb-transition-base);
+}
+
+.stepCard:hover .stepCircle i {
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Step Badge ─────────────────────────────────────────────── */
+.stepNum {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--vqb-surface-card);
+}
+
+/* ─── Step Text ─────────────────────────────────────────────── */
+.stepCard h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--vqb-text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.stepCard p {
+  font-size: 0.88rem;
+  color: var(--vqb-text-muted);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 200px;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  /* Hide horizontal connector on mobile */
+  .stepsRow::before {
+    display: none;
   }
 
-   /* scroll-margin-top: 90px; so the fixed navbar does not hide the heading of this section when scrolled to this section or use html{ scroll-behavior : smooth} */ 
+  .stepCard {
+    padding: 0 0.5rem;
+  }
+}

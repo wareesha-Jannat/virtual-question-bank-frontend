@@ -1,43 +1,95 @@
 .sidebar {
-  width: 220px;
-  background-color: #053e77;
-  padding: 10px 20px;
-  height: calc(100vh - 63px);
-  overflow-y: auto;
   position: fixed;
-  top: 63px;
-
+  top: var(--vqb-nav-height);
   z-index: 1;
-  color: white;
-  transition: transform 0.3s ease;
+  width: 220px;
+  height: calc(100vh - var(--vqb-nav-height));
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+  color: var(--vqb-text-inverse);
+  background-color: var(--vqb-nav-bg);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform var(--vqb-transition-base);
 }
+
 .sidebarClosed {
-  transform: translateX(-100%);
   visibility: hidden;
+  transform: translateX(-100%);
 }
+
 .sidebar ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  padding: 0px;
 }
 
 .sidebar li {
-  margin: 10px 0;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.sidebar a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  padding: 10px;
+  margin: 0;
+  border-radius: var(--vqb-radius-sm);
+  transition: background-color var(--vqb-transition-fast);
 }
 
 .sidebar li:hover {
-  background-color: #98ded9;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 0.75rem;
+  color: var(--vqb-nav-link);
+  border-radius: var(--vqb-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  transition:
+    color var(--vqb-transition-fast),
+    background-color var(--vqb-transition-fast);
+}
+
+.sidebar a:hover,
+.sidebar a:focus-visible {
+  color: var(--vqb-nav-link-hover);
+}
+
+.sidebar a i {
+  flex: 0 0 auto;
+  color: inherit;
 }
 
 .Active {
-  background-color: #98ded9;
+  background-color: rgba(26, 86, 219, 0.28);
+}
+
+.Active a,
+.Active a i {
+  color: var(--vqb-text-inverse);
+  font-weight: 600;
+}
+
+.sidebar button {
+  padding: 0.65rem 0.75rem;
+  color: var(--vqb-nav-link);
+  background: transparent !important;
+  border: 0;
+  border-radius: var(--vqb-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500 !important;
+}
+
+.sidebar button:hover {
+  color: var(--vqb-nav-link-hover);
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.sidebar button i {
+  color: inherit;
+}
+
+.sidebar :global(:focus-visible) {
+  outline-color: var(--vqb-primary-muted);
 }

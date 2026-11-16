@@ -5,6 +5,7 @@ import { FormatList } from "@/app/utils";
 import { useSubjects } from "@/app/hooks/useSubjects";
 import { useAddSubjectMutation, useDeleteSubjectMutation } from "./mutations";
 import { TopicManagement } from "./TopicManagement";
+import styles from "../../AdminPages.module.css";
 
 export const SubjectTab = () => {
   // Stores the list of subjects
@@ -63,86 +64,125 @@ export const SubjectTab = () => {
   };
 
   return (
-    <div className="mt-4">
-      {/* Add New Subject */}
-      <h3 className="heading">Add New Subject</h3>
-      <form onSubmit={handleAddSubject}>
-        <label htmlFor="subject" className="form-label">
-          Subject
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="subject"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          placeholder="Enter Subject Name"
-          autoComplete="off"
-          required
-        />
-        <button
-          type="submit"
-          disabled={addSubjectMutation.isPending}
-          className="btn btn-primary mt-2 d-flex align-items-center gap-2"
+    <>
+      <div className={`${styles.sectionGrid} ${styles.subjectGrid}`}>
+        <section
+          className={`${styles.panel} ${styles.subjectPanel}`}
+          aria-labelledby="add-subject-heading"
         >
-          {addSubjectMutation.isPending ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              <span>Adding</span>
-            </>
-          ) : (
-            "Add Subject"
-          )}
-        </button>
-      </form>
+          <div className={styles.panelHeader}>
+            <div>
+              <h2 id="add-subject-heading" className={styles.panelTitle}>
+                Add New Subject
+              </h2>
+              <p className={styles.panelDescription}>
+                Create a subject to organize questions in the bank.
+              </p>
+            </div>
+          </div>
+          <form onSubmit={handleAddSubject} className={styles.formGrid}>
+            <div className={`${styles.formField} ${styles.formWide}`}>
+              <label htmlFor="subject" className={styles.formLabel}>
+                Subject
+              </label>
+              <input
+                type="text"
+                className={styles.formControl}
+                id="subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Enter Subject Name"
+                autoComplete="off"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={addSubjectMutation.isPending}
+              className={`${styles.primaryButton} ${styles.formSubmit}`}
+            >
+              {addSubjectMutation.isPending ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span>Adding</span>
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-plus-lg" aria-hidden="true" />
+                  <span>Add Subject</span>
+                </>
+              )}
+            </button>
+          </form>
+        </section>
 
-      {/* Delete Subject */}
-      <div className="mt-4">
-        <h3 className="heading">Delete Subject</h3>
-        <form onSubmit={handleDeleteSubject}>
-          <label htmlFor="delete-subject" className="form-label">
-            Subject
-          </label>
-          <Select
-            options={subjectList}
-            value={
-              subjectList.find((option) => option.value === selectedSubject) ||
-              null
-            }
-            id="delete-subject"
-            onChange={handleSelectChange}
-            placeholder="Enter Subject to Delete"
-            isSearchable
-            autoComplete="off"
-            required
-          />
-
-          <button
-            type="submit"
-            className="btn btn-danger mt-2 d-flex align-items-center gap-2"
-            disabled={!selectedSubject || deleteSubjectMutation.isPending}
-          >
-            {deleteSubjectMutation.isPending ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span>Deleting...</span>
-              </>
-            ) : (
-              "Delete Subject"
-            )}
-          </button>
-        </form>
+        <section
+          className={`${styles.panel} ${styles.subjectPanel}`}
+          aria-labelledby="delete-subject-heading"
+        >
+          <div className={styles.panelHeader}>
+            <div>
+              <h2 id="delete-subject-heading" className={styles.panelTitle}>
+                Delete Subject
+              </h2>
+              <p className={styles.panelDescription}>
+                Deleting a subject also removes its topics and related
+                questions.
+              </p>
+            </div>
+          </div>
+          <form onSubmit={handleDeleteSubject} className={styles.formGrid}>
+            <div className={`${styles.formField} ${styles.formWide}`}>
+              <label htmlFor="delete-subject" className={styles.formLabel}>
+                Subject
+              </label>
+              <Select
+                options={subjectList}
+                value={
+                  subjectList.find(
+                    (option) => option.value === selectedSubject,
+                  ) || null
+                }
+                id="delete-subject"
+                onChange={handleSelectChange}
+                placeholder="Enter Subject to Delete"
+                isSearchable
+                autoComplete="off"
+                required
+                className={styles.reactSelect}
+                classNamePrefix="vqb"
+              />
+            </div>
+            <button
+              type="submit"
+              className={`${styles.dangerButton} ${styles.formSubmit}`}
+              disabled={!selectedSubject || deleteSubjectMutation.isPending}
+            >
+              {deleteSubjectMutation.isPending ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span>Deleting...</span>
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-trash" aria-hidden="true" />
+                  <span>Delete Subject</span>
+                </>
+              )}
+            </button>
+          </form>
+        </section>
       </div>
 
       <TopicManagement subjectList={subjectList} />
-    </div>
+    </>
   );
 };

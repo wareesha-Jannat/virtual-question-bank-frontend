@@ -1,0 +1,342 @@
+/* ═══════════════════════════════════════════════════════════
+   DetailResultComponent.module.css  — Question-by-question review
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Page shell ────────────────────────────────────────────── */
+.detailShell {
+  min-height: 100vh;
+  background-color: var(--vqb-surface);
+  padding: 1.5rem 1rem 3rem;
+}
+
+.detailColumn {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ─── Top brand bar ─────────────────────────────────────────── */
+.brandBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: var(--vqb-nav-bg);
+  color: var(--vqb-text-inverse);
+  border-radius: var(--vqb-radius-lg) var(--vqb-radius-lg) 0 0;
+  padding: 0.9rem 1.5rem;
+}
+
+.brandBar i { font-size: 1.3rem; color: var(--vqb-primary-muted); }
+
+.brandBar h1 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Wrapper card ──────────────────────────────────────────── */
+.card {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: 0 0 var(--vqb-radius-lg) var(--vqb-radius-lg);
+  padding: 1.75rem 2rem 2.5rem;
+  box-shadow: var(--vqb-shadow-lg);
+}
+
+/* ─── Page heading row ──────────────────────────────────────── */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--vqb-text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pageTitle i { color: var(--vqb-primary); }
+
+/* ─── Button group ──────────────────────────────────────────── */
+.btnGroup {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btnBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.btnBack:hover {
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+  background-color: var(--vqb-primary-light);
+}
+
+.btnQuestions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-alt);
+  color: var(--vqb-text-muted);
+  cursor: pointer;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+}
+
+.btnQuestions:hover {
+  border-color: var(--vqb-text-muted);
+  color: var(--vqb-text-secondary);
+}
+
+/* ─── Meta time row ─────────────────────────────────────────── */
+.timeMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--vqb-surface-alt);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+}
+
+.timeItem {
+  font-size: 0.82rem;
+  color: var(--vqb-text-muted);
+}
+
+.timeItem strong {
+  color: var(--vqb-text-secondary);
+  font-weight: 600;
+}
+
+/* ─── Individual question review card ───────────────────────── */
+.qCard {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: var(--vqb-shadow-xs);
+}
+
+/* Coloured top bar: green if correct, red if wrong */
+.qCardCorrect { border-top: 3px solid var(--vqb-success); }
+.qCardIncorrect { border-top: 3px solid var(--vqb-danger); }
+.qCardUnanswered { border-top: 3px solid var(--vqb-warning); }
+
+.qCardBody { padding: 1.25rem 1.5rem; }
+
+/* ─── Question header row ───────────────────────────────────── */
+.qHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.qNum {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vqb-primary);
+  flex-shrink: 0;
+}
+
+.qCorrectBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.qCorrectBadgeTrue {
+  background: var(--vqb-success-bg);
+  color: var(--vqb-success);
+  border: 1px solid #a7f3d0;
+}
+
+.qCorrectBadgeFalse {
+  background: var(--vqb-danger-bg);
+  color: var(--vqb-danger);
+  border: 1px solid #fca5a5;
+}
+
+.qCorrectBadgeUnanswered {
+  background: var(--vqb-warning-bg);
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.qText {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--vqb-text-primary);
+  line-height: 1.55;
+  margin-bottom: 1rem;
+}
+
+/* ─── MCQ option rows ───────────────────────────────────────── */
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid transparent;
+}
+
+/* Correct answer (always green) */
+.optionCorrect {
+  background: var(--vqb-success-bg);
+  border-color: #a7f3d0;
+  color: #065f46;
+  font-weight: 600;
+}
+
+/* User picked wrong */
+.optionWrong {
+  background: var(--vqb-danger-bg);
+  border-color: #fca5a5;
+  color: var(--vqb-danger);
+  font-weight: 600;
+}
+
+/* Not relevant option */
+.optionNeutral {
+  background: var(--vqb-surface-alt);
+  color: var(--vqb-text-muted);
+}
+
+.optionIcon { font-size: 0.85rem; flex-shrink: 0; }
+
+/* ─── Descriptive answer block ──────────────────────────────── */
+.descriptiveBlock {
+  margin-bottom: 0.85rem;
+}
+
+.descLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--vqb-text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.descUserAnswer {
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.descUserCorrect {
+  background: var(--vqb-success-bg);
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.descUserWrong {
+  background: var(--vqb-danger-bg);
+  border: 1px solid #fca5a5;
+  color: var(--vqb-danger);
+}
+
+.descCorrectAnswer {
+  margin-top: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--vqb-success-bg);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: #065f46;
+  line-height: 1.6;
+}
+
+/* ─── Feedback + Explanation panel ─────────────────────────── */
+.feedbackPanel {
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: var(--vqb-surface-alt);
+  border-left: 3px solid var(--vqb-primary);
+  border-radius: 0 var(--vqb-radius-md) var(--vqb-radius-md) 0;
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  line-height: 1.65;
+}
+
+.feedbackPanel p { margin-bottom: 0.3rem; }
+.feedbackPanel p:last-child { margin: 0; }
+.feedbackPanel strong { color: var(--vqb-primary); }
+
+/* ─── Summary banner at top ─────────────────────────────────── */
+.summaryBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--vqb-primary-light);
+  border: 1px solid var(--vqb-primary-muted);
+  border-radius: var(--vqb-radius-md);
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--vqb-primary);
+}
+
+.summaryItem i { font-size: 0.85rem; }
+
+@media (max-width: 600px) {
+  .card { padding: 1.25rem 1rem 1.75rem; }
+  .qCardBody { padding: 1rem 1rem; }
+  .pageHeader { flex-direction: column; align-items: flex-start; }
+}

@@ -10,6 +10,7 @@ import {
   useRequestDeleteMutation,
   useRequestUpdateMutation,
 } from "./mutations";
+import styles from "../../AdminPages.module.css";
 
 export const SupportRequestManagement = () => {
   const [showModal, setShowModal] = useState(false);
@@ -165,232 +166,287 @@ export const SupportRequestManagement = () => {
   };
 
   return (
-    <div className="container-fluid mt-2">
-      <h2>Support Requests</h2>
+    <div className={styles.page}>
+      <header className={styles.pageHeader}>
+        <span className={styles.pageIcon} aria-hidden="true">
+          <i className="bi bi-life-preserver" />
+        </span>
+        <div>
+          <span className={styles.eyebrow}>Administration</span>
+          <h1 className={styles.pageTitle}>Support Requests</h1>
+          <p className={styles.pageDescription}>
+            Respond to new requests and review resolved conversations.
+          </p>
+        </div>
+      </header>
 
-      {/* Table for New Support Requests */}
-      <h4 className="heading my-3">New Requests</h4>
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead>
-            <tr className="text-nowrap table-info">
-              <th>#</th>
-              <th>Request By</th>
-              <th>Subject</th>
-              <th>Message</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
+      <section className={styles.panel} aria-labelledby="new-requests-heading">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="new-requests-heading" className={styles.panelTitle}>
+              New Requests
+            </h2>
+            <p className={styles.panelDescription}>
+              Requests awaiting an administrator response.
+            </p>
+          </div>
+        </div>
+        <div className={styles.tableWrap}>
+          <table className={`${styles.table} ${styles.supportTable}`}>
+            <thead>
               <tr>
-                <td colSpan="7">
-                  <Loader />
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">Request By</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Message</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
               </tr>
-            ) : newRequests && newRequests.length > 0 ? (
-              newRequests.map((request, index) => (
-                <tr key={request._id}>
-                  <td>{index + 1}</td>
-                  <td className="text-nowrap">{request.userId.name}</td>
-                  <td className="text-nowrap">{request.subject}</td>
-                  <td style={{ minWidth: "200px" }}>{request.message}</td>
-
-                  <td className="text-nowrap">
-                    {formatDateTime(request.createdAt)}
-                  </td>
-                  <td>{request.status}</td>
-                  <td>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => handleRespond(request)}
-                    >
-                      Respond
-                    </button>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan="7" className={styles.tableEmpty}>
+                    <Loader />
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center">
-                  No new requests available
-                </td>
-              </tr>
-            )}
-            {isError && (
-              <tr>
-                <td colSpan="7" className="text-center text-danger ">
-                  Error fetching requests
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Table for Responded Requests */}
-      <h4 className="heading my-3">Responded Requests</h4>
-      <div className="d-flex align-items-center mb-3">
-        <input
-          type="text"
-          className="form-control w-50"
-          placeholder="Search requests by subject or message..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-
-        <button
-          className="btn btn-outline-primary ms-2"
-          onClick={() => refetch()}
-        >
-          Search
-        </button>
-      </div>
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead>
-            <tr className="text-nowrap table-success">
-              <th>#</th>
-              <th>Request By</th>
-              <th>Subject</th>
-              <th>Message</th>
-              <th>Response</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Responded At</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan="8">
-                  <Loader />
-                </td>
-              </tr>
-            ) : respondedRequests && respondedRequests.length > 0 ? (
-              respondedRequests.map((request, index) => (
-                <tr key={request._id}>
-                  <td>{index + 1}</td>
-                  <td className="text-nowrap">{request?.userId?.name}</td>
-                  <td className="text-nowrap">{request?.subject}</td>
-                  <td style={{ minWidth: "200px" }}>{request?.message}</td>
-                  <td style={{ minWidth: "200px" }}>
-                    {request?.responseText ? request?.responseText : "N/A"}
-                  </td>
-                  <td style={{ minWidth: "80px" }}>
-                    {formatDateTime(request?.createdAt)}
-                  </td>
-                  <td>{request?.status}</td>
-                  <td style={{ minWidth: "80px" }}>
-                    {formatDateTime(request?.updatedAt)}
-                  </td>
-                  <td>
-                    {" "}
-                    <button
-                      onClick={() => handleDeleteRequest(request._id)}
-                      className="btn btn-danger "
-                    >
-                      <i className="bi bi-trash "></i>
-                    </button>
+              ) : newRequests && newRequests.length > 0 ? (
+                newRequests.map((request, index) => (
+                  <tr key={request._id}>
+                    <td className={styles.tableNumber}>{index + 1}</td>
+                    <td className={styles.tableSubject}>
+                      {request.userId.name}
+                    </td>
+                    <td className={styles.tableSubject}>{request.subject}</td>
+                    <td className={styles.supportText}>{request.message}</td>
+                    <td className={styles.tableDate}>
+                      {formatDateTime(request.createdAt)}
+                    </td>
+                    <td className={styles.tableStatus}>
+                      <span
+                        className={`${styles.statusBadge} ${styles.statusPending}`}
+                      >
+                        {request.status}
+                      </span>
+                    </td>
+                    <td className={styles.tableActions}>
+                      <button
+                        className={styles.primaryButton}
+                        onClick={() => handleRespond(request)}
+                      >
+                        <i className="bi bi-reply" aria-hidden="true" />
+                        Respond
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className={styles.tableEmpty}>
+                    No new requests available
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center">
-                  No responded requests available
-                </td>
-              </tr>
-            )}
-            {status === "error" && (
-              <tr>
-                <td colSpan="7" className="text-center text-danger">
-                  Error loading requests
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      {hasNextPage && (
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-          className="btn btn-info d-flex align-items-center justify-content-center gap-2 px-4 py-2 fw-semibold shadow-sm"
-        >
-          {isFetchingNextPage ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              <span>Loading...</span>
-            </>
-          ) : (
-            <span className="text-white">Load More</span>
-          )}
-        </button>
-      )}
+              )}
+              {isError && (
+                <tr>
+                  <td colSpan="7" className={styles.tableEmpty}>
+                    Error fetching requests
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      {/* Bootstrap Modal for Responding to a Request */}
+      <section
+        className={styles.panel}
+        aria-labelledby="responded-requests-heading"
+      >
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="responded-requests-heading" className={styles.panelTitle}>
+              Responded Requests
+            </h2>
+            <p className={styles.panelDescription}>
+              Search previously handled requests and review responses.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.toolbar}>
+          <label className={`${styles.searchField} ${styles.formField}`}>
+            <span className="visually-hidden">
+              Search requests by subject or message
+            </span>
+            <i className="bi bi-search" aria-hidden="true" />
+            <input
+              type="text"
+              className={`${styles.formControl} ${styles.searchInput}`}
+              placeholder="Search requests by subject or message..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </label>
+          <button
+            className={styles.secondaryButton}
+            onClick={() => refetch()}
+          >
+            Search
+          </button>
+        </div>
+
+        <div className={styles.tableWrap}>
+          <table className={`${styles.table} ${styles.supportTable}`}>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Request By</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Message</th>
+                <th scope="col">Response</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Responded At</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="9" className={styles.tableEmpty}>
+                    <Loader />
+                  </td>
+                </tr>
+              ) : respondedRequests && respondedRequests.length > 0 ? (
+                respondedRequests.map((request, index) => (
+                  <tr key={request._id}>
+                    <td className={styles.tableNumber}>{index + 1}</td>
+                    <td className={styles.tableSubject}>
+                      {request?.userId?.name}
+                    </td>
+                    <td className={styles.tableSubject}>
+                      {request?.subject}
+                    </td>
+                    <td className={styles.supportText}>{request?.message}</td>
+                    <td className={styles.supportText}>
+                      {request?.responseText ? request?.responseText : "N/A"}
+                    </td>
+                    <td className={styles.tableDate}>
+                      {formatDateTime(request?.createdAt)}
+                    </td>
+                    <td className={styles.tableStatus}>
+                      <span
+                        className={`${styles.statusBadge} ${styles.statusResolved}`}
+                      >
+                        {request?.status}
+                      </span>
+                    </td>
+                    <td className={styles.tableDate}>
+                      {formatDateTime(request?.updatedAt)}
+                    </td>
+                    <td className={styles.tableActions}>
+                      <button
+                        onClick={() => handleDeleteRequest(request._id)}
+                        className={styles.dangerButton}
+                        aria-label={`Delete request from ${request?.userId?.name || "user"}`}
+                      >
+                        <i className="bi bi-trash" aria-hidden="true" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9" className={styles.tableEmpty}>
+                    No responded requests available
+                  </td>
+                </tr>
+              )}
+              {status === "error" && (
+                <tr>
+                  <td colSpan="9" className={styles.tableEmpty}>
+                    Error loading requests
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        {hasNextPage && (
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className={`${styles.loadMoreButton} mt-3`}
+          >
+            {isFetchingNextPage ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <span>Load More</span>
+            )}
+          </button>
+        )}
+      </section>
+
       {showModal && selectedRequest && (
-        <div
-          className="modal show d-block"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-        >
-          <div className="modal-dialog">
-            <div
-              className="modal-content"
-              style={{ backgroundColor: "#f4f7fc " }}
-            >
-              <div className="modal-header heading ">
-                <h5 className="modal-title">Respond to Request</h5>
+        <div className={styles.modalOverlay} tabIndex="-1" role="dialog">
+          <div className={styles.modalDialog} role="document">
+            <div className={styles.modalContent}>
+              <div className={styles.modalHeader}>
+                <h2 className={styles.modalTitle}>Respond to Request</h2>
                 <button
                   type="button"
-                  className="btn-close"
+                  className={styles.iconButton}
+                  aria-label="Close response dialog"
                   onClick={handleCloseModal}
-                ></button>
+                >
+                  <i className="bi bi-x-lg" aria-hidden="true" />
+                </button>
               </div>
-              <div className="modal-body">
+              <div className={styles.modalBody}>
                 <form onSubmit={handleSaveResponse}>
-                  <div className="mb-3">
-                    <label className="form-label">Subject</label>
+                  <div className={`${styles.formField} mb-3`}>
+                    <label className={styles.formLabel}>Subject</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={styles.formControl}
                       name="subject"
                       defaultValue={selectedRequest.subject}
                       readOnly
                     />
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label">Message</label>
+                  <div className={`${styles.formField} mb-3`}>
+                    <label className={styles.formLabel}>Message</label>
                     <textarea
-                      className="form-control"
+                      className={`${styles.formControl} ${styles.formTextarea}`}
                       name="message"
                       defaultValue={selectedRequest.message}
                       readOnly
-                    ></textarea>
+                    />
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label">Response</label>
+                  <div className={`${styles.formField} mb-3`}>
+                    <label className={styles.formLabel}>Response</label>
                     <textarea
-                      className="form-control"
+                      className={`${styles.formControl} ${styles.formTextarea}`}
                       name="responseText"
                       placeholder="Write your response here..."
                       required
                       value={responseText}
-                      onChange={(e) => setResponseText(e.target.value)} // Update responseText state
-                    ></textarea>
+                      onChange={(e) => setResponseText(e.target.value)}
+                    />
                   </div>
                   <button
                     type="submit"
                     disabled={saveRequestMutation.isPending}
-                    className="btn btn-success d-flex align-items-center gap-2"
+                    className={styles.primaryButton}
                   >
                     {saveRequestMutation.isPending ? (
                       <>
@@ -398,7 +454,7 @@ export const SupportRequestManagement = () => {
                           className="spinner-border spinner-border-sm"
                           role="status"
                           aria-hidden="true"
-                        ></span>
+                        />
                         <span>Saving...</span>
                       </>
                     ) : (
@@ -407,10 +463,10 @@ export const SupportRequestManagement = () => {
                   </button>
                 </form>
               </div>
-              <div className="modal-footer">
+              <div className={styles.modalFooter}>
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className={styles.secondaryButton}
                   onClick={handleCloseModal}
                 >
                   Cancel

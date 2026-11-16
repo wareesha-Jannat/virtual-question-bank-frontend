@@ -88,7 +88,7 @@ export default function ExamSessionPage() {
         },
       );
       const data = await response.json();
-
+      console.log("exam Data", data);
       if (response.status === 401) {
         router.push("/account/Login"); // Redirect to login if not authenticated
         return;
@@ -126,10 +126,9 @@ export default function ExamSessionPage() {
         toast.success(data.message);
         localStorage.removeItem("examSession");
         router.push("./question"); // Redirect to question page if finished without detailed results
-
       } else if (response.status === 201) {
         toast.success(data.message);
-        setResultData(data.populatedResult);
+        setResultData(data.result);
         localStorage.removeItem("examSession"); // Set result data for display
         setMode("result"); // Switch to result display mode
       }
@@ -168,84 +167,121 @@ export default function ExamSessionPage() {
   // Display loading state
   if (loading) {
     return (
-      <div className="container-xxl text-center mt-5">
-        <h2>
-          <Loader />
-        </h2>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "var(--vqb-surface)",
+        }}
+      >
+        <Loader />
       </div>
     );
   }
 
-
   // Display message if no exam session is available
   if (!examSession && mode === "exam") {
     return (
-      <div className="container-xxl text-center mt-5">
-        <h2>No Exam Session Found</h2>
-        <p style={{ maxWidth: "600px", margin: "0 auto", marginTop: "10px" }}>
-          To start an exam, please ensure there are enough questions available
-          in the question bank. At least <strong>40%</strong> of the required
-          questions must match your selected criteria.
-        </p>
-
-        <button
-          className="btn btn-secondary mt-4"
-          onClick={() => router.push("/question")}
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "var(--vqb-surface)",
+          padding: "2rem 1rem",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "520px",
+            width: "100%",
+            background: "var(--vqb-surface-card)",
+            border: "1px solid var(--vqb-border)",
+            borderRadius: "var(--vqb-radius-lg)",
+            boxShadow: "var(--vqb-shadow-lg)",
+            padding: "2.5rem 2rem",
+            textAlign: "center",
+          }}
         >
-          Back to Questions
-        </button>
+          <i
+            className="bi bi-exclamation-circle"
+            style={{
+              fontSize: "3rem",
+              color: "var(--vqb-warning)",
+              display: "block",
+              marginBottom: "1rem",
+            }}
+          ></i>
+          <h2
+            style={{
+              fontSize: "1.25rem",
+              fontWeight: 800,
+              color: "var(--vqb-text-primary)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            No Exam Session Found
+          </h2>
+          <p
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--vqb-text-muted)",
+              lineHeight: 1.65,
+              marginBottom: "1.75rem",
+            }}
+          >
+            To start an exam, please ensure there are enough questions available
+            in the question bank. At least <strong>40%</strong> of the required
+            questions must match your selected criteria.
+          </p>
+          <button
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.6rem 1.5rem",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              border: "1.5px solid var(--vqb-border)",
+              borderRadius: "var(--vqb-radius-pill)",
+              background: "var(--vqb-surface-alt)",
+              color: "var(--vqb-text-secondary)",
+              cursor: "pointer",
+            }}
+            onClick={() => router.push("/question")}
+          >
+            <i className="bi bi-arrow-left"></i> Back to Questions
+          </button>
+        </div>
       </div>
     );
   }
 
   // Display exam component during active exam session
   if (examSession && mode === "exam") {
-    return (
-      <div
-        className="container-fluid d-flex align-items-center justify-content-center "
-        style={{ backgroundColor: "antiquewhite" }}
-      >
-        <div className="row d-flex container-xxl align-items-center justify-content-center ">
-          <ExamComponent
-            examSession={examSession}
-            onSubmitExam={handleSubmitExam}
-          />
-        </div>
-      </div>
-    );
+    return <ExamComponent examSession={examSession} onSubmitExam={handleSubmitExam} />;
   }
 
   // Display result component after exam is submitted
   if (resultData && mode === "result") {
     return (
-      <div
-        className="container-fluid d-flex align-items-center justify-content-center min-vh-100"
-        style={{ backgroundColor: "antiquewhite" }}
-      >
-        <div className="row d-flex container-xxl align-items-center justify-content-center ">
-          <ResultComponent
-            result={resultData}
-            onViewDetail={handleDetailResult}
-          />
-        </div>
-      </div>
+      <ResultComponent
+        result={resultData}
+        onViewDetail={handleDetailResult}
+      />
     );
   }
 
   // Display detailed result component for question-by-question analysis
   if (detailResult && mode === "detail result") {
     return (
-      <div
-        className="container-fluid d-flex align-items-center justify-content-center"
-        style={{ backgroundColor: "antiquewhite" }}
-      >
-        <div className="row container-xxl d-flex align-items-center justify-content-center">
-          <DetailResultComponent
-            exam={detailResult}
-            onBack={handleBackToResult}
-          />
-        </div>
-      </div>
+      <DetailResultComponent
+        exam={detailResult}
+        onBack={handleBackToResult}
+      />
     );
   }
 

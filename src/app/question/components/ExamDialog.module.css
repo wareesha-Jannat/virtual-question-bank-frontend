@@ -1,0 +1,284 @@
+/* ═══════════════════════════════════════════════════════════
+   ExamDialog.module.css — Exam Configuration Modal
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Modal backdrop ────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 43, 0.6);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* ─── Dialog box ────────────────────────────────────────────── */
+.dialog {
+  background: var(--vqb-surface-card);
+  border-radius: var(--vqb-radius-xl);
+  box-shadow: var(--vqb-shadow-xl);
+  width: 100%;
+  max-width: 540px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Dialog header ─────────────────────────────────────────── */
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--vqb-divider);
+  flex-shrink: 0;
+}
+
+.dialogTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--vqb-text-primary);
+  margin: 0;
+}
+
+.dialogTitle i {
+  color: var(--vqb-primary);
+  font-size: 1.15rem;
+}
+
+.closeBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--vqb-surface-alt);
+  color: var(--vqb-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  background-color: var(--vqb-danger-bg);
+  color: var(--vqb-danger);
+}
+
+/* ─── Scrollable body ───────────────────────────────────────── */
+.dialogBody {
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  flex: 1;
+}
+
+/* ─── Form field group ──────────────────────────────────────── */
+.fieldGroup {
+  margin-bottom: 1.25rem;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--vqb-text-secondary);
+  margin-bottom: 0.45rem;
+}
+
+.fieldHint {
+  font-size: 0.7rem;
+  color: var(--vqb-text-muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ─── Read-only subject input ───────────────────────────────── */
+.subjectInput {
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vqb-text-secondary);
+  background-color: var(--vqb-surface-alt);
+  cursor: default;
+  outline: none;
+}
+
+/* ─── Number inputs ─────────────────────────────────────────── */
+.numberInput {
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  outline: none;
+  transition: border-color var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.numberInput:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+/* ─── Select dropdowns ──────────────────────────────────────── */
+.selectInput {
+  width: 100%;
+  padding: 0.55rem 2rem 0.55rem 0.9rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.selectInput:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+/* ─── Topic toggle pills ────────────────────────────────────── */
+.topicGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.topicPill {
+  padding: 0.38rem 0.9rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1.5px solid var(--vqb-border);
+  background: var(--vqb-surface-alt);
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+  user-select: none;
+}
+
+.topicPill:hover {
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+  background-color: var(--vqb-primary-light);
+}
+
+.topicPillActive {
+  padding: 0.38rem 0.9rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-primary);
+  background-color: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+}
+
+.topicPillActive:hover {
+  background-color: var(--vqb-primary-dark);
+  border-color: var(--vqb-primary-dark);
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Two column row (Duration + Questions) ─────────────────── */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── Error message ─────────────────────────────────────────── */
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--vqb-danger-bg);
+  border: 1px solid #fca5a5;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--vqb-danger);
+}
+
+/* ─── Dialog footer with Start Exam button ──────────────────── */
+.dialogFooter {
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid var(--vqb-divider);
+  flex-shrink: 0;
+}
+
+.btnStartExam {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--vqb-radius-pill);
+  background-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse);
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 3px 12px rgba(14, 159, 110, 0.35);
+  transition: background-color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.btnStartExam:hover {
+  background-color: var(--vqb-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 18px rgba(14, 159, 110, 0.45);
+}
+
+.btnStartExam:focus-visible {
+  outline: 3px solid var(--vqb-accent);
+  outline-offset: 3px;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog {
+    border-radius: var(--vqb-radius-lg);
+  }
+}

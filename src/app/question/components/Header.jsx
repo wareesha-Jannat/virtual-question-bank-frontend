@@ -2,74 +2,73 @@
 import Link from "next/link";
 import styles from "./Header.module.css";
 import { useEffect } from "react";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRole } from "../../components/RoleProvider";
 
 export const Header = ({ toggleSidebar }) => {
-  // State to store the authentication status and user role
-
   const { role } = useRole();
-
-  // Function to fetch the user role after authentication
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+
+  const dashboardHref =
+    role === "Admin" ? "/user/admin/dashboard" : "/user/student/dashboard";
+
   return (
     <>
-      {/* Navigation bar */}
-      <nav
-        className={` ${styles.header} navbar navbar-expand-lg navbar-dark fixed-top `}
-      >
-        <div className="container-xxl">
-          <button onClick={() => toggleSidebar?.()}>
-            <i className="bi bi-list fs-4"></i>
+      <nav className={`${styles.header} navbar navbar-expand-lg navbar-dark fixed-top`}>
+        <div className="container-xxl d-flex align-items-center">
+          {/* ── Sidebar Toggle ─────────────────────────────── */}
+          <button
+            className={styles.toggleBtn}
+            onClick={() => toggleSidebar?.()}
+            aria-label="Toggle sidebar"
+            title="Toggle Topics Panel"
+          >
+            <i className="bi bi-layout-sidebar-inset" aria-hidden="true"></i>
           </button>
-          <h1 className="navbar-brand">Virtual Question Bank</h1>
 
-          {/* Navbar toggle button for small screens */}
+          {/* ── Brand ──────────────────────────────────────── */}
+          <h1 className="navbar-brand mb-0 me-auto">
+            <i className="bi bi-journal-text" aria-hidden="true"></i>
+            Virtual Question Bank
+          </h1>
+
+          {/* ── Mobile Toggler ─────────────────────────────── */}
           <button
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
+            data-bs-target="#qNavbarNav"
+            aria-controls="qNavbarNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* Navbar links */}
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              {/* If authenticated, show Dashboard link based on role */}
+          {/* ── Nav Links ──────────────────────────────────── */}
+          <div className="collapse navbar-collapse" id="qNavbarNav">
+            <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-1">
               {role === "unauthorized" || role === null ? (
                 <>
                   <li className="nav-item">
                     <Link href="/" className="nav-link" prefetch={true}>
-                      <i className="bi bi-house-fill fs-5 me-2"></i>
+                      <i className="bi bi-house-fill" aria-hidden="true"></i>
                       Home
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link href="/account/Login" className="nav-link">
-                      <i className="bi bi-box-arrow-in-right fs-5 me-2"></i>
+                      <i className="bi bi-box-arrow-in-right" aria-hidden="true"></i>
                       Login
                     </Link>
                   </li>
                 </>
               ) : (
                 <li className="nav-item">
-                  <Link
-                    href={
-                      role === "Admin"
-                        ? "/user/admin/dashboard"
-                        : "/user/student/dashboard"
-                    }
-                    className="nav-link"
-                  >
-                    <i className="bi bi-grid-fill fs-5 me-2"></i>
+                  <Link href={dashboardHref} className="nav-link">
+                    <i className="bi bi-grid-fill" aria-hidden="true"></i>
                     Dashboard
                   </Link>
                 </li>

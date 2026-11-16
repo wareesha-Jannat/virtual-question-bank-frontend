@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import styles from "../../../Auth.module.css";
 import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -56,74 +58,94 @@ export default function ResetPasswordConfirm() {
     }
   };
   return (
-    <div className="formContainer">
-      <div className="formBox">
-        <h2 className="text-center mb-4">Reset Password</h2>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              New Password
+    <main className={styles.page}>
+      <section className={styles.card} aria-labelledby="reset-confirm-title">
+        <header className={styles.header}>
+          <span className={styles.brand} aria-hidden="true">
+            <i className="bi bi-shield-lock"></i>
+          </span>
+          <span className={styles.eyebrow}>Account recovery</span>
+          <h1 id="reset-confirm-title" className={styles.title}>Choose a new password</h1>
+          <p className={styles.description}>Create a password you haven&apos;t used here before.</p>
+        </header>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.form}>
+          <div className={styles.field}>
+            <label htmlFor="password" className={styles.label}>
+              New password <span className={styles.required} aria-hidden="true">*</span>
             </label>
-            <div>
+            <div className={styles.passwordField}>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                autoComplete="new-password"
+                placeholder="Enter a new password"
+                aria-required="true"
+                aria-invalid={Boolean(errors.password)}
+                aria-describedby={errors.password ? "reset-password-error" : "reset-password-hint"}
                 {...register("password")}
-                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                className={`${styles.input} ${styles.passwordInput} ${errors.password ? styles.inputInvalid : ""}`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="position-absolute top-50 border-0 bg-transparent"
-                style={{ right: "0px" }}
+                className={styles.visibilityButton}
+                aria-label={showPassword ? "Hide new password" : "Show new password"}
+                aria-pressed={showPassword}
               >
-                <i
-                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
-                ></i>
+                <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
               </button>
             </div>
-            {errors.password && (
-              <span className="text-danger">{errors.password.message}</span>
+            {errors.password ? (
+              <span id="reset-password-error" className={styles.error} role="alert">
+                {errors.password.message}
+              </span>
+            ) : (
+              <p id="reset-password-hint" className={styles.fieldHint}>
+                Use at least 5 characters.
+              </p>
             )}
           </div>
-
-          <div className="mb-3 position-relative">
-            <label htmlFor="passwordConfirmation" className="form-label">
-              Confirm New Password
+          <div className={styles.field}>
+            <label htmlFor="passwordConfirmation" className={styles.label}>
+              Confirm new password <span className={styles.required} aria-hidden="true">*</span>
             </label>
-            <div>
+            <div className={styles.passwordField}>
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="passwordConfirmation"
+                autoComplete="new-password"
+                placeholder="Enter the new password again"
+                aria-required="true"
+                aria-invalid={Boolean(errors.passwordConfirmation)}
+                aria-describedby={errors.passwordConfirmation ? "reset-confirm-error" : undefined}
                 {...register("passwordConfirmation")}
-                className={`form-control ${
-                  errors.passwordConfirmation ? "is-invalid" : ""
-                }`}
+                className={`${styles.input} ${styles.passwordInput} ${errors.passwordConfirmation ? styles.inputInvalid : ""}`}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="position-absolute top-50 border-0 bg-transparent"
-                style={{ right: "0px" }}
+                className={styles.visibilityButton}
+                aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                aria-pressed={showConfirmPassword}
               >
-                <i
-                  className={`bi ${
-                    showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                  }`}
-                ></i>
+                <i className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"}`} aria-hidden="true"></i>
               </button>
             </div>
             {errors.passwordConfirmation && (
-              <span className="text-danger">
+              <span id="reset-confirm-error" className={styles.error} role="alert">
                 {errors.passwordConfirmation.message}
               </span>
             )}
           </div>
-          <button type="submit" className="btn btn-primary w-100">
-            Save
+          <button type="submit" className={styles.primaryButton}>
+            Save new password
           </button>
         </form>
-      </div>
-    </div>
+        <p className={styles.footer}>
+          Need to return?
+          <Link href="/account/Login" className={styles.link}>Back to sign in</Link>
+        </p>
+      </section>
+    </main>
   );
 }

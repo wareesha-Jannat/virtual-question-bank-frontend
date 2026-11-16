@@ -1,9 +1,178 @@
+/* ═══════════════════════════════════════════════════════════
+   cta.module.css — Redesigned Call-to-Action Section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Section Wrapper ───────────────────────────────────────── */
 .cta {
-    background-color: #0d6efd;
-   
+  background-color: var(--vqb-cta-bg);
+  padding: var(--vqb-space-4xl) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle decorative corner accent */
+.cta::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(26, 86, 219, 0.12);
+  pointer-events: none;
+}
+
+.cta::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(14, 159, 110, 0.08);
+  pointer-events: none;
+}
+
+/* ─── Inner content wrapper ─────────────────────────────────── */
+.ctaInner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* ─── Eyebrow / Pre-headline ────────────────────────────────── */
+.ctaEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vqb-primary-muted);
+  background: rgba(147, 180, 245, 0.1);
+  border: 1px solid rgba(147, 180, 245, 0.2);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--vqb-radius-pill);
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Headline ──────────────────────────────────────────────── */
+.cta h2 {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: var(--vqb-text-inverse);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Supporting text ───────────────────────────────────────── */
+.ctaSubtext {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.68);
+  max-width: 480px;
+  margin: 0 auto 2.25rem;
+  line-height: 1.7;
+}
+
+/* ─── Button Group ──────────────────────────────────────────── */
+.ctaBtnGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btnMain {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.1rem;
+  background-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse) !important;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--vqb-radius-pill);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition:
+    background-color var(--vqb-transition-fast),
+    transform var(--vqb-transition-fast),
+    box-shadow var(--vqb-transition-fast);
+  box-shadow: 0 4px 20px rgba(14, 159, 110, 0.4);
+}
+
+.btnMain:hover {
+  background-color: var(--vqb-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(14, 159, 110, 0.5);
+  color: var(--vqb-text-inverse) !important;
+}
+
+.btnAlt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.82rem 2rem;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--vqb-radius-pill);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition:
+    background-color var(--vqb-transition-fast),
+    border-color var(--vqb-transition-fast),
+    color var(--vqb-transition-fast),
+    transform var(--vqb-transition-fast);
+}
+
+.btnAlt:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: var(--vqb-text-inverse) !important;
+  transform: translateY(-2px);
+}
+
+/* ─── Social Proof / Trust strip ────────────────────────────── */
+.trustStrip {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+}
+
+.trustItem i {
+  color: var(--vqb-accent);
+  font-size: 0.9rem;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ctaBtnGroup {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
-  .cta h2 {
-    font-size: 2rem;
+
+  .btnMain,
+  .btnAlt {
+    justify-content: center;
   }
-  
+}

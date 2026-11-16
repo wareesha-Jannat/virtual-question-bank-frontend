@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import styles from "../../AdminPages.module.css";
 
 export function NotificationManagement() {
   const initialFormData = {
@@ -56,68 +57,99 @@ export function NotificationManagement() {
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <h1 className="mb-4"> Notification Management</h1>
-        <div className="col-12">
-          <h3 className="mb-3 heading">Create and send notification</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Title</label>
-              <input
-                type="text"
-                className="form-control"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Message</label>
-              <textarea
-                className="form-control"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Receivers</label>
-              <select
-                className="form-select"
-                name="receiver"
-                value={formData.receiver}
-                onChange={handleChange}
-                required
-              >
-                <option value="users">All Users</option>
-                <option value="Admin">Admin</option>
-                <option value="Student">Student</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary d-flex align-items-center gap-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  <span>Sending...</span>
-                </>
-              ) : (
-                "Send Notification"
-              )}
-            </button>
-          </form>
+    <div className={styles.page}>
+      <header className={styles.pageHeader}>
+        <span className={styles.pageIcon} aria-hidden="true">
+          <i className="bi bi-bell" />
+        </span>
+        <div>
+          <span className={styles.eyebrow}>Administration</span>
+          <h1 className={styles.pageTitle}>Notification Management</h1>
+          <p className={styles.pageDescription}>
+            Compose and deliver updates to the right audience.
+          </p>
         </div>
-      </div>
+      </header>
+
+      <section className={styles.panel} aria-labelledby="create-notification">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 id="create-notification" className={styles.panelTitle}>
+              Create and send notification
+            </h2>
+            <p className={styles.panelDescription}>
+              Choose a concise title, message, and recipient group.
+            </p>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label htmlFor="notification-title" className={styles.formLabel}>
+              Title
+            </label>
+            <input
+              id="notification-title"
+              type="text"
+              className={styles.formControl}
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={styles.formField}>
+            <label htmlFor="notification-receiver" className={styles.formLabel}>
+              Receivers
+            </label>
+            <select
+              id="notification-receiver"
+              className={styles.formControl}
+              name="receiver"
+              value={formData.receiver}
+              onChange={handleChange}
+              required
+            >
+              <option value="users">All Users</option>
+              <option value="Admin">Admin</option>
+              <option value="Student">Student</option>
+            </select>
+          </div>
+          <div className={`${styles.formField} ${styles.formWide}`}>
+            <label htmlFor="notification-message" className={styles.formLabel}>
+              Message
+            </label>
+            <textarea
+              id="notification-message"
+              className={`${styles.formControl} ${styles.formTextarea}`}
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className={`${styles.primaryButton} ${styles.formSubmit}`}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span>Sending...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-send" aria-hidden="true" />
+                <span>Send Notification</span>
+              </>
+            )}
+          </button>
+        </form>
+      </section>
     </div>
   );
 }

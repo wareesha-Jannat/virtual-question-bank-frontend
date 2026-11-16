@@ -1,48 +1,418 @@
+.profilePage {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-bottom: var(--vqb-space-xl);
+}
 
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--vqb-space-md);
+  margin-bottom: var(--vqb-space-xl);
+  padding: 1.5rem 2rem;
+  background: var(--vqb-nav-bg);
+  border-radius: var(--vqb-radius-lg);
+}
 
-  .content ul{
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: antiquewhite;
-    height: 60px;
-    border-radius: 10px;
+.pageIcon {
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--vqb-primary-muted);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--vqb-radius-md);
+  font-size: 1.4rem;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: var(--vqb-space-xs);
+  color: var(--vqb-primary-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pageTitle {
+  margin: 0;
+  color: var(--vqb-text-inverse);
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.pageDescription {
+  margin: 0.35rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.tabList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  background: var(--vqb-surface-alt);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+}
+
+.tabItem {
+  flex: 1 1 150px;
+  min-width: 0;
+}
+
+.tabButton {
+  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  color: var(--vqb-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--vqb-radius-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+  transition:
+    color var(--vqb-transition-fast),
+    background-color var(--vqb-transition-fast),
+    box-shadow var(--vqb-transition-fast);
+}
+
+.tabButton:hover {
+  color: var(--vqb-primary);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.tabButtonActive,
+.tabButtonActive:hover {
+  color: var(--vqb-primary);
+  background: var(--vqb-surface-card);
+  border-color: var(--vqb-border);
+  box-shadow: var(--vqb-shadow-xs);
+}
+
+.tabButton i {
+  font-size: 1rem;
+}
+
+.tabPanel {
+  margin-top: var(--vqb-space-lg);
+}
+
+.formCard,
+.profileCard {
+  padding: clamp(1.15rem, 3vw, 1.75rem);
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  box-shadow: var(--vqb-shadow-xs);
+}
+
+.sectionTitle {
+  margin: 0 0 0.35rem;
+  color: var(--vqb-text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.sectionDescription {
+  margin: 0 0 1.25rem;
+  color: var(--vqb-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.formField {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem;
+}
+
+.formLabel {
+  color: var(--vqb-text-secondary);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.formControl {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  padding: 0.65rem 0.8rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-white);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font: inherit;
+  font-size: 0.9rem;
+  transition:
+    border-color var(--vqb-transition-fast),
+    box-shadow var(--vqb-transition-fast);
+}
+
+.formControl:focus {
+  border-color: var(--vqb-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+.formControl[aria-invalid="true"] {
+  border-color: var(--vqb-danger);
+}
+
+.formControl[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+}
+
+.formControl::placeholder {
+  color: var(--vqb-text-muted);
+}
+
+.passwordField {
+  position: relative;
+}
+
+.passwordInput {
+  padding-right: 3rem;
+}
+
+.visibilityButton {
+  position: absolute;
+  top: 50%;
+  right: 0.3rem;
+  display: inline-flex;
+  width: 2.35rem;
+  height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--vqb-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--vqb-radius-sm);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.visibilityButton:hover {
+  color: var(--vqb-primary);
+  background: var(--vqb-primary-light);
+}
+
+.formError {
+  color: var(--vqb-danger);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+.primaryButton,
+.dangerButton {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--vqb-radius-md);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  transition:
+    background-color var(--vqb-transition-fast),
+    border-color var(--vqb-transition-fast),
+    box-shadow var(--vqb-transition-fast);
+}
+
+.primaryButton {
+  color: var(--vqb-text-inverse);
+  background: var(--vqb-primary);
+  border-color: var(--vqb-primary);
+}
+
+.primaryButton:hover:not(:disabled) {
+  color: var(--vqb-text-inverse);
+  background: var(--vqb-primary-dark);
+  border-color: var(--vqb-primary-dark);
+  box-shadow: var(--vqb-shadow-sm);
+}
+
+.dangerButton {
+  color: var(--vqb-danger);
+  background: var(--vqb-danger-bg);
+  border-color: rgba(229, 62, 62, 0.24);
+}
+
+.dangerButton:hover:not(:disabled) {
+  color: var(--vqb-text-inverse);
+  background: var(--vqb-danger);
+  border-color: var(--vqb-danger);
+}
+
+.primaryButton:disabled,
+.dangerButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.profileIdentity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--vqb-divider);
+}
+
+.avatar {
+  display: inline-flex;
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--vqb-primary);
+  background: var(--vqb-primary-light);
+  border-radius: 50%;
+  font-size: 1.85rem;
+}
+
+.profileName {
+  margin: 0;
+  color: var(--vqb-text-primary);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.roleBadge {
+  display: inline-flex;
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  color: var(--vqb-primary);
+  background: var(--vqb-primary-light);
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.profileDetails {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.detailItem {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  background: var(--vqb-surface);
+  border: 1px solid var(--vqb-divider);
+  border-radius: var(--vqb-radius-md);
+}
+
+.detailLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--vqb-text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.detailValue {
+  display: block;
+  margin: 0;
+  color: var(--vqb-text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.deleteActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--vqb-divider);
+}
+
+.loadingState {
+  display: flex;
+  min-height: 260px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 560px) {
+  .pageHeader {
+    gap: 0.75rem;
+    margin-bottom: var(--vqb-space-lg);
+    padding: 1.1rem;
   }
-  .content li{
-    background-color:  #d4edda;
-    color: #155724; 
-    height: 30px;
-    width: 150px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    border-radius: 10px;
-    font-size: 16px;
+
+  .pageIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.15rem;
   }
-  .content li:hover{
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.6);
+
+  .tabList {
+    gap: 0.2rem;
   }
- 
 
-  
-   /*reponsive adjustments*/
-   @media (max-width : 810px) {
-    .content{
-      margin-left: 0;
-      width: 100%;
-    }
+  .tabItem {
+    flex-basis: calc(50% - 0.2rem);
+  }
 
-    
-   }
-   @media (max-width : 507px) {
-    .content li{
-      width: 90px;
-    }
-    .content ul{
-      gap: 10px;
-    }
+  .tabButton {
+    min-height: 42px;
+    padding: 0.55rem 0.45rem;
+    font-size: 0.78rem;
+  }
 
-   }
-  
-  
+  .formGrid,
+  .profileDetails {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .formActions,
+  .deleteActions {
+    justify-content: stretch;
+  }
+
+  .primaryButton,
+  .dangerButton {
+    width: 100%;
+  }
+
+  .profileIdentity {
+    align-items: flex-start;
+  }
+}

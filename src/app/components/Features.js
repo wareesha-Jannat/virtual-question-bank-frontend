@@ -1,36 +1,58 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "../css/features.module.css";
+
+const FEATURES = [
+  {
+    icon: "bi-journal-text",
+    colorClass: "iconWrapBlue",
+    title: "Extensive Question Bank",
+    description:
+      "Access thousands of categorized questions across subjects and topics — all in one place for comprehensive exam preparation.",
+  },
+  {
+    icon: "bi-check2-circle",
+    colorClass: "iconWrapGreen",
+    title: "Real-Time Feedback",
+    description:
+      "Receive instant, detailed explanations for every answer to reinforce understanding and accelerate your learning.",
+  },
+  {
+    icon: "bi-alarm",
+    colorClass: "iconWrapOrange",
+    title: "Simulated Exams",
+    description:
+      "Take full timed practice exams that mirror real test conditions, then review detailed performance breakdowns.",
+  },
+];
 
 export const Features = () => {
   return (
-    <section id="Features" className={`${styles.features} py-5 bg-light`}>
-      <div className="container-xxl text-center">
-        <h2 className="mb-5">Features</h2>
-        <div className="row justify-content-around">
-          <div className="col-md-3 mb-3">
-            <i className="bi bi-journal-text h1 "></i>
-            <h3>Extensive Question Bank</h3>
-            <p>
-              Access categorized questions across different subjects and topics
-              for comprehensive preparation.
-            </p>
-          </div>
-          <div className="col-md-3 mb-3">
-            <i className="bi bi-check-circle h1"></i>
-            <h3>Real-Time Feedback</h3>
-            <p>
-              Receive instant explanations for each answer, helping you
-              understand and improve.
-            </p>
-          </div>
-          <div className="col-md-3 mb-3">
-            <i className="bi bi-alarm h1 "></i>
-            <h3>Simulated Exams</h3>
-            <p>
-              Take timed practice exams and get detailed performance reports to
-              track your progress.
-            </p>
-          </div>
+    <section id="Features" className={styles.features}>
+      <div className="container-xxl">
+        {/* ── Section Header ───────────────────────────────── */}
+        <div className={styles.sectionHeader}>
+          <p className="vqb-section-label">What We Offer</p>
+          <h2 className="vqb-section-title">
+            Everything You Need to Succeed
+          </h2>
+          <p className="vqb-section-subtitle">
+            Powerful tools designed to make your exam preparation smarter,
+            faster, and more effective.
+          </p>
+        </div>
+
+        {/* ── Feature Cards ─────────────────────────────────── */}
+        <div className="row g-4 justify-content-center">
+          {FEATURES.map(({ icon, colorClass, title, description }) => (
+            <div key={title} className="col-sm-10 col-md-6 col-lg-4">
+              <article className={styles.featureCard}>
+                <div className={styles[colorClass]}>
+                  <i className={`bi ${icon}`} aria-hidden="true"></i>
+                </div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            </div>
+          ))}
         </div>
       </div>
     </section>

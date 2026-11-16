@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useMarkAsReadMutation } from "./mutations";
+import styles from "./NotificationComponent.module.css";
 
 export function NotificationComponent() {
   const router = useRouter();
@@ -46,7 +48,6 @@ export function NotificationComponent() {
   });
 
   const notifications = data?.notifications || [];
-  const userId = data?.userId || null;
 
   // Call the function to fetch notifications
   useEffect(() => {
@@ -54,68 +55,88 @@ export function NotificationComponent() {
   }, [data]);
 
   return (
-    <div className="container-xxl">
-      <h2 className="mb-4">Notifications</h2>
+    <main className={styles.page}>
+      <header className={styles.pageHeader}>
+        <span className={styles.pageIcon} aria-hidden="true">
+          <i className="bi bi-bell"></i>
+        </span>
+        <div>
+          <span className={styles.eyebrow}>Updates</span>
+          <h1 className={styles.title}>Notifications</h1>
+          <p className={styles.description}>
+            Important messages and updates for your account.
+          </p>
+        </div>
+      </header>
 
       {isLoading ? (
-        <div className="d-flex justify-content-center">
-          <div className="spinner-border"></div>
+        <div className={styles.loadingState} role="status" aria-label="Loading notifications">
+          <div className="spinner-border" aria-hidden="true"></div>
         </div>
-      ) : (
-        <div className="accordion" id="notificationAccordion">
-          {notifications.length > 0 ? (
-            notifications?.map((notification) => (
-              <div
-                className="accordion-item mb-3 shadow-sm"
-                key={notification._id}
+      ) : notifications.length > 0 ? (
+        <div className={`accordion ${styles.accordion}`} id="notificationAccordion">
+          {notifications.map((notification) => (
+            <div
+              className={`accordion-item ${styles.item}`}
+              key={notification._id}
+            >
+              <h2
+                className={`accordion-header ${styles.itemHeader}`}
+                id={`heading${notification._id}`}
               >
-                <h2
-                  className="accordion-header"
-                  id={`heading${notification._id}`}
+                <button
+                  className={`accordion-button ${styles.trigger} ${
+                    notification.isReadBy ? "collapsed" : styles.unreadTrigger
+                  }`}
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target={`#collapse${notification._id}`}
+                  onClick={() => markAsReadMutation.mutate(notification._id)}
                 >
-                  <button
-                    className={`accordion-button ${
-                      notification.isReadBy.includes(userId)
-                        ? "collapsed"
-                        : "bg-light"
-                    } d-flex align-items-center`}
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#collapse${notification._id}`}
-                    onClick={() => markAsReadMutation.mutate(notification._id)} // Mark as read on click
+                  <span
+                    className={`${styles.notificationIcon} ${
+                      !notification.isReadBy ? styles.unreadIcon : ""
+                    }`}
+                    aria-hidden="true"
                   >
-                    <i
-                      className={`bi bi-bell me-3 ${
-                        !notification.isReadBy.includes(userId)
-                          ? "text-danger"
-                          : "text-muted"
-                      }`}
-                    ></i>
-                    <strong>{notification.title}</strong>
-                    {!notification.isReadBy.includes(userId) && (
-                      <span className="badge bg-danger ms-2">New</span>
-                    )}
-                    <span className="ms-auto text-muted">
-                      {formatDistanceToNow(parseISO(notification.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
-                  </button>
-                </h2>
-                <div
-                  id={`collapse${notification._id}`}
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#notificationAccordion"
-                >
-                  <div className="accordion-body">{notification.message}</div>
+                    <i className="bi bi-bell"></i>
+                  </span>
+                  <span className={styles.notificationTitle}>
+                    {notification.title}
+                  </span>
+                  {!notification.isReadBy && (
+                    <span className={styles.newBadge}>New</span>
+                  )}
+                  <time className={styles.time} dateTime={notification.createdAt}>
+                    {formatDistanceToNow(parseISO(notification.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </time>
+                </button>
+              </h2>
+              <div
+                id={`collapse${notification._id}`}
+                className="accordion-collapse collapse"
+                data-bs-parent="#notificationAccordion"
+              >
+                <div className={`accordion-body ${styles.body}`}>
+                  {notification.message}
                 </div>
               </div>
-            ))
-          ) : (
-            <div>No notifications Available</div>
-          )}
+            </div>
+          ))}
         </div>
+      ) : (
+        <section className={styles.emptyState} role="status" aria-live="polite">
+          <span className={styles.emptyIcon} aria-hidden="true">
+            <i className="bi bi-bell-slash"></i>
+          </span>
+          <h2 className={styles.emptyTitle}>You&apos;re all caught up</h2>
+          <p className={styles.emptyDescription}>
+            There are no notifications right now. New messages will appear here.
+          </p>
+        </section>
       )}
-    </div>
+    </main>
   );
 }

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { FormatList } from "@/app/utils";
 import { useTopics } from "@/app/hooks/useTopics";
 import { useAddTopicMutation, useDeleteTopicMutation } from "./mutations";
+import styles from "../../AdminPages.module.css";
 export const TopicManagement = ({ subjectList }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
 
@@ -87,37 +88,59 @@ export const TopicManagement = ({ subjectList }) => {
     setSelectedTopic(selectedOption.value);
   };
   return (
-    <>
-      {/* Add Topic */}
-      <div className="mt-4">
-        <h3 className="heading">Add New Topic</h3>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="select-subject-for-topic" className="form-label">
-            Select Subject
-          </label>
-          <Select
-            options={subjectList}
-            id="select-subject-for-topic"
-            autoComplete="off"
-            isSearchable
-            onChange={handleSubjectSelectChange}
-          />
-
-          <label htmlFor="topic" className="form-label mt-2">
-            Topic
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="topic"
-            value={newTopic}
-            onChange={(e) => setNewTopic(e.target.value)}
-            disabled={!selectedSubject}
-            autoComplete="off"
-          />
+    <section className={styles.panel} aria-labelledby="topics-heading">
+      <div className={styles.panelHeader}>
+        <div>
+          <h2 id="topics-heading" className={styles.panelTitle}>
+            Topic Management
+          </h2>
+          <p className={styles.panelDescription}>
+            Add topics to subjects or remove topics that are no longer needed.
+          </p>
+        </div>
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        className={`${styles.sectionGrid} ${styles.topicGrid}`}
+      >
+        <div className={styles.topicOperation}>
+          <h3 className={`${styles.panelTitle} ${styles.topicOperationTitle}`}>
+            Add New Topic
+          </h3>
+          <div className={styles.formField}>
+            <label
+              htmlFor="select-subject-for-topic"
+              className={styles.formLabel}
+            >
+              Select Subject
+            </label>
+            <Select
+              options={subjectList}
+              id="select-subject-for-topic"
+              autoComplete="off"
+              isSearchable
+              onChange={handleSubjectSelectChange}
+              className={styles.reactSelect}
+              classNamePrefix="vqb"
+            />
+          </div>
+          <div className={styles.formField}>
+            <label htmlFor="topic" className={styles.formLabel}>
+              Topic
+            </label>
+            <input
+              type="text"
+              className={styles.formControl}
+              id="topic"
+              value={newTopic}
+              onChange={(e) => setNewTopic(e.target.value)}
+              disabled={!selectedSubject}
+              autoComplete="off"
+            />
+          </div>
           <button
             type="submit"
-            className="btn btn-secondary mt-2 d-flex align-items-center gap-2"
+            className={styles.secondaryButton}
             name="addTopic"
             disabled={
               !newTopic || !selectedSubject || addTopicMutation.isPending
@@ -129,52 +152,64 @@ export const TopicManagement = ({ subjectList }) => {
                   className="spinner-border spinner-border-sm"
                   role="status"
                   aria-hidden="true"
-                ></span>
+                />
                 <span>Adding...</span>
               </>
             ) : (
-              "Add Topic"
+              <>
+                <i className="bi bi-plus-lg" aria-hidden="true" />
+                <span>Add Topic</span>
+              </>
             )}
           </button>
+        </div>
 
-          {/* Delete Topic */}
-
-          <h3 className="heading mt-4">Delete Topic</h3>
-
-          <label
-            htmlFor="select-subject-to-delete-topic"
-            className="form-label"
-          >
-            Select Subject
-          </label>
-          <Select
-            options={subjectList}
-            value={
-              subjectList.find((option) => option.value === delSubject) || null
-            }
-            id="select-subject-to-delete-topic"
-            autoComplete="off"
-            isSearchable
-            onChange={handleDelSubjectChange}
-          />
-
-          <label htmlFor="select-topic" className="form-label mt-2">
-            Select Topic to Delete
-          </label>
-          <Select
-            options={topicList}
-            value={
-              topicList.find((option) => option.value === selectedTopic) || null
-            }
-            id="select-topic"
-            isSearchable
-            autoComplete="off"
-            onChange={handleTopicSelectChange}
-            isDisabled={!delSubject}
-          />
-
+        <div className={styles.topicOperation}>
+          <h3 className={`${styles.panelTitle} ${styles.topicOperationTitle}`}>
+            Delete Topic
+          </h3>
+          <div className={styles.formField}>
+            <label
+              htmlFor="select-subject-to-delete-topic"
+              className={styles.formLabel}
+            >
+              Select Subject
+            </label>
+            <Select
+              options={subjectList}
+              value={
+                subjectList.find((option) => option.value === delSubject) ||
+                null
+              }
+              id="select-subject-to-delete-topic"
+              autoComplete="off"
+              isSearchable
+              onChange={handleDelSubjectChange}
+              className={styles.reactSelect}
+              classNamePrefix="vqb"
+            />
+          </div>
+          <div className={styles.formField}>
+            <label htmlFor="select-topic" className={styles.formLabel}>
+              Select Topic to Delete
+            </label>
+            <Select
+              options={topicList}
+              value={
+                topicList.find((option) => option.value === selectedTopic) ||
+                null
+              }
+              id="select-topic"
+              isSearchable
+              autoComplete="off"
+              onChange={handleTopicSelectChange}
+              isDisabled={!delSubject}
+              className={styles.reactSelect}
+              classNamePrefix="vqb"
+            />
+          </div>
           <button
-            className="btn btn-danger mt-2 d-flex align-items-center gap-2"
+            className={styles.dangerButton}
             type="submit"
             name="deleteTopic"
             disabled={
@@ -187,15 +222,18 @@ export const TopicManagement = ({ subjectList }) => {
                   className="spinner-border spinner-border-sm"
                   role="status"
                   aria-hidden="true"
-                ></span>
+                />
                 <span>Deleting...</span>
               </>
             ) : (
-              "Delete Topic"
+              <>
+                <i className="bi bi-trash" aria-hidden="true" />
+                <span>Delete Topic</span>
+              </>
             )}
           </button>
-        </form>
-      </div>
-    </>
+        </div>
+      </form>
+    </section>
   );
 };

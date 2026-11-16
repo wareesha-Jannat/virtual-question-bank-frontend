@@ -1,41 +1,126 @@
-
-
-
-.header{
-  background-color: #053e77;
-
-} 
-.header button {
-  background-color: #053e77; 
-  border: none;
-  color: white;
-  font-weight: bold;
- 
-}
-.header h1{
-  font-size: 22px;
-  font-weight: bold;
-  position: relative;
-    top: 3px;
-}
-.header a{
- color: whitesmoke;
+.header {
+  min-height: var(--vqb-nav-height);
+  padding: 0 !important;
+  background-color: var(--vqb-nav-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--vqb-shadow-sm);
 }
 
-/* Notification dot style */
+.header :global(.container-xxl) {
+  display: flex;
+  min-height: var(--vqb-nav-height);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebarToggle {
+  display: inline-flex;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--vqb-nav-link);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--vqb-radius-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--vqb-transition-fast),
+    border-color var(--vqb-transition-fast);
+}
+
+.sidebarToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebarToggle i {
+  font-size: 1.35rem;
+}
+
+.brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  color: var(--vqb-text-inverse) !important;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.brand i {
+  color: inherit;
+  font-size: 1.3rem;
+}
+
+.header :global(.navbar-collapse) {
+  justify-content: flex-end;
+}
+
+.header :global(.navbar-nav) {
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.header :global(.navbar-nav .nav-link) {
+  display: flex;
+  min-height: 2.5rem;
+  align-items: center;
+  padding: 0.45rem 0.75rem !important;
+  color: var(--vqb-nav-link) !important;
+  border-radius: var(--vqb-radius-sm);
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition:
+    color var(--vqb-transition-fast),
+    background-color var(--vqb-transition-fast);
+}
+
+.header :global(.navbar-nav .nav-link:hover),
+.header :global(.navbar-nav .nav-link:focus-visible) {
+  color: var(--vqb-nav-link-hover) !important;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.header :global(.navbar-nav .nav-link i),
+.header :global(.navbar-nav .nav-link .bi) {
+  color: inherit;
+}
+
+.navToggler {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.5rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  border-radius: var(--vqb-radius-sm) !important;
+}
+
+.navToggler:focus {
+  box-shadow: 0 0 0 3px rgba(147, 180, 245, 0.3) !important;
+}
+
+.navToggler :global(.navbar-toggler-icon) {
+  opacity: 0.82;
+}
+
 .notificationDot {
   position: absolute;
-  top: 5px; 
-  right: 4px; 
-  width: 8px; 
-  height: 8px; 
-  background-color: red; 
-  border-radius: 50%; 
-  border: 2px solid white; 
-  transform: translate(50%, -50%); 
+  top: 0.15rem;
+  right: 0.1rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  background-color: var(--vqb-danger);
+  border: 2px solid var(--vqb-nav-bg);
+  border-radius: 50%;
 }
 
-/* Shaking bell icon animation */
 @keyframes shake {
   0% { transform: rotate(0); }
   25% { transform: rotate(-10deg); }
@@ -48,8 +133,39 @@
   animation: shake 0.5s ease-in-out infinite;
 }
 
+@media (max-width: 991.98px) {
+  .header :global(.navbar-collapse) {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    padding: 0.75rem 1rem 1rem;
+    background-color: var(--vqb-nav-bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--vqb-shadow-md);
+  }
 
+  .header :global(.navbar-nav) {
+    align-items: stretch;
+  }
 
+  .header :global(.navbar-nav .nav-link) {
+    min-height: 2.75rem;
+  }
+}
 
+@media (max-width: 380px) {
+  .header :global(.container-xxl) {
+    gap: 0.45rem;
+  }
 
- 
+  .brand {
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.015em;
+  }
+
+  .brand i {
+    font-size: 1.1rem;
+  }
+}

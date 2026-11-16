@@ -5,84 +5,82 @@ import Loader from "@/app/components/Loader";
 
 export const SubjectCarousel = ({ subjects, onSubjectSelect, isLoading }) => {
   const [activeSubjectId, setActiveSubjectId] = useState(null);
-  const scrollRef = React.useRef(null); // Ref to the container that holds the subjects for scrolling functionality
+  const scrollRef = React.useRef(null);
 
-  // Function to handle smooth scrolling of the carousel (left or right)
+  // Smooth scroll the carousel track left / right
   const scroll = (scrollOffset) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: scrollOffset, // Scroll by the provided offset
-        behavior: "smooth",
-      });
+      scrollRef.current.scrollBy({ left: scrollOffset, behavior: "smooth" });
     }
   };
 
-  // Effect hook to set a default active subject when the subjects array is available
+  // Auto-select first subject once subjects load
   useEffect(() => {
     if (!activeSubjectId && subjects.length > 0) {
-      const defaultSubjectId = subjects[0]._id; // Select the first subject by default
+      const defaultSubjectId = subjects[0]._id;
       setActiveSubjectId(defaultSubjectId);
-      onSubjectSelect(defaultSubjectId); // Notify the parent component about the default selection
+      onSubjectSelect(defaultSubjectId);
     }
-  }, [subjects, ,activeSubjectId]);
+  }, [subjects, , activeSubjectId]);
 
-  // Function to handle click on a subject and update the active subject
   const handleSubjectClick = (subjectId) => {
     setActiveSubjectId(subjectId);
     onSubjectSelect(subjectId);
   };
 
-  // Helper function to capitalize the first letter of a string
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
-    <section className={` ${styles.subjectPortion} `}>
-    <div className="container">
-      <h4 className="text-center heading mt-1">Subjects</h4>
+    <section className={styles.subjectPortion} aria-label="Subject selector">
+      <div className="container-xxl">
+        <p className={styles.sectionTitle}>Subjects</p>
 
-      {/* Container for the carousel with scroll buttons */}
-      <div className="d-flex align-items-center justify-content-center">
-        <button
-          className={`btn btn-outline-secondary  me-2`}
-          onClick={() => scroll(-100)}
-        >
-          ❮
-        </button>
-        <div
-          className={`overflow-auto d-flex flex-nowrap  ${styles.carousel}`}
-          ref={scrollRef}
-        >
-          {/* Map through the subjects array and display each subject */}
-          {isLoading ? (
-            <div style={{ minWidth: "250px" }}> <Loader height="20" width="20" size={20}/> </div>
-          ) : subjects?.length > 0 ? (
-            subjects.map((subject) => (
-              <div
-                key={subject._id}
-                className={`${styles.subjectItem} p-2 ${
-                  subject._id === activeSubjectId ? styles.active : ""
-                }`}
-                onClick={() => handleSubjectClick(subject._id)}
-              >
-                {capitalize(subject.name)}
+        <div className={styles.carouselRow}>
+          {/* ── Left arrow ─────────────────────────────────── */}
+          <button
+            className={styles.arrowBtn}
+            onClick={() => scroll(-160)}
+            aria-label="Scroll subjects left"
+          >
+            <i className="bi bi-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          {/* ── Scrollable subject track ────────────────────── */}
+          <div className={styles.carousel} ref={scrollRef}>
+            {isLoading ? (
+              <div className={styles.loadingWrap}>
+                <Loader height={24} width={24} size={24} />
               </div>
-            ))
-          ) : (
-            <div className="text-muted p-3">No subjects found</div>
-          )
-          }
-          
-          
-          
+            ) : subjects?.length > 0 ? (
+              subjects.map((subject) => (
+                <button
+                  key={subject._id}
+                  className={`${styles.subjectItem} ${
+                    subject._id === activeSubjectId ? styles.active : ""
+                  }`}
+                  onClick={() => handleSubjectClick(subject._id)}
+                  aria-pressed={subject._id === activeSubjectId}
+                >
+                  {capitalize(subject.name)}
+                </button>
+              ))
+            ) : (
+              <span className="text-muted small px-3 py-1">
+                No subjects found
+              </span>
+            )}
+          </div>
+
+          {/* ── Right arrow ─────────────────────────────────── */}
+          <button
+            className={styles.arrowBtn}
+            onClick={() => scroll(160)}
+            aria-label="Scroll subjects right"
+          >
+            <i className="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
         </div>
-        <button
-          className={`btn btn-outline-secondary carousel-btn ms-2`}
-          onClick={() => scroll(100)}
-        >
-          ❯
-        </button>
       </div>
-    </div>
     </section>
   );
 };

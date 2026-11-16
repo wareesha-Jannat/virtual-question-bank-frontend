@@ -1,0 +1,238 @@
+/* ═══════════════════════════════════════════════════════════
+   ResultComponent.module.css  — Post-exam result card
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Page shell ────────────────────────────────────────────── */
+.resultShell {
+  min-height: 100vh;
+  background-color: var(--vqb-surface);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.resultColumn {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* ─── Top brand bar ─────────────────────────────────────────── */
+.brandBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: var(--vqb-nav-bg);
+  color: var(--vqb-text-inverse);
+  border-radius: var(--vqb-radius-lg) var(--vqb-radius-lg) 0 0;
+  padding: 0.9rem 1.5rem;
+}
+
+.brandBar i { font-size: 1.3rem; color: var(--vqb-primary-muted); }
+
+.brandBar h1 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--vqb-text-inverse);
+}
+
+/* ─── Card ──────────────────────────────────────────────────── */
+.card {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: 0 0 var(--vqb-radius-lg) var(--vqb-radius-lg);
+  padding: 2rem;
+  box-shadow: var(--vqb-shadow-lg);
+}
+
+/* ─── Result hero (score circle + pass/fail) ────────────────── */
+.resultHero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.scoreCircle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  font-weight: 800;
+}
+
+.scoreCirclePass {
+  background: var(--vqb-success-bg);
+  border: 3px solid var(--vqb-success);
+  color: var(--vqb-success);
+}
+
+.scoreCircleFail {
+  background: var(--vqb-danger-bg);
+  border: 3px solid var(--vqb-danger);
+  color: var(--vqb-danger);
+}
+
+.scorePercent {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.scoreLabel {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.1rem;
+}
+
+.passBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 1rem;
+  border-radius: var(--vqb-radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.passBadgePass {
+  background: var(--vqb-success-bg);
+  color: var(--vqb-success);
+  border: 1.5px solid #a7f3d0;
+}
+
+.passBadgeFail {
+  background: var(--vqb-danger-bg);
+  color: var(--vqb-danger);
+  border: 1.5px solid #fca5a5;
+}
+
+/* ─── Stats grid ────────────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.statItem {
+  background: var(--vqb-surface-alt);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statKey {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vqb-text-muted);
+}
+
+.statVal {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--vqb-text-primary);
+  word-break: break-word;
+}
+
+/* ─── Detail rows (Subject, Topics, etc.) ───────────────────── */
+.detailList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--vqb-surface-alt);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+}
+
+.detailRow {
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  line-height: 1.5;
+}
+
+.detailRow strong {
+  color: var(--vqb-text-primary);
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+/* ─── Action buttons ────────────────────────────────────────── */
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btnDetail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-primary);
+  color: var(--vqb-text-inverse);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26, 86, 219, 0.25);
+  transition: background-color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.btnDetail:hover {
+  background-color: var(--vqb-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 86, 219, 0.35);
+  color: var(--vqb-text-inverse);
+}
+
+.btnBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.58rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.btnBack:hover {
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+  background-color: var(--vqb-primary-light);
+}
+
+@media (max-width: 480px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+  .actionRow { flex-direction: column; align-items: stretch; }
+  .btnDetail, .btnBack { justify-content: center; }
+}

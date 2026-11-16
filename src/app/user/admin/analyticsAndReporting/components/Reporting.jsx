@@ -21,6 +21,7 @@ import { useTopics } from "@/app/hooks/useTopics";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/components/Loader";
+import styles from "../../AdminPages.module.css";
 
 export const Reporting = () => {
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -76,8 +77,12 @@ export const Reporting = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            subjectId: selectedSubject,
-            topicId: selectedTopic,
+            subjectName: subjectList.find(
+              (subject) => subject.value === selectedSubject,
+            )?.label,
+            topicName: topicList.find(
+              (topic) => topic.value === selectedTopic,
+            )?.label,
             difficulty: selectedDifficulty,
             dateRange,
           }),
@@ -170,231 +175,293 @@ export const Reporting = () => {
 
   return (
     <>
-      <div ref={reportRef} style={{ padding: "20px" }}>
-        <h3 className="mb-4 heading">Reporting Overview</h3>
-
-        {/* Filters */}
-        <div className="mb-4 row">
-          <div className="col-md-6 mb-3">
-            <label>Select Subject:</label>
-            <Select
-              options={subjectList}
-              value={
-                subjectList.find(
-                  (option) => option.value === selectedSubject,
-                ) || null
-              }
-              onChange={handleSubjectChange}
-              isSearchable
-              placeholder="Enter a subject"
-              autoComplete="off"
-            />
-          </div>
-
-          <div className="col-md-6 mb-3">
-            <label>Select Topic:</label>
-            <Select
-              options={topicList}
-              value={
-                topicList.find((option) => option.value === selectedTopic) ||
-                null
-              }
-              onChange={handleTopicChange}
-              placeholder="Enter a topic"
-              autoComplete="off"
-              isSearchable
-              isDisabled={!selectedSubject}
-            />
-          </div>
-
-          <div className="col-md-6 mb-3">
-            <label>Select Difficulty:</label>
-            <select
-              className="form-control"
-              value={selectedDifficulty}
-              onChange={(e) => setSelectedDifficulty(e.target.value)}
-            >
-              <option value="">Select Difficulty</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
-          </div>
-
-          <div className="col-md-3 mb-3">
-            <label>Start Date:</label>
-            <input
-              type="date"
-              className="form-control"
-              value={dateRange.start}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, start: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="col-md-3 mb-3">
-            <label>End Date:</label>
-            <input
-              type="date"
-              className="form-control"
-              value={dateRange.end}
-              onChange={(e) =>
-                setDateRange({ ...dateRange, end: e.target.value })
-              }
-            />
+      <div ref={reportRef} className={styles.reportContent}>
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 className={styles.panelTitle}>Reporting Overview</h2>
+            <p className={styles.panelDescription}>
+              Refine the report and review the resulting trends and question
+              details.
+            </p>
           </div>
         </div>
 
-        {/* Score Distribution Pie Chart */}
-        <div className="mb-4">
-          <h5 className="headingQuestion"> Exam Score Distribution</h5>
-          <div style={{ width: "100%", height: "300px" }}>
-            {isLoading || !data ? (
-              <div>
-                <Loader />
-              </div>
-            ) : !isError && scoreDistributionData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={scoreDistributionData}
-                    dataKey="value"
-                    nameKey="label"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#8884d8"
-                    label
-                  >
-                    {scoreDistributionData?.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={
-                          ["#8884d8", "#82ca9d", "#ffc658", "#d0ed57"][
-                            index % 4
-                          ]
-                        }
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center bg-light border rounded p-4 mt-3"
-                style={{ height: "100%" }}
+        <section className={styles.panel} aria-labelledby="report-filters">
+          <div className={styles.panelHeader}>
+            <h3 id="report-filters" className={styles.panelTitle}>
+              Report filters
+            </h3>
+          </div>
+          <div className={styles.sectionGrid}>
+            <div className={styles.formField}>
+              <label htmlFor="report-subject" className={styles.formLabel}>
+                Select Subject
+              </label>
+              <Select
+                inputId="report-subject"
+                options={subjectList}
+                value={
+                  subjectList.find(
+                    (option) => option.value === selectedSubject,
+                  ) || null
+                }
+                onChange={handleSubjectChange}
+                isSearchable
+                placeholder="Enter a subject"
+                autoComplete="off"
+                className={styles.reactSelect}
+                classNamePrefix="vqb"
+              />
+            </div>
+
+            <div className={styles.formField}>
+              <label htmlFor="report-topic" className={styles.formLabel}>
+                Select Topic
+              </label>
+              <Select
+                inputId="report-topic"
+                options={topicList}
+                value={
+                  topicList.find((option) => option.value === selectedTopic) ||
+                  null
+                }
+                onChange={handleTopicChange}
+                placeholder="Enter a topic"
+                autoComplete="off"
+                isSearchable
+                isDisabled={!selectedSubject}
+                className={styles.reactSelect}
+                classNamePrefix="vqb"
+              />
+            </div>
+
+            <div className={styles.formField}>
+              <label htmlFor="report-difficulty" className={styles.formLabel}>
+                Select Difficulty
+              </label>
+              <select
+                id="report-difficulty"
+                className={styles.formControl}
+                value={selectedDifficulty}
+                onChange={(e) => setSelectedDifficulty(e.target.value)}
               >
-                <div className="text-center">
-                  <i className="bi bi-exclamation-triangle text-danger fs-3 mb-2"></i>
-                  <p className="text-danger fw-semibold mb-0">No Data</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+                <option value="">Select Difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
 
-        {/* Question-wise Analysis Bar Chart with Pagination */}
-        <div className="mb-4">
-          <h5 className="headingQuestion">Question-wise Analysis</h5>
-          <div style={{ width: "100%", height: "300px" }}>
-            {isLoading || !data ? (
-              <div>
-                <Loader />
-              </div>
-            ) : !isError && paginatedData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={paginatedData}>
-                  <XAxis dataKey="questionNumber" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="correct"
-                    fill="#82ca9d"
-                    name="Correct Answers"
-                  />
-                  <Bar
-                    dataKey="incorrect"
-                    fill="#ff7f7f"
-                    name="Incorrect Answers"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center bg-light border rounded p-4 mt-3"
-                style={{ height: "100%" }}
+            <div className={styles.formField}>
+              <label htmlFor="report-start-date" className={styles.formLabel}>
+                Start Date
+              </label>
+              <input
+                id="report-start-date"
+                type="date"
+                className={styles.formControl}
+                value={dateRange.start}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, start: e.target.value })
+                }
+              />
+            </div>
+
+            <div className={styles.formField}>
+              <label htmlFor="report-end-date" className={styles.formLabel}>
+                End Date
+              </label>
+              <input
+                id="report-end-date"
+                type="date"
+                className={styles.formControl}
+                value={dateRange.end}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, end: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </section>
+
+        <div className={styles.chartGrid}>
+          <section className={styles.chartPanel} aria-labelledby="score-heading">
+            <div className={styles.panelHeader}>
+              <h3 id="score-heading" className={styles.panelTitle}>
+                Exam Score Distribution
+              </h3>
+            </div>
+            <div className={styles.chartViewport}>
+              {isLoading || !data ? (
+                <div className={styles.loadingState}>
+                  <Loader />
+                </div>
+              ) : !isError && scoreDistributionData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={scoreDistributionData}
+                      dataKey="value"
+                      nameKey="label"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="var(--vqb-primary)"
+                      label
+                    >
+                      {scoreDistributionData?.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            [
+                              "var(--vqb-primary)",
+                              "var(--vqb-accent)",
+                              "var(--vqb-warning)",
+                              "var(--vqb-info)",
+                            ][index % 4]
+                          }
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className={styles.emptyState}>
+                  <i className="bi bi-pie-chart" aria-hidden="true" />
+                  <p className="mb-0">No Data</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section
+            className={styles.chartPanel}
+            aria-labelledby="question-analysis-heading"
+          >
+            <div className={styles.panelHeader}>
+              <h3
+                id="question-analysis-heading"
+                className={styles.panelTitle}
               >
-                <div className="text-center">
-                  <i className="bi bi-exclamation-triangle text-danger fs-3 mb-2"></i>
-                  <p className="text-danger fw-semibold mb-0">No Data</p>
+                Question-wise Analysis
+              </h3>
+            </div>
+            <div className={styles.chartViewport}>
+              {isLoading || !data ? (
+                <div className={styles.loadingState}>
+                  <Loader />
                 </div>
-              </div>
-            )}
-          </div>
-          <div className="d-flex justify-content-between mt-2">
-            <button
-              className="btn btn-primary"
-              onClick={() => setCurrentPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className="btn btn-primary"
-              onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+              ) : !isError && paginatedData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={paginatedData}>
+                    <XAxis dataKey="questionNumber" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="correct"
+                      fill="var(--vqb-accent)"
+                      name="Correct Answers"
+                    />
+                    <Bar
+                      dataKey="incorrect"
+                      fill="var(--vqb-danger)"
+                      name="Incorrect Answers"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className={styles.emptyState}>
+                  <i className="bi bi-bar-chart" aria-hidden="true" />
+                  <p className="mb-0">No Data</p>
+                </div>
+              )}
+            </div>
+            <div className={styles.chartPagination}>
+              <button
+                className={styles.paginationButton}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className={styles.pageIndicator}>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className={styles.paginationButton}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </section>
         </div>
 
-        {/* Table for Question-wise Details with Search */}
-        <div className="mb-4">
-          <h5 className="headingQuestion">Question-wise Details</h5>
-          <input
-            type="text"
-            className="form-control mb-3"
-            placeholder="Search question text..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="table-responsive">
-            <table className="table table-striped">
+        <section
+          className={styles.panel}
+          aria-labelledby="question-details-heading"
+        >
+          <div className={styles.panelHeader}>
+            <div>
+              <h3
+                id="question-details-heading"
+                className={styles.panelTitle}
+              >
+                Question-wise Details
+              </h3>
+              <p className={styles.panelDescription}>
+                Search question text or its sequence number.
+              </p>
+            </div>
+          </div>
+          <label className={`${styles.searchField} ${styles.formField}`}>
+            <span className="visually-hidden">Search question details</span>
+            <i className="bi bi-search" aria-hidden="true" />
+            <input
+              type="text"
+              className={`${styles.formControl} ${styles.searchInput}`}
+              placeholder="Search question text..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </label>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
               <thead>
-                <tr className=" table-success ">
-                  <th>#</th>
-                  <th>Question</th>
-                  <th>Correct</th>
-                  <th>Incorrect</th>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Question</th>
+                  <th scope="col">Correct</th>
+                  <th scope="col">Incorrect</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading || !data ? (
                   <tr>
-                    <td colSpan="7">
+                    <td colSpan="4" className={styles.tableEmpty}>
                       <Loader />
                     </td>
                   </tr>
                 ) : filteredData?.length > 0 ? (
                   filteredData?.map((item) => (
                     <tr key={item.questionNumber}>
-                      <td>{item.questionNumber}</td>
-                      <td style={{ minWidth: "400px" }}>{item.question}</td>
+                      <td className={styles.tableNumber}>
+                        {item.questionNumber}
+                      </td>
+                      <td className={`${styles.tableText} ${styles.questionText}`}>
+                        {item.question}
+                      </td>
                       <td>{item.correct}</td>
                       <td>{item.incorrect}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="text-center">
+                    <td colSpan="4" className={styles.tableEmpty}>
                       No data found
                     </td>
                   </tr>
@@ -402,10 +469,13 @@ export const Reporting = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </section>
       </div>
-      {/* Download Report as PDF Button */}
-      <button className="btn btn-primary" onClick={downloadReportAsPDF}>
+      <button
+        className={`${styles.primaryButton} mt-3`}
+        onClick={downloadReportAsPDF}
+      >
+        <i className="bi bi-download" aria-hidden="true" />
         Download Report as PDF
       </button>
     </>

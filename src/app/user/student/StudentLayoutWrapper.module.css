@@ -1,10 +1,10 @@
 .content {
   margin-left: 220px;
   padding: 30px;
-  margin-top: 63px;
+  margin-top: var(--vqb-nav-height);
   width: calc(100% - 220px);
   background-color: #f4f7fc;
-  height: calc(100vh - 63px); /* Adjust the height to exclude the header*/
+  height: calc(100vh - var(--vqb-nav-height));
   overflow-y: auto;
   z-index: 1;
   transition:

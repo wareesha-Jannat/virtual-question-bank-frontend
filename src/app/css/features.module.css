@@ -1,15 +1,88 @@
-.features h2 {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-  
-  /* Features Section */
-  .features i {
-    color: #2578f5;
-  }
-  
-  .features h3 {
-    font-size: 1.5rem;
-    margin-bottom:  1rem;
-    
-  }
+/* ═══════════════════════════════════════════════════════════
+   features.module.css — Redesigned Features Section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Section Wrapper ───────────────────────────────────────── */
+.features {
+  background-color: var(--vqb-surface);
+  padding: var(--vqb-space-4xl) 0;
+}
+
+/* ─── Section Header ────────────────────────────────────────── */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: var(--vqb-space-3xl);
+}
+
+/* ─── Feature Card ──────────────────────────────────────────── */
+.featureCard {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  padding: 2rem 1.75rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition:
+    transform var(--vqb-transition-base),
+    box-shadow var(--vqb-transition-base),
+    border-color var(--vqb-transition-base);
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--vqb-shadow-lg);
+  border-color: var(--vqb-primary-muted);
+}
+
+/* ─── Icon Wrappers (shared base) ───────────────────────────── */
+.iconWrapBlue,
+.iconWrapGreen,
+.iconWrapOrange {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--vqb-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  flex-shrink: 0;
+}
+
+.iconWrapBlue {
+  background-color: var(--vqb-primary-light);
+  color: var(--vqb-primary);
+}
+
+.iconWrapGreen {
+  background-color: var(--vqb-accent-light);
+  color: var(--vqb-accent);
+}
+
+.iconWrapOrange {
+  background-color: var(--vqb-warning-bg);
+  color: var(--vqb-warning);
+}
+
+.iconWrapBlue i,
+.iconWrapGreen i,
+.iconWrapOrange i {
+  font-size: 1.45rem;
+}
+
+/* ─── Card Text ─────────────────────────────────────────────── */
+.featureCard h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--vqb-text-primary);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+
+.featureCard p {
+  font-size: 0.92rem;
+  color: var(--vqb-text-muted);
+  line-height: 1.7;
+  margin: 0;
+}

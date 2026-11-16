@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useUserData } from "@/app/hooks/useUserData";
 import { useUpdatePersonalInfoMutation } from "./mutations";
+import styles from "./ProfileComponent.module.css";
 export const PersonalInfo = () => {
   const router = useRouter();
   //fetchData
@@ -61,96 +62,100 @@ export const PersonalInfo = () => {
   };
 
   return (
-    <>
-      <div className="container mt-4">
-        <div className="row  ">
-          <h4 className="heading">Personal Information</h4>
-          <div className="card p-4 shadow-sm mt-3">
-            <div className="col-11">
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    name="name"
-                    value={formData?.name}
-                    onChange={handleFormChange}
-                    required
-                  />
-                </div>
+    <section className={styles.formCard} aria-labelledby="personal-info-title">
+      <h2 id="personal-info-title" className={styles.sectionTitle}>
+        Personal information
+      </h2>
+      <p className={styles.sectionDescription}>
+        Keep the details associated with your account up to date.
+      </p>
+      <form onSubmit={handleSubmit} aria-busy={updateInfoMutation.isPending}>
+        <div className={styles.formGrid}>
+          <div className={styles.formField}>
+            <label htmlFor="name" className={styles.formLabel}>
+              Name
+            </label>
+            <input
+              type="text"
+              className={styles.formControl}
+              id="name"
+              name="name"
+              value={formData?.name}
+              onChange={handleFormChange}
+              required
+            />
+          </div>
 
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    value={formData?.email}
-                    onChange={handleFormChange}
-                    required
-                  />
-                </div>
+          <div className={styles.formField}>
+            <label htmlFor="email" className={styles.formLabel}>
+              Email
+            </label>
+            <input
+              type="email"
+              className={styles.formControl}
+              id="email"
+              name="email"
+              value={formData?.email}
+              onChange={handleFormChange}
+              required
+            />
+          </div>
 
-                <div className="mb-3">
-                  <label htmlFor="age" className="form-label">
-                    Age
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="age"
-                    name="age"
-                    value={formData?.age}
-                    onChange={handleFormChange}
-                  />
-                </div>
+          <div className={styles.formField}>
+            <label htmlFor="age" className={styles.formLabel}>
+              Age
+            </label>
+            <input
+              type="text"
+              className={styles.formControl}
+              id="age"
+              name="age"
+              value={formData?.age}
+              onChange={handleFormChange}
+            />
+          </div>
 
-                <div className="mb-3">
-                  <label htmlFor="gender" className="form-label">
-                    Gender
-                  </label>
-                  <select
-                    className="form-select"
-                    id="gender"
-                    name="gender"
-                    value={formData?.gender}
-                    onChange={handleFormChange}
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-success"
-                  disabled={updateInfoMutation.isPending}
-                >
-                  {updateInfoMutation.isPending ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      <span>Saving...</span>
-                    </>
-                  ) : (
-                    "Save Changes"
-                  )}
-                </button>
-              </form>
-            </div>
+          <div className={styles.formField}>
+            <label htmlFor="gender" className={styles.formLabel}>
+              Gender
+            </label>
+            <select
+              className={styles.formControl}
+              id="gender"
+              name="gender"
+              value={formData?.gender}
+              onChange={handleFormChange}
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
         </div>
-      </div>
-    </>
+        <div className={styles.formActions}>
+          <button
+            type="submit"
+            className={styles.primaryButton}
+            disabled={updateInfoMutation.isPending}
+          >
+            {updateInfoMutation.isPending ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span>Saving...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-check2" aria-hidden="true"></i>
+                Save Changes
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </section>
   );
 };

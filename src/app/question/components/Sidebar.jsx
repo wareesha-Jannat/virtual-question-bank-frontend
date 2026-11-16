@@ -1,7 +1,5 @@
 import styles from "./Sidebar.module.css";
-
 import { useEffect, useState } from "react";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { useTopics } from "@/app/hooks/useTopics";
 import Loader from "@/app/components/Loader";
 
@@ -10,8 +8,7 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
   const { data, error, isLoading } = useTopics(subjectId);
   const topics = data?.status === "success" ? data.topics : [];
 
-  // Effect hook to set a default topic when topics are fetched
-
+  // Auto-select first topic when topics load
   useEffect(() => {
     if (!activeTopicId && topics.length > 0) {
       const defaultTopicId = topics[0]._id;
@@ -19,51 +16,58 @@ export const Sidebar = ({ isOpen, subjectId, onTopicSelect }) => {
       onTopicSelect(defaultTopicId);
     }
   }, [topics, activeTopicId]);
-  
+
+  // Reset active topic when subject changes
   useEffect(() => {
-    // reset topic when subject changes
     setActiveTopicId(null);
   }, [subjectId]);
 
-  // Function to handle when a topic is clicked
   const handleTopicClick = (topicId) => {
     setActiveTopicId(topicId);
-    onTopicSelect(topicId); // Notify the parent component of the selected topic ID
+    onTopicSelect(topicId);
   };
 
-  // Helper function to capitalize the first letter of a string
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   return (
-    <div className={`${styles.sidebar}  ${isOpen ? "" : styles.sidebarClosed}`}>
-      {/* Sidebar header and topic list */}
-      <h3 className={styles.sidebarHeader}>Topics</h3>
+    <aside
+      className={`${styles.sidebar} ${isOpen ? "" : styles.sidebarClosed}`}
+      aria-label="Topics navigation"
+    >
+      {/* ── Header ─────────────────────────────────────────── */}
+      <div className={styles.sidebarHeader}>
+        <p className={styles.sidebarTitle}>Topics</p>
+      </div>
+
+      {/* ── Topic list ─────────────────────────────────────── */}
       <ul className={styles.topicList}>
         {isLoading || !subjectId ? (
-          <div>
-            {" "}
-            <Loader height="20" width="20" size={20} />{" "}
+          <div className={styles.loadingWrap}>
+            <Loader height={28} width={28} size={28} color="#93b4f5" />
           </div>
         ) : topics && topics.length > 0 ? (
           topics.map((topic) => (
             <li
               key={topic._id}
-              className={`${styles.topicItem} p-2 ${
+              className={`${styles.topicItem} ${
                 topic._id === activeTopicId ? styles.active : ""
               }`}
               onClick={() => handleTopicClick(topic._id)}
+              role="button"
+              aria-pressed={topic._id === activeTopicId}
             >
-              {capitalize(topic.name)}{" "}
-              {/* Display the topic name with the first letter capitalized */}
+              {capitalize(topic.name)}
             </li>
           ))
         ) : (
-          <li className={styles.noTopics}>No Topics available</li>
+          <li className={styles.noTopics}>No topics available</li>
         )}
 
-        {error && <li className={styles.noTopics}>Error loading topics</li>}
+        {error && (
+          <li className={styles.noTopics}>Error loading topics</li>
+        )}
       </ul>
-    </div>
+    </aside>
   );
 };
 

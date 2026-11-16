@@ -1,0 +1,272 @@
+/* ═══════════════════════════════════════════════════════════
+   PracticeComponent.module.css — Practice mode UI
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Practice mode header bar ──────────────────────────────── */
+.practiceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.practiceTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--vqb-text-primary);
+  margin: 0;
+}
+
+.practiceTitle i {
+  color: var(--vqb-accent);
+  font-size: 1.2rem;
+}
+
+.practiceCount {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--vqb-text-muted);
+  background: var(--vqb-surface-alt);
+  border: 1px solid var(--vqb-border);
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--vqb-radius-pill);
+}
+
+/* ─── Back button ───────────────────────────────────────────── */
+.btnBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+  white-space: nowrap;
+}
+
+.btnBack:hover {
+  border-color: var(--vqb-primary);
+  color: var(--vqb-primary);
+  background-color: var(--vqb-primary-light);
+}
+
+/* ─── Practice question card ────────────────────────────────── */
+.practiceCard {
+  background: var(--vqb-surface-card);
+  border: 1px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: box-shadow var(--vqb-transition-base);
+}
+
+.practiceCard:hover {
+  box-shadow: var(--vqb-shadow-md);
+}
+
+/* ─── Question number + text ────────────────────────────────── */
+.questionNum {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vqb-primary);
+  margin-bottom: 0.5rem;
+}
+
+.questionText {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--vqb-text-primary);
+  line-height: 1.55;
+  padding: 0.75rem 1rem;
+  background: var(--vqb-surface-alt);
+  border-left: 3px solid var(--vqb-primary);
+  border-radius: 0 var(--vqb-radius-md) var(--vqb-radius-md) 0;
+  margin-bottom: 1rem;
+}
+
+/* ─── MCQ option ────────────────────────────────────────────── */
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  cursor: pointer;
+  margin-bottom: 0.45rem;
+  transition: background-color var(--vqb-transition-fast),
+              border-color var(--vqb-transition-fast);
+}
+
+.optionLabel:hover {
+  background-color: var(--vqb-primary-light);
+  border-color: var(--vqb-primary);
+}
+
+.optionLabel input[type="radio"] {
+  accent-color: var(--vqb-primary);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ─── Descriptive textarea ──────────────────────────────────── */
+.textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-primary);
+  background-color: var(--vqb-surface-card);
+  resize: vertical;
+  min-height: 110px;
+  font-family: var(--vqb-font-sans);
+  line-height: 1.6;
+  transition: border-color var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+  outline: none;
+}
+
+.textarea:focus {
+  border-color: var(--vqb-primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+.textarea:disabled {
+  background-color: var(--vqb-surface-alt);
+  color: var(--vqb-text-muted);
+  cursor: not-allowed;
+}
+
+/* ─── Submit / Reset button row ─────────────────────────────── */
+.btnRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btnSubmit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--vqb-radius-pill);
+  background-color: var(--vqb-accent);
+  color: var(--vqb-text-inverse);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(14, 159, 110, 0.25);
+  transition: background-color var(--vqb-transition-fast),
+              transform var(--vqb-transition-fast),
+              box-shadow var(--vqb-transition-fast);
+}
+
+.btnSubmit:hover:not(:disabled) {
+  background-color: var(--vqb-accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 159, 110, 0.35);
+}
+
+.btnSubmit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnReset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.48rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1.5px solid var(--vqb-border);
+  border-radius: var(--vqb-radius-pill);
+  background: var(--vqb-surface-card);
+  color: var(--vqb-text-muted);
+  cursor: pointer;
+  transition: border-color var(--vqb-transition-fast),
+              color var(--vqb-transition-fast);
+}
+
+.btnReset:hover {
+  border-color: var(--vqb-text-muted);
+  color: var(--vqb-text-secondary);
+}
+
+/* ─── Feedback alerts ───────────────────────────────────────── */
+.feedbackCorrect {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 1rem;
+  background: var(--vqb-success-bg);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vqb-success);
+}
+
+.feedbackIncorrect {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--vqb-danger-bg);
+  border: 1px solid #fca5a5;
+  color: var(--vqb-danger);
+}
+
+.feedbackDetails {
+  margin-top: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--vqb-info-bg);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--vqb-radius-md);
+  font-size: 0.875rem;
+  color: var(--vqb-text-secondary);
+  line-height: 1.65;
+}
+
+.feedbackDetails p {
+  margin: 0 0 0.25rem;
+}
+
+.feedbackDetails p:last-child {
+  margin: 0;
+}
+
+/* ─── Empty state ───────────────────────────────────────────── */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--vqb-text-muted);
+}

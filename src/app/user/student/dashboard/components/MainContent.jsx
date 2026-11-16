@@ -34,7 +34,7 @@ export function MainContent() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const data = await res.json();
 
@@ -65,90 +65,115 @@ export function MainContent() {
     );
   }
 
+  const statCards = [
+    {
+      icon: "bi-collection-play",
+      iconClass: styles.statIconBlue,
+      label: "Practice Questions",
+      value: dashboardData.practiceQuestions,
+    },
+    {
+      icon: "bi-check-circle",
+      iconClass: styles.statIconGreen,
+      label: "Correct Answers",
+      value: dashboardData.correctAnswers,
+    },
+    {
+      icon: "bi-journal-check",
+      iconClass: styles.statIconAmber,
+      label: "Exams Taken",
+      value: dashboardData.examTaken,
+    },
+    {
+      icon: "bi-graph-up",
+      iconClass: styles.statIconRed,
+      label: "Avg. Percentage",
+      value: `${dashboardData.averagePercentage}%`,
+    },
+  ];
+
   return (
-    <>
-      <div className="container-xxl">
-        <h1>Welcome {dashboardData.name}!</h1>
-        <p>Here is a quick overview of your Dashboard</p>
-
-        {/* Cards Section */}
-        <div className={styles.cards}>
-          <div className="bg-info text-dark">
-            <h3>
-              <i className="bi bi-person h4"></i> Practice Questions
-            </h3>
-            <p>Total: {dashboardData.practiceQuestions}</p>
-          </div>
-          <div className="bg-success text-dark">
-            <h3>
-              <i className="bi bi-question-circle h4"></i> Correct
-              answers(Practice Questions)
-            </h3>
-            <p>Total: {dashboardData.correctAnswers}</p>
-          </div>
-          <div className="bg-warning text-dark">
-            <h3>
-              <i className="bi bi-book h4"></i> Exam Taken
-            </h3>
-            <p>Total: {dashboardData.examTaken}</p>
-          </div>
-          <div className="bg-danger text-dark">
-            <h3>
-              <i className="bi bi-file-earmark-text h4"></i> Average Percentage
-            </h3>
-            <p>Total: {dashboardData.averagePercentage}</p>
-          </div>
-        </div>
-
-        {/* Charts Section */}
-        <div className="row mt-5 justify-content-around">
-          <div className="col-md-7 mb-5">
-            <UserActivityChart data={dashboardData.userActivityData} />
-          </div>
-          <div className="col-md-5">
-            <ExamResultDistributionChart data={dashboardData.examChartData} />
-          </div>
-        </div>
-
-        {/* Tables Section */}
-        <div className="row mt-2">
-          <div className="col-12">
-            <h2>Recent Activity</h2>
-            <div className="table-responsive">
-              <table className="table table-hover mt-2">
-                <thead className="table-primary">
-                  <tr>
-                    <th>Activity</th>
-                    <th>Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData.recentActivity.length > 0 ? (
-                    dashboardData.recentActivity.map((activity, index) => (
-                      <tr
-                        key={index}
-                        className="text-nowrap"
-                        style={{ minWidth: "200px" }}
-                      >
-                        <td>{activity.action}</td>
-                        <td>
-                          {formatDistanceToNow(parseISO(activity.timestamp), {
-                            addSuffix: true,
-                          })}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="4">No recent activity</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <div className="container-xxl">
+      {/* Welcome Banner */}
+      <div className={styles.welcomeBanner}>
+        <i className={`bi bi-person-workspace ${styles.welcomeIcon}`}></i>
+        <div>
+          <p className={styles.welcomeTitle}>
+            Welcome back, {dashboardData.name || "Student"}!
+          </p>
+          <p className={styles.welcomeSub}>
+            Here is a quick overview of your activity and progress.
+          </p>
         </div>
       </div>
-    </>
+
+      {/* Stat Cards */}
+      <div className={styles.cards}>
+        {statCards.map((card, i) => (
+          <div key={i} className={styles.statCard}>
+            <div className={`${styles.statIcon} ${card.iconClass}`}>
+              <i className={`bi ${card.icon}`}></i>
+            </div>
+            <div className={styles.statBody}>
+              <span className={styles.statLabel}>{card.label}</span>
+              <span className={styles.statValue}>{card.value}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Charts */}
+      <div className={styles.chartsRow}>
+        <div className={styles.chartCard}>
+          <p className={styles.sectionHeading}>
+            <i className="bi bi-bar-chart-line"></i> Activity Over Time
+          </p>
+          <UserActivityChart data={dashboardData.userActivityData} />
+        </div>
+        <div className={styles.chartCard}>
+          <p className={styles.sectionHeading}>
+            <i className="bi bi-pie-chart"></i> Exam Results
+          </p>
+          <ExamResultDistributionChart data={dashboardData.examChartData} />
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className={styles.activityCard}>
+        <p className={styles.sectionHeading}>
+          <i className="bi bi-clock-history"></i> Recent Activity
+        </p>
+        <div style={{ overflowX: "auto" }}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData.recentActivity.length > 0 ? (
+                dashboardData.recentActivity.map((activity, index) => (
+                  <tr key={index}>
+                    <td>{activity.action}</td>
+                    <td>
+                      <span className={styles.timeBadge}>
+                        {formatDistanceToNow(parseISO(activity.timestamp), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className={styles.emptyRow}>
+                  <td colSpan="2">No recent activity yet</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
 }

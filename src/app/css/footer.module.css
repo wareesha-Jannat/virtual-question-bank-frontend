@@ -1,15 +1,95 @@
-.footer{
-  background-color:#053e77;
+/* ═══════════════════════════════════════════════════════════
+   footer.module.css — Redesigned Footer
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Footer Shell ──────────────────────────────────────────── */
+.footer {
+  background-color: var(--vqb-footer-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: var(--vqb-space-2xl) 0 var(--vqb-space-lg);
 }
-.footer p {
-    margin-bottom: 0;
-  }
-  
+
+/* ─── Brand Block ───────────────────────────────────────────── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--vqb-text-inverse) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.brand i {
+  font-size: 1.25rem;
+  color: var(--vqb-primary-muted);
+}
+
+.brandTagline {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* ─── Divider ───────────────────────────────────────────────── */
+.divider {
+  border-color: rgba(255, 255, 255, 0.08);
+  margin: var(--vqb-space-lg) 0 var(--vqb-space-md);
+}
+
+/* ─── Bottom bar ────────────────────────────────────────────── */
+.bottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.copyright {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.42);
+  margin: 0;
+}
+
+/* ─── Footer Links ──────────────────────────────────────────── */
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
 .footer a {
-    text-decoration: none;
-    margin-left: 10px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.42) !important;
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--vqb-radius-sm);
+  transition: color var(--vqb-transition-fast),
+              background-color var(--vqb-transition-fast);
+}
+
+.footer a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  padding: 0 0.1rem;
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .bottomBar {
+    justify-content: center;
+    text-align: center;
   }
-  
-  .footer a:hover {
-    text-decoration: underline;
-  }
+}

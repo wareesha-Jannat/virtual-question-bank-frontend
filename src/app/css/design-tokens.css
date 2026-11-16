@@ -1,0 +1,87 @@
+/**
+ * VQB Design System — Centralized Design Tokens
+ * ------------------------------------------------
+ * Single source of truth for all design decisions.
+ * Import this file in globals.css so every component inherits these tokens.
+ * When redesigning other pages, reuse these variables for consistency.
+ */
+
+:root {
+  /* ─── Brand / Primary Palette ─── */
+  --vqb-primary:        #1a56db;   /* Rich blue — primary actions, links     */
+  --vqb-primary-dark:   #1341af;   /* Darker blue — hover states             */
+  --vqb-primary-light:  #eff4ff;   /* Very light blue — tinted backgrounds   */
+  --vqb-primary-muted:  #93b4f5;   /* Muted blue — decorative accents        */
+
+  /* ─── Secondary / Accent ─── */
+  --vqb-accent:         #0e9f6e;   /* Teal-green — success, highlights       */
+  --vqb-accent-dark:    #057a55;   /* Darker green — hover                   */
+  --vqb-accent-light:   #f0fdf8;   /* Very light green — tinted backgrounds  */
+
+  /* ─── Neutral / Surface ─── */
+  --vqb-white:          #ffffff;
+  --vqb-surface:        #f8faff;   /* Page background                        */
+  --vqb-surface-card:   #ffffff;   /* Card / panel backgrounds               */
+  --vqb-surface-alt:    #f1f5fb;   /* Alternating section background         */
+  --vqb-border:         #dde4f0;   /* Subtle border color                    */
+  --vqb-divider:        #e8edf7;   /* Hairline dividers                      */
+
+  /* ─── Text ─── */
+  --vqb-text-primary:   #111827;   /* Main body / heading text               */
+  --vqb-text-secondary: #374151;   /* Sub-headings, labels                   */
+  --vqb-text-muted:     #6b7280;   /* Captions, supporting text              */
+  --vqb-text-inverse:   #ffffff;   /* Text on dark backgrounds               */
+
+  /* ─── Semantic Colors ─── */
+  --vqb-success:        #0e9f6e;
+  --vqb-success-bg:     #f0fdf8;
+  --vqb-warning:        #f59e0b;
+  --vqb-warning-bg:     #fffbeb;
+  --vqb-danger:         #e53e3e;
+  --vqb-danger-bg:      #fff5f5;
+  --vqb-info:           #3b82f6;
+  --vqb-info-bg:        #eff6ff;
+
+  /* ─── Navbar ─── */
+  --vqb-nav-bg:         #0f1f40;   /* Deep navy — professional and strong    */
+  --vqb-nav-height:     68px;
+  --vqb-nav-link:       rgba(255, 255, 255, 0.82);
+  --vqb-nav-link-hover: #ffffff;
+
+  /* ─── CTA / Footer Backgrounds ─── */
+  --vqb-cta-bg:         #0f1f40;
+  --vqb-footer-bg:      #07142b;
+
+  /* ─── Typography ─── */
+  --vqb-font-sans:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --vqb-font-heading:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ─── Spacing Scale ─── */
+  --vqb-space-xs:       0.25rem;
+  --vqb-space-sm:       0.5rem;
+  --vqb-space-md:       1rem;
+  --vqb-space-lg:       1.5rem;
+  --vqb-space-xl:       2rem;
+  --vqb-space-2xl:      3rem;
+  --vqb-space-3xl:      4.5rem;
+  --vqb-space-4xl:      6rem;
+
+  /* ─── Border Radius ─── */
+  --vqb-radius-sm:      6px;
+  --vqb-radius-md:      10px;
+  --vqb-radius-lg:      16px;
+  --vqb-radius-xl:      24px;
+  --vqb-radius-pill:    9999px;
+
+  /* ─── Shadows ─── */
+  --vqb-shadow-xs:      0 1px 2px rgba(15, 31, 64, 0.06);
+  --vqb-shadow-sm:      0 2px 6px rgba(15, 31, 64, 0.08);
+  --vqb-shadow-md:      0 4px 16px rgba(15, 31, 64, 0.10);
+  --vqb-shadow-lg:      0 8px 32px rgba(15, 31, 64, 0.13);
+  --vqb-shadow-xl:      0 16px 48px rgba(15, 31, 64, 0.16);
+
+  /* ─── Transitions ─── */
+  --vqb-transition-fast:   150ms ease;
+  --vqb-transition-base:   250ms ease;
+  --vqb-transition-slow:   400ms ease;
+}

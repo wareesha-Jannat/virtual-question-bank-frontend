@@ -3,6 +3,7 @@ import React from "react";
 import { format, isValid } from "date-fns";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/components/Loader";
+import styles from "./ResultComponent.module.css";
 
 export const ResultComponent = ({
   result,
@@ -21,97 +22,143 @@ export const ResultComponent = ({
     return format(parsedDate, "dd MMM yyyy hh:mm a");
   };
 
+  const topicNames = Array.isArray(result?.examSessionId?.topicNames)
+    ? result.examSessionId.topicNames
+    : Array.isArray(result?.examSessionId?.topicList)
+    ? result.examSessionId.topicList
+        .map((topic) =>
+          topic && typeof topic === "object" ? topic.name : "",
+        )
+        .filter(Boolean)
+    : [];
+
   // Show a loading message if result data hasn't loaded yet
 
   return (
-    <div className="col-12 col-md-10">
-      {/* Card container for result details */}
-      <div
-        className="card shadow my-4 p-4"
-        style={{ backgroundColor: "#f4f7fc " }}
-      >
-        {/* Header for the component */}
-        <h1
-          className="text-center my-4 p-2"
-          style={{ backgroundColor: "#053e77", color: "white" , borderRadius: "5px"}}
-        >
-          Virtual Question Bank
-        </h1>
-        <h3 className="text-center heading">RESULT</h3>
+    <div className={styles.resultShell}>
+      <div className={styles.resultColumn}>
+        {/* Brand bar */}
+        <div className={styles.brandBar}>
+          <i className="bi bi-journal-bookmark-fill"></i>
+          <h1>Virtual Question Bank</h1>
+        </div>
 
-        {!result ? (
-          <div>
-            <Loader />
-          </div>
-        ) : (
-          <>
-            {/* Main result details */}
-            <p className="text-muted d-flex flex-wrap justify-content-between gap-3 mt-2">
-              <span>
-                <strong>Student:</strong> {result?.userId?.name}
-              </span>
-              <span>
-                <strong>Score:</strong> {result?.correctAnswers} /{" "}
-                {result?.examSessionId?.totalQuestions}
-              </span>
-              <span>
-                <strong>Percentage:</strong> {result?.percentage}%
-              </span>
-              <span>
-                <strong>Result:</strong> {result?.isPass ? "Pass" : "Fail"}
-              </span>
-              <span>
-                <strong>Exam Date:</strong> {formatDateTime(result?.date)}
-              </span>
-            </p>
-
-            {/* Additional exam session details */}
-            <p className="text-muted">
-              <strong>Subject:</strong> {result?.examSessionId?.subjectId?.name}
-            </p>
-            <p className="text-muted">
-              <strong>Topics Covered:</strong>{" "}
-              {result?.examSessionId?.topicList
-                .map((topic) => topic.name)
-                .join(", ")}
-            </p>
-            <p className="text-muted">
-              <strong>Difficulty Level:</strong>{" "}
-              {result?.examSessionId?.difficulty}
-            </p>
-            <p className="text-muted">
-              <strong>Duration:</strong> {result?.examSessionId?.duration}{" "}
-              minutes
-            </p>
-            <p className="text-muted">
-              <strong>Time Taken:</strong> {result?.examSessionId?.timeTaken}
-            </p>
-
-            {/* Action buttons for viewing details or navigating back */}
-            <div className="text-center mt-2">
-              <button
-                className="btn btn-primary m-2"
-                onClick={() => onViewDetail(result?.examSessionId?._id)}
-              >
-                View Detailed Results
-              </button>
-
-              {/* Conditionally render the Back button based on dashboardMode prop */}
-              {dashboardMode ? (
-                <button className="btn btn-primary m-2" onClick={onBack}>
-                  Back to Result Table
-                </button>
-              ) : (
-                <button
-                  className="btn btn-secondary m-2"
-                  onClick={() => router.push("/question")}
-                >
-                  Back to Questions
-                </button>
-              )}
+        {/* Card */}
+        <div className={styles.card}>
+          {!result ? (
+            <div>
+              <Loader />
             </div>
-          </>
-        )}
+          ) : (
+            <>
+              {/* Result hero */}
+              <div className={styles.resultHero}>
+                <div
+                  className={`${styles.scoreCircle} ${
+                    result?.isPass
+                      ? styles.scoreCirclePass
+                      : styles.scoreCircleFail
+                  }`}
+                >
+                  <span className={styles.scorePercent}>
+                    {result?.percentage}%
+                  </span>
+                  <span className={styles.scoreLabel}>Score</span>
+                </div>
+
+                <span
+                  className={`${styles.passBadge} ${
+                    result?.isPass
+                      ? styles.passBadgePass
+                      : styles.passBadgeFail
+                  }`}
+                >
+                  {result?.isPass ? (
+                    <>
+                      <i className="bi bi-check-circle-fill"></i> Pass
+                    </>
+                  ) : (
+                    <>
+                      <i className="bi bi-x-circle-fill"></i> Fail
+                    </>
+                  )}
+                </span>
+              </div>
+
+              {/* Stats grid */}
+              <div className={styles.statsGrid}>
+                <div className={styles.statItem}>
+                  <span className={styles.statKey}>Student</span>
+                  <span className={styles.statVal}>
+                    {result?.userId?.name}
+                  </span>
+                </div>
+                <div className={styles.statItem}>
+                  <span className={styles.statKey}>Score</span>
+                  <span className={styles.statVal}>
+                    {result?.correctAnswers} /{" "}
+                    {result?.examSessionId?.totalQuestions}
+                  </span>
+                </div>
+                <div className={styles.statItem}>
+                  <span className={styles.statKey}>Time Taken</span>
+                  <span className={styles.statVal}>
+                    {result?.examSessionId?.timeTaken}
+                  </span>
+                </div>
+                <div className={styles.statItem}>
+                  <span className={styles.statKey}>Duration</span>
+                  <span className={styles.statVal}>
+                    {result?.examSessionId?.duration} min
+                  </span>
+                </div>
+              </div>
+
+              {/* Detail list */}
+              <div className={styles.detailList}>
+                <div className={styles.detailRow}>
+                  <strong>Subject:</strong>{" "}
+                  {result?.examSessionId?.subjectName || "Unknown Subject"}
+                </div>
+                <div className={styles.detailRow}>
+                  <strong>Topics Covered:</strong>{" "}
+                  {topicNames.join(", ") || "No topics"}
+                </div>
+                <div className={styles.detailRow}>
+                  <strong>Difficulty Level:</strong>{" "}
+                  {result?.examSessionId?.difficulty}
+                </div>
+                <div className={styles.detailRow}>
+                  <strong>Exam Date:</strong> {formatDateTime(result?.date)}
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className={styles.actionRow}>
+                <button
+                  className={styles.btnDetail}
+                  onClick={() => onViewDetail(result?.examSessionId?._id)}
+                >
+                  <i className="bi bi-list-ul"></i> View Detailed Results
+                </button>
+
+                {/* Conditionally render the Back button based on dashboardMode prop */}
+                {dashboardMode ? (
+                  <button className={styles.btnBack} onClick={onBack}>
+                    <i className="bi bi-arrow-left"></i> Back to Result Table
+                  </button>
+                ) : (
+                  <button
+                    className={styles.btnBack}
+                    onClick={() => router.push("/question")}
+                  >
+                    <i className="bi bi-arrow-left"></i> Back to Questions
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

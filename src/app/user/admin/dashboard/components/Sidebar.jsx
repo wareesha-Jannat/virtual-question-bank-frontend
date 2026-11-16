@@ -6,7 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRole } from "@/app/components/RoleProvider";
 
-export const Sidebar = ({ isOpen }) => {
+export const Sidebar = ({ isOpen, isDashboard = false }) => {
   const router = useRouter();
   const { role, setRole } = useRole();
   const pathname = usePathname(); // Get the current path
@@ -39,7 +39,11 @@ export const Sidebar = ({ isOpen }) => {
   };
 
   return (
-    <div className={`${styles.sidebar} ${isOpen ? "" : styles.sidebarClosed}`}>
+    <div
+      className={`${styles.sidebar} ${
+        isOpen ? "" : styles.sidebarClosed
+      } ${isDashboard ? styles.dashboardSidebar : ""}`}
+    >
       <ul>
         <li
           className={pathname === "/user/admin/dashboard" ? styles.Active : ""}

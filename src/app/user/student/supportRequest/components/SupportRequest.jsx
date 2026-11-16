@@ -8,6 +8,7 @@ import { useDebounce } from "@/app/hooks/useDebounce";
 import { useCreateRequestMutation } from "./mutations";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Loader from "@/app/components/Loader";
+import styles from "../../StudentPages.module.css";
 
 export function SupportRequest() {
   const initialFormData = {
@@ -21,7 +22,6 @@ export function SupportRequest() {
   const debouncedSearch = useDebounce(searchTerm);
   const createRequestMutation = useCreateRequestMutation();
 
-  // Handle input changes and update the formData state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((formData) => ({
@@ -30,7 +30,6 @@ export function SupportRequest() {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,7 +37,7 @@ export function SupportRequest() {
       onSuccess: (data) => {
         if (data.success) {
           toast.success(data.message || "Request Created successfully");
-          setFormData(initialFormData); // Reset form fields
+          setFormData(initialFormData);
         }
       },
       onError: (error) => {
@@ -98,114 +97,168 @@ export function SupportRequest() {
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <h2 className="mb-4">Support Request</h2>
-        <div className="col-12">
-          <h3 className="mb-3 heading">Make a Request for Help</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Subject</label>
+    <div className={styles.page}>
+      <header className={styles.pageHeader}>
+        <span className={styles.pageIcon} aria-hidden="true">
+          <i className="bi bi-life-preserver"></i>
+        </span>
+        <div>
+          <span className={styles.pageEyebrow}>We&apos;re here to help</span>
+          <h1 className={styles.pageTitle}>Support requests</h1>
+          <p className={styles.pageDescription}>
+            Send a question to our support team and follow its status here.
+          </p>
+        </div>
+      </header>
+
+      <div className={styles.supportLayout}>
+        <section className={styles.panel} aria-labelledby="create-request-title">
+          <h2 id="create-request-title" className={styles.panelHeading}>
+            <i className="bi bi-chat-square-text" aria-hidden="true"></i>
+            Make a request for help
+          </h2>
+          <form onSubmit={handleSubmit} className={styles.supportForm}>
+            <div className={styles.formField}>
+              <label htmlFor="support-subject" className={styles.formLabel}>
+                Subject
+              </label>
               <input
                 type="text"
-                className="form-control"
+                id="support-subject"
+                className={styles.formInput}
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Message</label>
+            <div className={styles.formField}>
+              <label htmlFor="support-message" className={styles.formLabel}>
+                Message
+              </label>
               <textarea
-                className="form-control"
+                id="support-message"
+                className={styles.formTextarea}
                 name="messageText"
                 value={formData.messageText}
                 onChange={handleChange}
                 required
               ></textarea>
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={createRequestMutation.isPending}
-            >
-              {createRequestMutation.isPending ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  <span> Creating...</span>
-                </>
-              ) : (
-                "Create Request"
-              )}
-            </button>
+            <div className={styles.formActions}>
+              <button
+                type="submit"
+                className={styles.actionButton}
+                disabled={createRequestMutation.isPending}
+              >
+                {createRequestMutation.isPending ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    <span>Creating...</span>
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-send" aria-hidden="true"></i>
+                    Create request
+                  </>
+                )}
+              </button>
+            </div>
           </form>
-        </div>
+        </section>
 
-        {/* Display support requests */}
-        <div className="col-12 mt-5">
-          <h3 className="mb-3 heading">Support Requests</h3>
+        <section
+          className={`${styles.panel} ${styles.supportList}`}
+          aria-labelledby="support-requests-title"
+        >
+          <h2 id="support-requests-title" className={styles.panelHeading}>
+            <i className="bi bi-inbox" aria-hidden="true"></i>
+            Your support requests
+          </h2>
 
-          <div className="d-flex align-items-center mb-3">
+          <div className={styles.searchToolbar}>
+            <label
+              className={styles.visuallyHidden}
+              htmlFor="support-search"
+            >
+              Search support requests
+            </label>
             <input
               type="text"
-              className="form-control w-50"
+              id="support-search"
+              className={styles.searchInput}
               placeholder="Search requests by subject or message..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button
-              className="btn btn-outline-primary ms-2"
+              type="button"
+              className={styles.searchButton}
               onClick={() => refetch()}
             >
+              <i className="bi bi-search" aria-hidden="true"></i>
               Search
             </button>
           </div>
 
-          <div className="table-responsive">
-            <table className="table table-bordered table-striped">
+          <div className={styles.tableWrap} aria-busy={isLoading}>
+            <table className={styles.table}>
               <thead>
-                <tr className="text-nowrap">
-                  <th>#</th>
-                  <th>Subject</th>
-                  <th>Message</th>
-                  <th>Response</th>
-                  <th>Responded By</th>
-                  <th>Status</th>
-                  <th>Made At</th>
-                  <th>Responded At</th>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Subject</th>
+                  <th scope="col">Message</th>
+                  <th scope="col">Response</th>
+                  <th scope="col">Responded by</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Made at</th>
+                  <th scope="col">Responded at</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan="8">
+                    <td colSpan="8" className={styles.emptyTableCell}>
                       <Loader />
                     </td>
                   </tr>
                 ) : requests.length > 0 ? (
                   requests.map((request, index) => (
                     <tr key={request._id}>
-                      <td>{index + 1}</td>
-                      <td className="text-nowrap">{request.subject}</td>
-                      <td style={{ minWidth: "200px" }}>{request.message}</td>
-                      <td style={{ minWidth: "200px" }}>
+                      <td className={styles.tableCellNumber}>{index + 1}</td>
+                      <td className={styles.tableCellSubject}>
+                        {request.subject}
+                      </td>
+                      <td className={styles.tableCellText}>
+                        {request.message}
+                      </td>
+                      <td className={styles.tableCellText}>
                         {request.responseText ? request.responseText : "N/A"}
                       </td>
-                      <td className="text-nowrap">
+                      <td className={styles.tableCellSubject}>
                         {request.respondedAdminId
                           ? request.respondedAdminId.name
                           : "N/A"}
                       </td>
-                      <td>{request.status}</td>
-                      <td className="text-nowrap">
+                      <td className={styles.tableCellStatus}>
+                        <span
+                          className={`${styles.statusBadge} ${
+                            request.status === "pending"
+                              ? styles.statusPending
+                              : styles.statusResolved
+                          }`}
+                        >
+                          {request.status}
+                        </span>
+                      </td>
+                      <td className={styles.tableCellDate}>
                         {formatDateTime(request.createdAt)}
                       </td>
-                      <td className="text-nowrap">
+                      <td className={styles.tableCellDate}>
                         {request.status === "pending"
                           ? "N/A"
                           : formatDateTime(request.updatedAt)}
@@ -214,16 +267,24 @@ export function SupportRequest() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7">No support requests found</td>
+                    <td colSpan="8" className={styles.emptyTableCell}>
+                      <i className="bi bi-inbox" aria-hidden="true"></i>
+                      <span>No support requests found</span>
+                    </td>
                   </tr>
                 )}
               </tbody>
             </table>
-            {hasNextPage && (
+          </div>
+
+          {hasNextPage && (
+            <div className={styles.tableFooter}>
               <button
+                type="button"
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="btn btn-info d-flex align-items-center justify-content-center gap-2 px-4 py-2 fw-semibold shadow-sm"
+                className={styles.loadMoreButton}
+                aria-busy={isFetchingNextPage}
               >
                 {isFetchingNextPage ? (
                   <>
@@ -235,12 +296,15 @@ export function SupportRequest() {
                     <span>Loading...</span>
                   </>
                 ) : (
-                  <span className="text-white">Load More</span>
+                  <>
+                    <span>Load more</span>
+                    <i className="bi bi-arrow-down" aria-hidden="true"></i>
+                  </>
                 )}
               </button>
-            )}
-          </div>
-        </div>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );

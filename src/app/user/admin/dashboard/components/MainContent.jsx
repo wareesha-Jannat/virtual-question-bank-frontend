@@ -58,101 +58,154 @@ export function MainContent() {
   const dashboardData = data || initData;
   if (isLoading) {
     return (
-      <div>
+      <div className={styles.loadingState}>
         <Loader />
       </div>
     );
   }
 
+  const statCards = [
+    {
+      icon: "bi-people",
+      iconClass: styles.statIconBlue,
+      label: "Total users",
+      value: dashboardData.users,
+    },
+    {
+      icon: "bi-patch-question",
+      iconClass: styles.statIconGreen,
+      label: "Questions",
+      value: dashboardData.questions,
+    },
+    {
+      icon: "bi-journal-bookmark",
+      iconClass: styles.statIconAmber,
+      label: "Subjects",
+      value: dashboardData.subjects,
+    },
+    {
+      icon: "bi-file-earmark-check",
+      iconClass: styles.statIconRed,
+      label: "Exams taken",
+      value: dashboardData.examsTaken,
+    },
+  ];
+
   return (
-    <>
-      <div className="container">
-        <h2>Welcome {dashboardData?.name}!</h2>
-        <p>Here is a quick overview of your Dashboard</p>
-
-        {/* Cards Section */}
-        <div className={styles.cards}>
-          <div className="bg-info text-dark">
-            <h3>
-              <i className="bi bi-person h3"></i> Users
-            </h3>
-            <p>Total: {dashboardData?.users}</p>
-          </div>
-          <div className="bg-success text-dark">
-            <h3>
-              <i className="bi bi-question-circle h3"></i> Questions
-            </h3>
-            <p>Total: {dashboardData?.questions}</p>
-          </div>
-          <div className="bg-warning text-dark">
-            <h3>
-              <i className="bi bi-book h3"></i> Subjects
-            </h3>
-            <p>Total: {dashboardData?.subjects}</p>
-          </div>
-          <div className="bg-danger text-dark">
-            <h3>
-              <i className="bi bi-file-earmark-text h3"></i> Exams Taken
-            </h3>
-            <p>Total: {dashboardData?.examsTaken}</p>
-          </div>
+    <div className={styles.dashboard}>
+      <section
+        className={styles.welcomeBanner}
+        aria-labelledby="admin-welcome-title"
+      >
+        <span className={styles.welcomeIcon} aria-hidden="true">
+          <i className="bi bi-person-workspace"></i>
+        </span>
+        <div>
+          <h1 id="admin-welcome-title" className={styles.welcomeTitle}>
+            Welcome{dashboardData.name ? `, ${dashboardData.name}` : ""}!
+          </h1>
+          <p className={styles.welcomeSub}>
+            Here is a quick overview of your platform.
+          </p>
         </div>
+      </section>
 
-        {/* Charts Section */}
-        <div className="row mt-5 justify-content-around">
-          <div className="col-md-7 mb-5">
-            <UserActivityChart data={dashboardData?.userActivityData} />
-          </div>
-          <div className="col-md-5">
-            <ExamResultDistributionChart data={dashboardData?.examChartData} />
-          </div>
-        </div>
+      <section className={styles.cards} aria-label="Platform statistics">
+        {statCards.map((card) => (
+          <article key={card.label} className={styles.statCard}>
+            <span
+              className={`${styles.statIcon} ${card.iconClass}`}
+              aria-hidden="true"
+            >
+              <i className={`bi ${card.icon}`}></i>
+            </span>
+            <span className={styles.statBody}>
+              <span className={styles.statLabel}>{card.label}</span>
+              <span className={styles.statValue}>{card.value}</span>
+            </span>
+          </article>
+        ))}
+      </section>
 
-        {/* Tables Section */}
-        <div className="row mt-2">
-          <div className="col-12">
-            <h2>Recent Activity</h2>
-            <div className="table-responsive">
-              <table className="table table-hover mt-3">
-                <thead className="table-primary">
-                  <tr>
-                    <th>User</th>
-                    <th>Role</th>
-                    <th>Activity</th>
-                    <th>Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dashboardData?.recentActivity.length > 0 ? (
-                    dashboardData.recentActivity.map((activity, index) => (
-                      <tr
-                        key={index}
-                        className="text-nowrap"
-                        style={{ minWidth: "200px" }}
-                      >
-                        <td>
-                          {activity.user ? activity.user.name : "User Deleted"}
-                        </td>
-                        <td>{activity.role}</td>
-                        <td>{activity.action}</td>
-                        <td>
+      <section className={styles.chartsRow} aria-label="Dashboard analytics">
+        <article className={styles.chartPanel}>
+          <UserActivityChart data={dashboardData?.userActivityData} />
+        </article>
+        <article className={styles.chartPanel}>
+          <ExamResultDistributionChart data={dashboardData?.examChartData} />
+        </article>
+      </section>
+
+      <section
+        className={styles.activityCard}
+        aria-labelledby="recent-activity-title"
+      >
+        <h2 id="recent-activity-title" className={styles.sectionHeading}>
+          <i className="bi bi-clock-history" aria-hidden="true"></i>
+          Recent activity
+        </h2>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Role</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData?.recentActivity.length > 0 ? (
+                dashboardData.recentActivity.map((activity, index) => {
+                  const userName = activity.user
+                    ? activity.user.name
+                    : "User Deleted";
+                  const initials = userName
+                    .split(/\s+/)
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map((part) => part[0])
+                    .join("");
+
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <span className={styles.userCell}>
+                          <span
+                            className={styles.userAvatar}
+                            aria-hidden="true"
+                          >
+                            {initials || "?"}
+                          </span>
+                          {userName}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={styles.roleBadge}>{activity.role}</span>
+                      </td>
+                      <td>{activity.action}</td>
+                      <td>
+                        <time
+                          className={styles.timeBadge}
+                          dateTime={activity.timestamp}
+                        >
                           {formatDistanceToNow(parseISO(activity.timestamp), {
                             addSuffix: true,
                           })}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="4">No recent activity</td>
+                        </time>
+                      </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  );
+                })
+              ) : (
+                <tr className={styles.emptyRow}>
+                  <td colSpan="4">No recent activity</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
