@@ -18,10 +18,13 @@ export const NavBar = () => {
 
   // ── Bootstrap JS + outside-click handler ─────────────────────
   useEffect(() => {
+    let handleClickOutside;
+    let isMounted = true;
     import("bootstrap/dist/js/bootstrap.bundle.min.js").then((bootstrap) => {
+      if (!isMounted) return;
       bootstrapRef.current = bootstrap;
 
-      const handleClickOutside = (event) => {
+      handleClickOutside = (event) => {
         const navbar = document.getElementById("navbarNav"); //Menu container
         const toggler = document.querySelector(".navbar-toggler"); //mobile hamburger
 
@@ -41,7 +44,9 @@ export const NavBar = () => {
 
       document.addEventListener("click", handleClickOutside);
     });
+
     return () => {
+      isMounted = false;
       if (handleClickOutside) {
         document.removeEventListener("click", handleClickOutside);
       }

@@ -1,5 +1,3 @@
-
-
 //Function to fomat list to be used in react-select dropdown
 
 export const FormatList = (list) => {
@@ -57,7 +55,6 @@ export const getTopics = async (subjectId) => {
     };
   }
 };
-
 
 export const checkUnreadNotifications = async () => {
   try {
