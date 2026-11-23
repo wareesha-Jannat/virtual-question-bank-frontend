@@ -22,15 +22,15 @@ export const NavBar = () => {
       bootstrapRef.current = bootstrap;
 
       const handleClickOutside = (event) => {
-        const navbar = document.getElementById("navbarNav");
-        const toggler = document.querySelector(".navbar-toggler");
+        const navbar = document.getElementById("navbarNav"); //Menu container
+        const toggler = document.querySelector(".navbar-toggler"); //mobile hamburger
 
         if (
-          navbar &&
-          navbar.classList.contains("show") &&
-          !navbar.contains(event.target) &&
-          toggler &&
-          !toggler.contains(event.target)
+          navbar && //Does the menu element exist?
+          navbar.classList.contains("show") && //Is the menu currently open?
+          !navbar.contains(event.target) && //Was the click outside the menu?
+          toggler && //Does the hamburger button exist?
+          !toggler.contains(event.target) //Was the click outside the hamburger button?
         ) {
           const bsCollapse =
             bootstrap.Collapse.getInstance(navbar) ||
@@ -40,8 +40,12 @@ export const NavBar = () => {
       };
 
       document.addEventListener("click", handleClickOutside);
-      return () => document.removeEventListener("click", handleClickOutside);
     });
+    return () => {
+      if (handleClickOutside) {
+        document.removeEventListener("click", handleClickOutside);
+      }
+    };
   }, []);
 
   // ── Close navbar on link click (mobile) ──────────────────────

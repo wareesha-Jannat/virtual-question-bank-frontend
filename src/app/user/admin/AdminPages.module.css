@@ -227,7 +227,6 @@
   grid-column: 1 / -1;
 }
 
-.button,
 .primaryButton,
 .secondaryButton,
 .dangerButton,
@@ -256,15 +255,13 @@
     box-shadow var(--vqb-transition-fast);
 }
 
-.primaryButton,
-.button {
+.primaryButton {
   color: var(--vqb-text-inverse);
   background: var(--vqb-primary);
   border-color: var(--vqb-primary);
 }
 
-.primaryButton:hover:not(:disabled),
-.button:hover:not(:disabled) {
+.primaryButton:hover:not(:disabled) {
   color: var(--vqb-text-inverse);
   background: var(--vqb-primary-dark);
   border-color: var(--vqb-primary-dark);
@@ -303,7 +300,6 @@
   border-color: var(--vqb-danger);
 }
 
-.button:disabled,
 .primaryButton:disabled,
 .secondaryButton:disabled,
 .dangerButton:disabled,

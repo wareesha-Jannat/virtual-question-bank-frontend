@@ -83,58 +83,6 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-/* ─── 10. Heading utility classes (retained for other pages) ────────────────  */
-.heading {
-  background-color: var(--vqb-accent-light);
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-  padding: 10px;
-  border-radius: var(--vqb-radius-sm);
-  text-align: center;
-  box-shadow: var(--vqb-shadow-sm);
-}
-
-.headingQuestion {
-  background-color: var(--vqb-accent-light);
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-  padding: 10px;
-  border-radius: var(--vqb-radius-sm);
-  text-align: start;
-  box-shadow: var(--vqb-shadow-sm);
-}
-
-.headingPink {
-  background-color: antiquewhite;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-  padding: 10px;
-  border-radius: var(--vqb-radius-sm);
-  text-align: center;
-}
-
-/* ─── 11. Auth Form containers (used on Login / Register pages) ─────────────  */
-.formContainer {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--vqb-surface-alt);
-}
-
-.formBox {
-  background: var(--vqb-surface-card);
-  padding: 2rem;
-  border-radius: var(--vqb-radius-lg);
-  box-shadow: var(--vqb-shadow-lg);
-  width: 420px;
-}
-
-.formBox h2 {
-  color: var(--vqb-nav-bg);
-  font-family: var(--vqb-font-heading);
-  font-weight: 800;
-}
 
 /* ─── 12. Toast notifications ───────────────────────────────────────────────  */
 .customToast {
@@ -142,11 +90,4 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 50px;
 }
 
-/* ─── 13. Responsive overrides ──────────────────────────────────────────────  */
-@media (max-width: 545px) {
-  .formBox {
-    width: 92vw;
-    max-width: 360px;
-    margin: 0 auto;
-  }
-}
+
